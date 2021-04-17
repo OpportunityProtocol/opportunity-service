@@ -1,0 +1,19 @@
+{
+  "name": "opportunity-service",
+  "version": "1.0.0",
+  "description": "A service layer that connects all services between the blockchain and ui.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/OpportunityProtocol/opportunity-service.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/OpportunityProtocol/opportunity-service/issues"
+  },
+  "homepage": "https://github.com/OpportunityProtocol/opportunity-service#readme"
+}
