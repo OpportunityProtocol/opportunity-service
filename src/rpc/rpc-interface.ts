@@ -1,6 +1,6 @@
 "use strict";
 
-var createRpcInterface = function (ethrpc) {
+function generateRpc(ethrpc) {
   return {
     constants: ethrpc.constants,
     errors: ethrpc.errors,
@@ -9,7 +9,6 @@ var createRpcInterface = function (ethrpc) {
     clear: ethrpc.clear,
     startBlockStream: ethrpc.startBlockStream,
     getBlockStream: ethrpc.getBlockStream,
-    getCoinbase: ethrpc.getCoinbase,
     getCurrentBlock: ethrpc.getCurrentBlock,
     getGasPrice: ethrpc.getGasPrice,
     getNetworkID: ethrpc.getNetworkID,
@@ -20,18 +19,9 @@ var createRpcInterface = function (ethrpc) {
     packageAndSubmitRawTransaction: ethrpc.packageAndSubmitRawTransaction,
     callContractFunction: ethrpc.callContractFunction,
     transact: ethrpc.transact,
-    excludeFromTransactionRelay: ethrpc.excludeFromTransactionRelay,
-    registerTransactionRelay: ethrpc.registerTransactionRelay,
-    setDebugOptions: ethrpc.setDebugOptions,
-    HttpTransport: ethrpc.HttpTransport,
-    WsTransport: ethrpc.WsTransport,
     publish: ethrpc.publish,
     sha3: ethrpc.sha3,
   };
 };
 
-var ethrpc = createRpcInterface(require("ethrpc"));
-ethrpc.createRpcInterface = createRpcInterface;
-
-
-export { ethrpc };
+export { generateRpc };
