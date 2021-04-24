@@ -6,5 +6,10 @@
     "exchange": {
         "WorkExchange": "",
         "WorkRelationship": ""
+    },
+    "market": {
+        "defaultMarkets": [
+
+        ]
     }
 }
