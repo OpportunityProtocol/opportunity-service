@@ -1,5 +1,6 @@
-type EthereumRPC = {
-    createRpcInterface: () => {}
+export type StorageInterface = {
+    provider: object,
+    IPFS: object,
 }
 
-export {EthereumRPC}
+export type StorageInterfaceWrapper<StorageInterface> = () => void;

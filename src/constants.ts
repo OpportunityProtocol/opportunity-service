@@ -23,4 +23,7 @@ export const RPC_CONFIGURATION = {
     connectionTimeout: 3000, // optional, default 3000
     errorHandler: function (err) { /* out-of-band error */ }, // optional, used for errors that can't be correlated back to a request
   };
-  
+
+  export enum StorageProviders {
+    IPFS='ipfs'
+  }

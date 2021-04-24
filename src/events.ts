@@ -13,4 +13,20 @@ enum RPCEvent {
     
 }
 
+enum MarketEvents {
+
+}
+
+enum UserEvents {
+
+}
+
+enum ExchangeEvents {
+
+}
+
+enum StorageEvents {
+    
+}
+
 export { StorageServiceEvent, AuthenticationServiceEvent, RPCEvent };

@@ -5,7 +5,7 @@ export function connectToRpc(ethrpc) {
         if (err) {
           console.error("Failed to connect to Ethereum node.");
         } else {
-          console.log("Connected to Ethereum node!");
+          console.log("Connected to Ethereum node.");
         }
       });
 }

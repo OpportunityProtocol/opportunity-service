@@ -1,8 +1,6 @@
-const EventEmitter = require('events');
 const createClient = require('ipfs-http-client');
-import { StorageServiceEvent } from '../events';
-
-const StorageEventEmitter = new EventEmitter();
+import { StorageServiceEvent } from '../../events';
+import StorageEventEmitter from './storage-event-emitter';
 
 let client;
 
@@ -26,7 +24,7 @@ async function getData(cid) : Promise<Object> {
 
     StorageEventEmitter.emit(StorageServiceEvent.DATA_RETRIEVED);
 
-    return content
+    return content;
 }
 
 export { createNewClient, addData, getData, StorageEventEmitter };
