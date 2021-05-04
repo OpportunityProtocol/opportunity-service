@@ -1,6 +1,6 @@
 import { fm, web3 } from './index';
 
-function login() {
+function loginFortmatic() {
     return fm.user.login().then(() => {
         return web3.eth.getAccounts().then(accounts => {
             return accounts[0]
@@ -8,8 +8,8 @@ function login() {
     })
 }
 
-function logout() {
+function logoutFortmatic() {
 
 }
 
-export { login, logout };
+export { loginFortmatic, logoutFortmatic };

@@ -1,5 +1,6 @@
 import { AuthenticationProviders } from "../constants";
-import { login } from "./fortmatic/authenticate-user";
+import fortmaticInterface from "./fortmatic";
+import metamaskInterface from './metamask';
 
 class ConnectionProvider {
     private currentProvider : AuthenticationProviders;
@@ -15,10 +16,15 @@ class ConnectionProvider {
     connect(currentProvider: AuthenticationProviders) {
         switch(currentProvider) {
             case AuthenticationProviders.Fortmatic:
-                const connectedAccount = login();
-                return connectedAccount;
-            case AuthenticationProviders.Metamask
-                return;
+                fortmaticInterface.login().then((connectedAccount) => {
+                    this.changeCurrentProvider(AuthenticationProviders.Fortmatic);
+                    return connectedAccount;
+                })
+            case AuthenticationProviders.Metamask:
+                metamaskInterface.login().then((connectedAccount) => {
+                    this.changeCurrentProvider(AuthenticationProviders.Metamask)
+                    return connectedAccount;
+                })
         }
     }
 }
