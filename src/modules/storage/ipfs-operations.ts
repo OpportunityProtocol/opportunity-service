@@ -1,17 +1,18 @@
 const createClient = require('ipfs-http-client');
-import { StorageServiceEvent } from '../../events';
-import StorageEventEmitter from './storage-event-emitter';
+import { StorageProviderInterface } from '../../types';
+import opportunityEventEmitter from '../../events/OpportunityEventEmitter';
+import { StorageEvents } from '../../constants';
 
 let client;
 
 function createNewClient(url=process.env.DEFAULT_IPFS_URL) {
     client = createClient(new URL(url));
-    StorageEventEmitter.emit(StorageServiceEvent.HOST_CHANGED, url);
+    opportunityEventEmitter.emit(StorageEvents.HOST_CHANGED, url);
 }
 
 function addData(data) : string {
     const { cid } = this.client.add(data);
-    StorageEventEmitter.emit(StorageServiceEvent.DATA_ADDED);
+    opportunityEventEmitter.emit(StorageEvents.DATA_ADDED);
     return cid;
 }
 
@@ -22,9 +23,15 @@ async function getData(cid) : Promise<Object> {
         content += decoder.decode(chunk)
     }
 
-    StorageEventEmitter.emit(StorageServiceEvent.DATA_RETRIEVED);
+    opportunityEventEmitter.emit(StorageEvents.DATA_RETRIEVED);
 
     return content;
 }
 
-export { createNewClient, addData, getData, StorageEventEmitter };
+const IPFSProviderInterface : StorageProviderInterface = {
+    createProvider: createNewClient,
+    storeData: addData,
+    retrieveData: getData
+}
+
+export default IPFSProviderInterface;

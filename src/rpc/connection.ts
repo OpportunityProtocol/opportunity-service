@@ -1,6 +1,6 @@
 import { RPC_CONFIGURATION } from '../constants';
 
-export function connectToRpc(ethrpc) {
+function connectRpc(ethrpc) {
     ethrpc.connect(RPC_CONFIGURATION, function (err) {
         if (err) {
           console.error("Failed to connect to Ethereum node.");
@@ -9,3 +9,9 @@ export function connectToRpc(ethrpc) {
         }
       });
 }
+
+function disconnectRpc(ethrpc) {
+  ethrpc.disconnect();
+}
+
+export { connectRpc, disconnectRpc }

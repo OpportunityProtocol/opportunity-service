@@ -1,16 +1,6 @@
 "use strict";
-import { SubscriptionInterface } from "../../types"
-import { subscribeToLogEvent, unsubscribeFromLogEvent } from "../subscriptions/subscribe-log-event"
-import { subscribeToEvent, unsubscribeFromEvent } from "../subscriptions/subscribe-to-event";
 
-const SubscriptionInterface : SubscriptionInterface =  {
-    subscribeEvent: subscribeToEvent,
-    unsubscribeEvent: unsubscribeFromEvent,
-}
-
-export default SubscriptionInterface;
-
-function generateRpc(ethrpc) {
+function generateRpcInterface(ethrpc) {
   return {
     constants: ethrpc.constants,
     eth: ethrpc.eth,
@@ -47,6 +37,9 @@ function generateRpc(ethrpc) {
     resend: ethrpc.resend,
     resendRawTransaction: ethrpc.resendRawTransaction,
     transact: ethrpc.transact
-};
+}
+}
 
-export { generateRpc }
+const rpc = generateRpcInterface(require('ethrpc'));
+
+export default rpc;

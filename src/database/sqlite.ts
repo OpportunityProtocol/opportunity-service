@@ -5,12 +5,12 @@ require('dotenv').config();
 import { Database } from 'sqlite3/index';
 
 // this is a top-level await
-const initializeAndOpenDb = async (db: Database, databaseUrl : string) => {
+const initializeAndOpenDb = async (db: Database, databaseUrl : string = process.env.DATABASE_URL) => {
     // open the database
     db = await open({
         filename: databaseUrl,
         drive: sqlite3.Database
-    })
+    });
 
     return db;
 }

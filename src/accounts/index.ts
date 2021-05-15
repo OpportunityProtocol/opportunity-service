@@ -13,6 +13,15 @@ class ConnectionProvider {
         return this.currentProvider;
     }
 
+    getProviderInterface() {
+        switch(this.currentProvider) {
+            case AuthenticationProviders.Fortmatic:
+                return fortmaticInterface;
+            case AuthenticationProviders.Metamask:
+                return metamaskInterface;
+        }
+    }
+
     connect(currentProvider: AuthenticationProviders) {
         switch(currentProvider) {
             case AuthenticationProviders.Fortmatic:
@@ -30,3 +39,4 @@ class ConnectionProvider {
 }
 
 const opportunityConnectionProvider : ConnectionProvider = new ConnectionProvider();
+export { opportunityConnectionProvider };

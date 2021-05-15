@@ -1,7 +1,22 @@
-export const enum Networks {
-  Ropsten = 'Ropsten',
-  Mainnet = 'Mainnet',
-  Rinkeby = 'Rinkeby'
+require('dotenv').config()
+
+/* Contracts */
+export const ABI_LIST = [
+  'CONTROL',
+  'DISPUTE',
+  'WORK_EXCHANGE',
+  'WORK_RELATIONSHIP',
+  'MARKET',
+  'MARKET_FACTORY'
+]
+
+export enum Contracts {
+  CONTROL='0x',
+  DISPUTE='0x',
+  WORK_EXCHANGE='0X',
+  WORK_RELATIONSHIP='0X',
+  MARKET='0x',
+  MARKET_FACTORY='0x'
 }
 
 export const enum WorkRelationshipState {
@@ -12,7 +27,15 @@ export const enum WorkRelationshipState {
   COMPLETED,
   EVALUATING,
   CLAIMED,
+}
 
+
+/* Web3 */
+
+export const enum Networks {
+  Ropsten = 'Ropsten',
+  Mainnet = 'Mainnet',
+  Rinkeby = 'Rinkeby'
 }
 
 export const RPC_CONFIGURATION = {
@@ -24,27 +47,25 @@ export const RPC_CONFIGURATION = {
   errorHandler: function (err) { /* out-of-band error */ }, // optional, used for errors that can't be correlated back to a request
 };
 
-export enum StorageProviders {
-  IPFS = 'ipfs'
-}
+/* Events */
 
 export enum AuthenticationServiceEvent {
   USER_REGISTERED = 'user_registered',
 }
 
-export enum StorageServiceEvent {
-  DATA_ADDED = 'data_added',
-  DATA_RETRIEVED = 'data_retrieved',
-  HOST_CHANGED = 'host_changed',
-  STATUS_CHANGED = 'status_changed',
+export enum ServiceEvents {
+  ServiceStarted='ServiceRunning',
+  ServiceStopped='ServiceStopped'
 }
 
 export enum RPCEvents {
-  EventOne="EventOne"
+  StartSyncing='StartSyncing',
+  StopSyncing='StopSyncing'
 }
 
 export enum MarketEvents {
-  EventOne="EventOne"
+  MarkedCreated='MarketCreated',
+  MarketDestroyed='MarketDestroyed'
 }
 
 export enum UserEvents {
@@ -56,18 +77,25 @@ export enum ExchangeEvents {
 }
 
 export enum StorageEvents {
-  EventOne="EventOne"
+  HOST_CHANGED='HostChanged',
+  DATA_ADDED= 'DataAdded',
+  DATA_RETRIEVED='DataRetrieved',
 }
 
-export enum SERVER_ENDPOINTS {
-  getMarkets='/api/getMarkets/',
-  getUsers='/api/getUsers/',
-  getUser='/api/getUser/${address}',
-  getDispitues='/api/getDisputes/',
-
-}
+/* Providers */
 
 export enum AuthenticationProviders {
   Fortmatic='Fortmatic',
-  Metamask='Metamask'
+  Metamask='Metamask',
+  Torus='Torus'
+}
+
+export enum StorageProviders {
+  IPFS = 'ipfs'
+}
+
+/* Database */
+
+export enum DBHealthStatus {
+  
 }

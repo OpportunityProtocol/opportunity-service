@@ -1,11 +1,18 @@
 import { StorageProviders } from '../../constants';
-import { createNewClient, addData, getData, StorageEventEmitter  } from './ipfs-operations';
-import { StorageInterface, StorageInterfaceWrapper } from '../../types';
+import IPFSProviderInterface from './ipfs-operations';
+import { StorageInterface, StorageInterfaceWrapper, StorageProviderInterface } from '../../types';
 
-let StorageProvider: StorageInterfaceWrapper<StorageInterface> = function(): void {
-    this.provider.currentProvider = StorageProviders.IPFS
+const StorageProvider: StorageInterfaceWrapper<StorageInterface> = function(): void {
+    this.provider.currentProvider = null;
+    this.provider.interface = null;
     this.provider.changeStorageProvider = function(newProvider : StorageProviders) {
-        this.currentProvider = newProvider;
+        switch (newProvider) {
+            case StorageProviders.IPFS:
+                this.currentProvider = StorageProviders.IPFS;
+                this.provider.interface = IPFSProviderInterface;
+                break;
+            default:
+        }
     }
     this.provider.getCurrentProvider = function () {
         return this.provider.currentProvider;
@@ -13,8 +20,6 @@ let StorageProvider: StorageInterfaceWrapper<StorageInterface> = function(): voi
     return this;
 }
 
-StorageProvider.IPFS.createNewClient = createNewClient;
-StorageProvider.IPFS.addData = addData;
-StorageProvider.IPFS.getData = getData;
+const storageProvider = new StorageProvider();
 
-export { StorageProvider };
+export default storageProvider;
