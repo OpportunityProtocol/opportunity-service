@@ -1,9 +1,5 @@
 {
-    "CONTROL": "0x",
-    "DISPUTE": "0x",
-    "WORK_EXCHANGE":"0X",
-    "WORK_RELATIONSHIP":  "0X",
-    "MARKET": "0x",
-    "MARKET_FACTORY": "0x",
-    "Dispute": "0x"
+    "CONTROL": 352,
+    "DISPUTE": 351,
+    "MARKET_FACTORY": 350
 }

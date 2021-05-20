@@ -1,5 +1,8 @@
 import { ExchangeEvents, MarketEvents, StorageProviders, UserEvents } from "./constants";
 
+/* General Types */
+export type IHashMap = {}
+
 /* Storage Module */
 export type StorageInterface = {
     currentProvider: StorageProviderInterface,

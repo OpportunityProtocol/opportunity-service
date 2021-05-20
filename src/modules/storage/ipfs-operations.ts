@@ -1,7 +1,8 @@
+require('dotenv').config()
 const createClient = require('ipfs-http-client');
 import { StorageProviderInterface } from '../../types';
 import opportunityEventEmitter from '../../events/OpportunityEventEmitter';
-import { StorageEvents } from '../../constants';
+import { StorageEvsents } from '../../constants';
 
 let client;
 
