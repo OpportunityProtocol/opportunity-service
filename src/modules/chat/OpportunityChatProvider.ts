@@ -6,13 +6,14 @@ import { IHashMap } from '../../types';
 class OpportunityChatProvider {
 
     private streams : IHashMap;
-    private rpc = rpc;
+    private rpc = null;
     private keyPair;
     private channelSymmetricKey;
     private pubKey;
     private eventEmitter : EventEmitter;
 
-    constructor() {
+   /* constructor(rpc) {
+        this.rpc = rpc;
         this.generateKeys();
         this.eventEmitter = opportunityEventEmitter;
     }
@@ -21,9 +22,9 @@ class OpportunityChatProvider {
         this.keyPair = await rpc.shh.newKeyPair();
         this.channelSymmetricKey = await rpc.shh.generateSymKeyFromPass(process.env.DEFAULT_WHISPER_CHANNEL);
         this.pubKey = await rpc.shh.getPublicKey(this.keyPair);
-    }
+    }*/
 
-    broadcastPublicMessage(message) {
+    /*broadcastPublicMessage(message) {
         this.rpc.shh.post({
             symmKeyID: this.channelSymmetricKey,
             sig: this.keyPair,
@@ -70,7 +71,10 @@ class OpportunityChatProvider {
 
     unsubscribePrivateStream() {
         opportunityEventEmitter.unsubscribeFromListener(ChatEvent.NewPrivateMessage, console.log)
-    }
+    }*/
 
 
 }
+
+const opportunityChatProvider = new OpportunityChatProvider();
+export { opportunityChatProvider };

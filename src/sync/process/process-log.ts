@@ -24,13 +24,14 @@ function processLog(log) {
 }
 
 function processLogEvents(log) {
+    console.log('FOund a log to process')
     const topics = log.topics;
     let event = null;
     let abi = null;
 
     for (var i = 0; i < ABI_LIST.length; i++) {
-        var abi = abiMap[Contracts[ABI_LIST[i]]];
-        for (const abiItem in abi) {
+        var abis = abiMap[Contracts[ABI_LIST[i]]];
+        for (const abiItem in abis) {
             if (abiItem.type != "event") { continue; };
             var signature = abiItem.name + "(" + abiItem.inputs.map(function (input) { return input.type; }).join(",") + ")";
 

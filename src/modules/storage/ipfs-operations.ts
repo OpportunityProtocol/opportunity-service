@@ -1,12 +1,12 @@
-require('dotenv').config()
+
 const createClient = require('ipfs-http-client');
 import { StorageProviderInterface } from '../../types';
 import opportunityEventEmitter from '../../events/OpportunityEventEmitter';
-import { StorageEvsents } from '../../constants';
+import { StorageEvents } from '../../constants';
 
 let client;
 
-function createNewClient(url=process.env.DEFAULT_IPFS_URL) {
+function createNewClient(url='http://localhost:5001/api/v0' /*process.env.DEFAULT_IPFS_URL*/) {
     client = createClient(new URL(url));
     opportunityEventEmitter.emit(StorageEvents.HOST_CHANGED, url);
 }

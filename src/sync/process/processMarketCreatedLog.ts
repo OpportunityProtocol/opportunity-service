@@ -1,7 +1,6 @@
 import { Contracts, MarketEvents } from '../../constants';
 import ethrpc from '../../rpc/interface/rpc-interface';
 import * as abiMap from '../../blockchain/abi.json';
-import { knex } from '../../database/index';
 import opportunityEventEmitter from '../../events/OpportunityEventEmitter';
 
 /**
@@ -22,21 +21,6 @@ function processMarketCreatedEvent(eventData) {
     relationshipAddresses = marketContractInstance.methods.getWorkRelationships().call();
 
     //update db for markets
-    knex.select()
-        .insert({
-            index: marketIndex,
-            marketAddress: marketAddress,
-            name: marketContractInstance.methods.get_marketName(),
-            marketType: marketContractInstance.methods.get_marketType(),
-            requiredReputation: marketContractInstance.methods.get_requiredReputation(),
-            requiredIndustryReputation: marketContractInstance.methods.get_requiredIndustryReputation(),
-            marketStatus: marketContractInstance.methods.get_marketStatus(),
-            relationships: relationshipAddresses
-        })
-        .into('markets')
-        .then(() => {
-            opportunityEventEmitter.emit(MarketEvents.MarkedCreated);
-        })
 
     //update data db
     //go through the address of each relationship, create the contract and extract the status and metadata pointer;
@@ -47,17 +31,7 @@ function processMarketCreatedEvent(eventData) {
         const contractStatus = relationshipContractInstance.methods.get_contractStatus().call();
         const contractTaskName = relationshipContractInstance.methods.get_contractTaskName().call();
         //update db
-        knex.select().insert({
-            marketAddress: marketAddress,
-            marketID: marketContractInstance.methods.get_marketName(),
-            address: relationship,
-            taskName: contractTaskName,
-            status: contractStatus
-        })
-        .into('relationships')
-        .then(() => {
-           
-        })
+ 
     }
 
 }

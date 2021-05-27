@@ -11,12 +11,12 @@ export const ABI_LIST = [
 ]
 
 export enum Contracts {
-  CONTROL='0x',
-  DISPUTE='0x',
-  WORK_EXCHANGE='0X',
-  WORK_RELATIONSHIP='0X',
-  MARKET='0x',
-  MARKET_FACTORY='0x'
+  CONTROL='Control',
+  DISPUTE='Dispute',
+  WORK_EXCHANGE='WorkExchange',
+  WORK_RELATIONSHIP='WorkRelationship',
+  MARKET='Market',
+  MARKET_FACTORY='MarketFactory'
 }
 
 export const enum WorkRelationshipState {
@@ -39,9 +39,8 @@ export const enum Networks {
 }
 
 export const RPC_CONFIGURATION = {
-  httpAddresses: [process.env.OpportunityNodeHTTP], // optional, default empty array
-  wsAddresses: [], // optional, default empty array
-  ipcAddresses: [process.env.OpportunityNodeIPC], // optional, default empty array
+  httpAddresses: ['https://silent-bold-sea.rinkeby.quiknode.pro/1dbc05d5626c99bd2ad24ada0c962fc90f15b007/'], // optional, default empty array
+  wsAddresses: ['wss://silent-bold-sea.rinkeby.quiknode.pro/1dbc05d5626c99bd2ad24ada0c962fc90f15b007/'], // optional, default empty array
   networkID: 3, // optional, used to verify connection to the intended network (blockchain)
   connectionTimeout: 3000, // optional, default 3000
   errorHandler: function (err) { /* out-of-band error */ }, // optional, used for errors that can't be correlated back to a request

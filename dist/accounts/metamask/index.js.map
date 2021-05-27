@@ -1,0 +1,1 @@
+{"version":3,"file":"index.js","sourceRoot":"","sources":["../../../src/accounts/metamask/index.ts"],"names":[],"mappings":";;AAAA,2DAAoE;AACpE,qEAA6D;AAE7D,MAAM,iBAAiB,GAAG;IACtB,IAAI,EAAE,0CAAiB,EAAE,CAAC,CAAC,CAAC,MAAM,CAAC,IAAI,CAAC,CAAC,CAAC,IAAI;IAC9C,KAAK,EAAE,iCAAa;IACpB,MAAM,EAAE,kCAAc;CACzB,CAAA;AAED,kBAAe,iBAAiB,CAAC"}
