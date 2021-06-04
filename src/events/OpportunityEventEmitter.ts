@@ -7,11 +7,14 @@ class OpportunityEventEmitter extends EventEmitter {
         this.setMaxListeners(0);
     }
 
-    readonly subscriptions = [];
+    private subscriptions = [];
 
-    addSubscription(id : string, eventName : string, callback : () => any) {}
+    addSubscription(eventName : string, callback : () => any) {
+        this.subscriptions[eventName] = callback;
+    }
 
     emit(eventName : ServiceEvents | MarketEvents | ExchangeEvents | UserEvents | RPCEvents | StorageEvents, ...args: Array<any>) : boolean {
+        this.subscriptions[MarketEvents.MarkedCreated](...args);
         return super.emit(eventName, ...args);
     }
 
@@ -22,8 +25,7 @@ class OpportunityEventEmitter extends EventEmitter {
     subscribeToEvent = (eventName : string, callback : (...args : Array<any>) => any) => {
         this.on(eventName, callback);
 
-        const id = -1;
-        this.addSubscription(id, eventName, callback)
+        this.addSubscription(eventName, callback)
     }
 
     unsubscribeFromAllListeners = () => {

@@ -24,32 +24,59 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.processMarketCreatedEvent = void 0;
 const constants_1 = require("../../constants");
-const rpc_interface_1 = __importDefault(require("../../rpc/interface/rpc-interface"));
 const abiMap = __importStar(require("../../blockchain/abi.json"));
+const OpportunityService_1 = __importDefault(require("../../OpportunityService"));
+const ethers_1 = require("ethers");
+const OpportunityEventEmitter_1 = __importDefault(require("../../events/OpportunityEventEmitter"));
 /**
- *
+ * MarketCreated(_market: address, index: uint256, _marketAddress: address, owner: address)
  * @param eventData
  * @returns
  */
-function processMarketCreatedEvent(eventData) {
-    //get market data
-    const initialMarketData = eventData[1];
-    const marketIndex = eventData[2];
-    const marketAddress = eventData[3];
-    const marketContractInstance = new rpc_interface_1.default.eth.Contract(abiMap[constants_1.Contracts.MARKET], marketAddress);
+function processMarketCreatedEvent(log) {
+    const iface = new ethers_1.ethers.utils.Interface(abiMap[constants_1.Contracts.MARKET_FACTORY]);
+    const decodedLog = iface.parseLog(log);
+    const { args, signature } = decodedLog;
+    const marketAddress = args[0];
+    const marketIndex = args[1];
+    const marketOwner = args[2];
+    const marketName = args[3];
+    const marketType = args[4];
+    console.log('Processing ' + signature + ' with args: '
+        + 'Market Address: ' + marketAddress + ', Index: '
+        + marketIndex + ', Owner: ' + marketOwner, ', Market Name: ' + marketName, +', and Market Type: ' + marketType);
+    const marketContractInstance = new ethers_1.ethers.Contract(marketAddress, abiMap[constants_1.Contracts.MARKET], OpportunityService_1.default.getProviderInterface());
+    let relationshipsData = [];
     //get a market's address and instantiate a new contract to get all work relationships
-    let relationshipAddresses = [];
-    relationshipAddresses = marketContractInstance.methods.getWorkRelationships().call();
-    //update db for markets
-    //update data db
+    const relationshipAddresses = marketContractInstance.getWorkRelationships();
+    console.log('This market contains: ' + relationshipAddresses.length + ' relationships');
     //go through the address of each relationship, create the contract and extract the status and metadata pointer;
     //update work db for work relationships
-    for (const relationship in relationshipAddresses) {
-        const relationshipContractInstance = new rpc_interface_1.default.eth.Contract(abiMap[constants_1.Contracts.WORK_RELATIONSHIP], relationship);
-        const contractStatus = relationshipContractInstance.methods.get_contractStatus().call();
-        const contractTaskName = relationshipContractInstance.methods.get_contractTaskName().call();
-        //update db
+    if (relationshipAddresses.length > 0 && relationshipAddresses != null) {
+        for (const relationship in relationshipAddresses) {
+            const relationshipContractInstance = new ethers_1.ethers.Contract(abiMap[constants_1.Contracts.WORK_RELATIONSHIP], relationship, OpportunityService_1.default.getProviderInterface());
+            const contractStatus = relationshipContractInstance.get_contractStatus();
+            const contractTaskName = relationshipContractInstance.get_contractTaskName();
+            let relationshipData = {
+                contractStatus,
+                contractTaskName
+            };
+            relationshipsData.push(relationshipData);
+            console.log('Processing task with task name: ' + contractTaskName + ' and the status: ' + contractStatus);
+        }
     }
+    let marketData = {
+        marketAddress,
+        marketIndex,
+        marketOwner,
+        marketName,
+        marketType,
+        marketRelationships: relationshipAddresses
+    };
+    OpportunityEventEmitter_1.default.emit(constants_1.MarketEvents.MarkedCreated, marketData);
+    //update db
+    console.log('Updating database for markets and relationships');
+    //knex.schema.raw("SET sql_mode='TRADITIONAL'")
 }
 exports.processMarketCreatedEvent = processMarketCreatedEvent;
 //# sourceMappingURL=processMarketCreatedLog.js.map

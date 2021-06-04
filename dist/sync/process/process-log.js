@@ -18,16 +18,13 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.processLogEvents = exports.processLog = void 0;
 const constants_1 = require("../../constants");
-const rpc_interface_1 = __importDefault(require("../../rpc/interface/rpc-interface"));
 const abiMap = __importStar(require("../../blockchain/abi.json"));
 const processMarketCreatedLog_1 = require("./processMarketCreatedLog");
 const processMarketDestroyedEvent_1 = require("./processMarketDestroyedEvent");
+const ethers_1 = require("ethers");
 /**
  * Retrieves topics and process the approppriate log
  * @param log
@@ -48,37 +45,38 @@ function processLog(log) {
 }
 exports.processLog = processLog;
 function processLogEvents(log) {
-    console.log('FOund a log to process');
-    const topics = log.topics;
+    const { data, topics } = log;
     let event = null;
-    let abi = null;
+    let hash = null;
     for (var i = 0; i < constants_1.ABI_LIST.length; i++) {
-        var abis = abiMap[constants_1.Contracts[constants_1.ABI_LIST[i]]];
-        for (const abiItem in abis) {
-            if (abiItem.type != "event") {
+        var abis = abiMap[constants_1.ABI_LIST[i].toString()];
+        for (const aItem in abis) {
+            if (aItem['type'] == "event") {
                 continue;
             }
             ;
-            var signature = abiItem.name + "(" + abiItem.inputs.map(function (input) { return input.type; }).join(",") + ")";
-            var hash = rpc_interface_1.default.eth.sha3(signature);
+            var signature = abis[aItem]['name'] + "(" + abis[aItem]['inputs'].map(function (input) { return input.type; }).join(",") + ")";
+            console.log('Processing an event with the signature: ' + signature);
+            hash = ethers_1.utils.id(signature);
             if (hash == topics[0]) {
-                event = abiItem;
+                event = abis[aItem];
                 break;
             }
         }
     }
-    if (event != null && abi != null) {
-        var inputs = event.inputs.map(function (input) { return input.type; });
-        let decodedEventData = rpc_interface_1.default.eth.abi.decodeParameters(inputs, abi);
-        switch (decodedEventData[0]) {
+    if (event != null) {
+        switch (event['name']) {
             case "MarketCreated":
-                processMarketCreatedLog_1.processMarketCreatedEvent(decodedEventData);
+                processMarketCreatedLog_1.processMarketCreatedEvent(log);
                 break;
             case "MarketDestroyed":
-                processMarketDestroyedEvent_1.processMarketDestroyedEvent(decodedEventData);
+                processMarketDestroyedEvent_1.processMarketDestroyedEvent(log);
                 break;
             default:
         }
+    }
+    else {
+        console.log('Event is null.. exiting processing.');
     }
 }
 exports.processLogEvents = processLogEvents;

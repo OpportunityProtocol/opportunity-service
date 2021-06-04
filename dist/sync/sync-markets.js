@@ -18,23 +18,42 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const rpc_interface_1 = __importDefault(require("../rpc/interface/rpc-interface"));
+const OpportunityService_1 = __importDefault(require("../OpportunityService"));
 const addressMap = __importStar(require("../blockchain/addresses.json"));
 const constants_1 = require("../constants");
 const process_log_1 = require("./process/process-log");
 function syncMarkets() {
-    //sync Markets and Work Relationships
-    rpc_interface_1.default.getLogs({ address: addressMap[constants_1.Contracts.MARKET_FACTORY], fromBlock: 0, toBlock: 'latest' }, (err, logs) => {
-        logs.forEach(log => {
-            if (log && Array.isArray(log.topics) && log.topics.length) {
-                process_log_1.processLog(log);
-            }
+    return __awaiter(this, void 0, void 0, function* () {
+        //sync Markets and Work Relationships
+        yield OpportunityService_1.default.getProviderInterface().getLogs({
+            address: addressMap[constants_1.Contracts.MARKET_FACTORY],
+            fromBlock: 1,
+            toBlock: 'latest'
+        }).then((logs) => {
+            console.log('Found logs.. Processing...');
+            logs.forEach(log => {
+                if (log && Array.isArray(log.topics) && log.topics.length) {
+                    process_log_1.processLog(log); // keccashinside here
+                }
+            });
+        })
+            .catch(err => {
+            console.log('Err on fetching logs from blockchain: ' + err);
         });
     });
 }
-module.exports = syncMarkets;
+exports.default = syncMarkets;
 //# sourceMappingURL=sync-markets.js.map

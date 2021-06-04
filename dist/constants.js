@@ -4,12 +4,7 @@ exports.DBHealthStatus = exports.StorageProviders = exports.AuthenticationProvid
 require('dotenv').config();
 /* Contracts */
 exports.ABI_LIST = [
-    'CONTROL',
-    'DISPUTE',
-    'WORK_EXCHANGE',
-    'WORK_RELATIONSHIP',
-    'MARKET',
-    'MARKET_FACTORY'
+    'MarketFactory',
 ];
 var Contracts;
 (function (Contracts) {
@@ -19,6 +14,9 @@ var Contracts;
     Contracts["WORK_RELATIONSHIP"] = "WorkRelationship";
     Contracts["MARKET"] = "Market";
     Contracts["MARKET_FACTORY"] = "MarketFactory";
+    Contracts["EVALUATION"] = "Evaluation";
+    Contracts["MARKETLIB"] = "MarketLib";
+    Contracts["STRINGUTILS"] = "StringUtils";
 })(Contracts = exports.Contracts || (exports.Contracts = {}));
 exports.RPC_CONFIGURATION = {
     httpAddresses: ['https://silent-bold-sea.rinkeby.quiknode.pro/1dbc05d5626c99bd2ad24ada0c962fc90f15b007/'],

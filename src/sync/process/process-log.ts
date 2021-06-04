@@ -1,9 +1,10 @@
 import { ABI_LIST, Contracts, MarketEvents } from "../../constants";
-import ethrpc from '../../rpc/interface/rpc-interface';
 import * as abiMap from '../../blockchain/abi.json';
-
 import  { processMarketCreatedEvent } from './processMarketCreatedLog';
 import { processMarketDestroyedEvent } from "./processMarketDestroyedEvent";
+import opportunityService from "../../OpportunityService";
+import { utils } from "ethers";
+import { hexZeroPad } from "@ethersproject/bytes";
 /**
  * Retrieves topics and process the approppriate log
  * @param log 
@@ -24,39 +25,38 @@ function processLog(log) {
 }
 
 function processLogEvents(log) {
-    console.log('FOund a log to process')
-    const topics = log.topics;
+    const { data, topics } = log;
     let event = null;
-    let abi = null;
-
+    let hash = null;
     for (var i = 0; i < ABI_LIST.length; i++) {
-        var abis = abiMap[Contracts[ABI_LIST[i]]];
-        for (const abiItem in abis) {
-            if (abiItem.type != "event") { continue; };
-            var signature = abiItem.name + "(" + abiItem.inputs.map(function (input) { return input.type; }).join(",") + ")";
-
-            var hash = ethrpc.eth.sha3(signature);
-            if (hash == topics[0]) {
-                event = abiItem;
-                break;
+        var abis = abiMap[ABI_LIST[i].toString()];
+        
+        for (const aItem in abis) {
+            if (aItem['type'] == "event") { continue; };
+            var signature = abis[aItem]['name'] + "(" + abis[aItem]['inputs'].map(function (input) { return input.type; }).join(",") + ")";
+            console.log('Processing an event with the signature: ' + signature)
+            hash = utils.id(signature);
+            if (hash == topics[0]) { 
+                event = abis[aItem]; 
+                break; 
             }
         }
     }
 
-    if (event != null && abi != null) {
-        var inputs = event.inputs.map(function (input) { return input.type; });
-        
-        let decodedEventData = ethrpc.eth.abi.decodeParameters(inputs, abi);
 
-        switch(decodedEventData[0]) {
+
+    if (event != null) {
+        switch(event['name']) {
             case "MarketCreated":
-                processMarketCreatedEvent(decodedEventData);
+                processMarketCreatedEvent(log);
                 break;
             case "MarketDestroyed":
-                processMarketDestroyedEvent(decodedEventData);
+                processMarketDestroyedEvent(log);
                 break;
             default:
         }
+    } else {
+        console.log('Event is null.. exiting processing.')
     }
 }
 

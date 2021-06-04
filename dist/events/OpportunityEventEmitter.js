@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const events_1 = require("events");
+const constants_1 = require("../constants");
 class OpportunityEventEmitter extends events_1.EventEmitter {
     constructor() {
         super();
@@ -10,8 +11,7 @@ class OpportunityEventEmitter extends events_1.EventEmitter {
         };
         this.subscribeToEvent = (eventName, callback) => {
             this.on(eventName, callback);
-            const id = -1;
-            this.addSubscription(id, eventName, callback);
+            this.addSubscription(eventName, callback);
         };
         this.unsubscribeFromAllListeners = () => {
             this.removeAllListeners();
@@ -21,8 +21,11 @@ class OpportunityEventEmitter extends events_1.EventEmitter {
         };
         this.setMaxListeners(0);
     }
-    addSubscription(id, eventName, callback) { }
+    addSubscription(eventName, callback) {
+        this.subscriptions[eventName] = callback;
+    }
     emit(eventName, ...args) {
+        this.subscriptions[constants_1.MarketEvents.MarkedCreated](...args);
         return super.emit(eventName, ...args);
     }
 }

@@ -1,6 +1,5 @@
 import EventEmitter from 'node:events';
 import opportunityEventEmitter from '../../events/OpportunityEventEmitter';
-import rpc from '../../rpc/interface/rpc-interface';
 import { IHashMap } from '../../types';
 
 class OpportunityChatProvider {
