@@ -10,15 +10,35 @@ const abi_json_1 = __importDefault(require("./blockchain/abi.json"));
 const addresses_json_1 = __importDefault(require("./blockchain/addresses.json"));
 const blocks_json_1 = __importDefault(require("./blockchain/blocks.json"));
 const start_event_listeners_1 = require("./events/start-event-listeners");
+const index_1 = __importDefault(require("./api/index"));
 class OpportunityService {
+    /**
+     * The Singleton's constructor should always be private to prevent direct
+     * construction calls with the `new` operator.
+     */
     constructor() {
-        //logger = null;
         this.eventEmitter = OpportunityEventEmitter_1.default;
         this.running = false;
         this.ethersProvider = null;
         this.ethersSigner = null;
         this.defaultProvider = null;
-        this.running = false;
+        this.opportunityLogger = null;
+        this.api = index_1.default;
+    }
+    /**
+     * The static method that controls the access to the singleton instance.
+     *
+     * This implementation let you subclass the Singleton class while keeping
+     * just one instance of each subclass around.
+     */
+    static getInstance() {
+        if (!OpportunityService.instance) {
+            OpportunityService.instance = new OpportunityService();
+        }
+        return OpportunityService.instance;
+    }
+    assignDefaultProvider(provider) {
+        this.defaultProvider = provider;
     }
     assignProvider(provider) {
         this.ethersProvider = provider;
@@ -33,24 +53,9 @@ class OpportunityService {
         if (this.running) {
             return;
         }
-        if (this.ethersProvider == null) {
-            return;
-        }
         console.log('Starting service...');
-        //sync node
-        this.syncing = true;
-        this.eventEmitter.emit(constants_1.RPCEvents.StartSyncing);
-        sync_with_ethereum_node_1.syncWithEthereumNode()
-            .then(() => {
-            this.syncing = false;
-            this.eventEmitter.emit(constants_1.RPCEvents.StopSyncing);
-            console.log('Finished syncing ethereum node.');
-        })
-            .catch(err => {
-            console.log('Error while syncing ethereum node: ' + err);
-        });
+        this.sync();
         this.running = true;
-        this.eventEmitter.emit(constants_1.ServiceEvents.ServiceStarted);
         console.log('Finished starting service...');
     }
     shutdownService() {
@@ -59,7 +64,26 @@ class OpportunityService {
         }
         ;
         this.running = false;
+        this.setDefaultProvider(null);
+        this.assignProvider(null);
+        this.assignSigner(null);
         this.eventEmitter.emit(constants_1.ServiceEvents.ServiceStopped);
+    }
+    sync() {
+        //sync node
+        this.syncing = true;
+        this.eventEmitter.emit(constants_1.RPCEvents.StartSyncing);
+        sync_with_ethereum_node_1.syncWithEthereumNode()
+            .then(() => {
+            this.syncing = false;
+            this.eventEmitter.emit(constants_1.RPCEvents.StopSyncing);
+            console.log('Finished syncing ethereum node.');
+            this.syncing = false;
+        })
+            .catch(err => {
+            console.log('Error while syncing ethereum node: ' + err);
+            this.syncing = false;
+        });
     }
     isSyncing() {
         return this.syncing;
@@ -73,6 +97,9 @@ class OpportunityService {
     accessContractABI(contract) {
         return abi_json_1.default[contract];
     }
+    getDefaultProviderInterface() {
+        return this.defaultProvider;
+    }
     getProviderInterface() {
         return this.ethersProvider;
     }
@@ -83,6 +110,6 @@ class OpportunityService {
         this.defaultProvider = provider;
     }
 }
-const opportunityService = new OpportunityService();
+const opportunityService = OpportunityService.getInstance();
 exports.default = opportunityService;
 //# sourceMappingURL=OpportunityService.js.map

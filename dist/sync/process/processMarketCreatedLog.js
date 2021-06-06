@@ -55,14 +55,16 @@ function processMarketCreatedEvent(log) {
     if (relationshipAddresses.length > 0 && relationshipAddresses != null) {
         for (const relationship in relationshipAddresses) {
             const relationshipContractInstance = new ethers_1.ethers.Contract(abiMap[constants_1.Contracts.WORK_RELATIONSHIP], relationship, OpportunityService_1.default.getProviderInterface());
-            const contractStatus = relationshipContractInstance.get_contractStatus();
-            const contractTaskName = relationshipContractInstance.get_contractTaskName();
+            const relationshipContractAddress = relationship;
+            const relationshipContractStatus = relationshipContractInstance.get_contractStatus();
+            const relationshipContractTaskName = relationshipContractInstance.get_contractTaskName();
             let relationshipData = {
-                contractStatus,
-                contractTaskName
+                relationshipContractAddress,
+                relationshipContractStatus,
+                relationshipContractTaskName
             };
             relationshipsData.push(relationshipData);
-            console.log('Processing task with task name: ' + contractTaskName + ' and the status: ' + contractStatus);
+            console.log('Processing task with task name: ' + relationshipContractTaskName + ' and the status: ' + contractStatus);
         }
     }
     let marketData = {
@@ -71,12 +73,9 @@ function processMarketCreatedEvent(log) {
         marketOwner,
         marketName,
         marketType,
-        marketRelationships: relationshipAddresses
+        marketRelationshipData: relationshipsData
     };
     OpportunityEventEmitter_1.default.emit(constants_1.MarketEvents.MarkedCreated, marketData);
-    //update db
-    console.log('Updating database for markets and relationships');
-    //knex.schema.raw("SET sql_mode='TRADITIONAL'")
 }
 exports.processMarketCreatedEvent = processMarketCreatedEvent;
 //# sourceMappingURL=processMarketCreatedLog.js.map

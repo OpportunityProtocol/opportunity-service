@@ -3,8 +3,9 @@ import * as abiMap from '../../blockchain/abi.json';
 import  { processMarketCreatedEvent } from './processMarketCreatedLog';
 import { processMarketDestroyedEvent } from "./processMarketDestroyedEvent";
 import opportunityService from "../../OpportunityService";
-import { utils } from "ethers";
+import { ethers, utils } from "ethers";
 import { hexZeroPad } from "@ethersproject/bytes";
+import { decode } from "node:punycode";
 /**
  * Retrieves topics and process the approppriate log
  * @param log 
@@ -25,9 +26,9 @@ function processLog(log) {
 }
 
 function processLogEvents(log) {
-    const { data, topics } = log;
     let event = null;
     let hash = null;
+    const { data, topics } = log;
     for (var i = 0; i < ABI_LIST.length; i++) {
         var abis = abiMap[ABI_LIST[i].toString()];
         

@@ -9,6 +9,7 @@ import { providers } from "ethers";
 import { EventCallbackDictionary } from "./types";
 import { startEventListeners } from "./events/start-event-listeners";
 import opportunityAPI from './api/index';
+import opportunityStorageProvider from "./modules/storage/OpportunityStorageProvider";
 
 class OpportunityService {
     private eventEmitter = opportunityEventEmitter;
@@ -18,6 +19,7 @@ class OpportunityService {
     private ethersSigner : providers.JsonRpcSigner = null;
     private defaultProvider = null;
     private opportunityLogger = null;
+    private storageProvider = opportunityStorageProvider;
 
     public api  = opportunityAPI;
 

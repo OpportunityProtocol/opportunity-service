@@ -51,7 +51,7 @@ var UserEvents;
 })(UserEvents = exports.UserEvents || (exports.UserEvents = {}));
 var ExchangeEvents;
 (function (ExchangeEvents) {
-    ExchangeEvents["EventOne"] = "EventOne";
+    ExchangeEvents["WorkRelationshipCreated"] = "WorkRelationshipCreated";
 })(ExchangeEvents = exports.ExchangeEvents || (exports.ExchangeEvents = {}));
 var StorageEvents;
 (function (StorageEvents) {

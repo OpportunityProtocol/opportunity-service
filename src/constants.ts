@@ -70,7 +70,7 @@ export enum UserEvents {
 }
 
 export enum ExchangeEvents {
-  EventOne="EventOne"
+  WorkRelationshipCreated='WorkRelationshipCreated',
 }
 
 export enum StorageEvents {

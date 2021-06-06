@@ -1,7 +1,7 @@
-import { opportunityConnectionProvider } from "../accounts";
 import { completeRelationship } from "./exchange/complete-relationship";
 import { createTask } from "./exchange/create-task";
 import { enterWorkRelationship } from "./exchange/enter-work-relationship";
+import { createMarket } from "./market/create-market";
 
 function generateAPI() {
     return {
@@ -12,8 +12,9 @@ function generateAPI() {
         },
         dispute: {},
         identity: {},
-        market: {},
-        authentication: opportunityConnectionProvider
+        markets: {
+            createMarket: createMarket,
+        },
     }
 }
 

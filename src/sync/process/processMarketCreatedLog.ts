@@ -31,46 +31,16 @@ function processMarketCreatedEvent(log) {
         abiMap[Contracts.MARKET], 
          opportunityService.getProviderInterface());
 
-    let relationshipsData = []
-
-    //get a market's address and instantiate a new contract to get all work relationships
-    const relationshipAddresses = marketContractInstance.getWorkRelationships();
-    console.log('This market contains: ' + relationshipAddresses.length + ' relationships');
-
-    //go through the address of each relationship, create the contract and extract the status and metadata pointer;
-    //update work db for work relationships
-    if (relationshipAddresses.length > 0 && relationshipAddresses != null) {
-        for (const relationship in relationshipAddresses) {
-            const relationshipContractInstance : Contract = new ethers.Contract(abiMap[Contracts.WORK_RELATIONSHIP], relationship, opportunityService.getProviderInterface());
-    
-            const contractStatus = relationshipContractInstance.get_contractStatus();
-            const contractTaskName = relationshipContractInstance.get_contractTaskName();
-
-            let relationshipData = {
-                contractStatus,
-                contractTaskName
-            }
-
-            relationshipsData.push(relationshipData)
-    
-            console.log('Processing task with task name: ' + contractTaskName + ' and the status: '  +contractStatus);        
-        }
-    }
-
     let marketData = {
         marketAddress,
         marketIndex,
         marketOwner,
         marketName,
         marketType,
-        marketRelationships: relationshipAddresses
+        marketRelationshipData: []
     }
 
     opportunityEventEmitter.emit(MarketEvents.MarkedCreated, marketData);
-
-        //update db
-        console.log('Updating database for markets and relationships')
-        //knex.schema.raw("SET sql_mode='TRADITIONAL'")
 }
 
 export { processMarketCreatedEvent };
