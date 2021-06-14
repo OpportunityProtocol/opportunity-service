@@ -17,8 +17,6 @@ function processWorkRelationshipCreatedEvent(log) {
     const decodedLog : LogDescription = iface.parseLog(log);
     const { args, signature } = decodedLog;
 
-    let relationshipsData = []
-
     const relationshipOwner = args[0];
     const relationshipAddress = args[1];
     const relationshipMarketAddress = args[2];
@@ -33,15 +31,15 @@ function processWorkRelationshipCreatedEvent(log) {
     //process contents of metadata pointer
     //opportunityService.storageProvider.retrieveContent(relationshipTaskMetadataPointer);
     console.log('Unsuccessful fetch of file contents from ipfs');
-    let relationshipMetadata = {}
+
+    let relationshipMetadata = {
+        relationshipStatus
+    }
 
     let relationshipData = {
-        relationshipOwner,
-        relationshipAddress,
-        relationshipMetadata,
         relationshipMarketAddress,
-        relationshipTaskMetadataPointer,
-        relationshipStatus
+        relationshipStatus,
+        relationshipMetadata,
     }
 
     opportunityEventEmitter.emit(ExchangeEvents.WorkRelationshipCreated, relationshipData);

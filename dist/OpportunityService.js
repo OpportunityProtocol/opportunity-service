@@ -1,4 +1,13 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -11,7 +20,9 @@ const addresses_json_1 = __importDefault(require("./blockchain/addresses.json"))
 const blocks_json_1 = __importDefault(require("./blockchain/blocks.json"));
 const start_event_listeners_1 = require("./events/start-event-listeners");
 const index_1 = __importDefault(require("./api/index"));
+const OpportunityStorageProvider_1 = __importDefault(require("./modules/storage/OpportunityStorageProvider"));
 class OpportunityService {
+    /** */
     /**
      * The Singleton's constructor should always be private to prevent direct
      * construction calls with the `new` operator.
@@ -21,9 +32,15 @@ class OpportunityService {
         this.running = false;
         this.ethersProvider = null;
         this.ethersSigner = null;
-        this.defaultProvider = null;
+        this.ethersGSNProvider = null;
+        this.ethersGSNSigner = null;
         this.opportunityLogger = null;
+        this.storageProvider = OpportunityStorageProvider_1.default;
+        this.currentAccount = null;
         this.api = index_1.default;
+        /* DEV */
+        this.DEVforwarderAddress = null;
+        this.DEVpaymasterAddress = null;
     }
     /**
      * The static method that controls the access to the singleton instance.
@@ -37,8 +54,14 @@ class OpportunityService {
         }
         return OpportunityService.instance;
     }
-    assignDefaultProvider(provider) {
+    static assignDefaultProvider(provider) {
         this.defaultProvider = provider;
+    }
+    assignGSNProvider(provider) {
+        this.ethersGSNProvider = provider;
+    }
+    assignGSNSigner(signer) {
+        this.ethersGSNSigner = signer;
     }
     assignProvider(provider) {
         this.ethersProvider = provider;
@@ -46,17 +69,34 @@ class OpportunityService {
     assignSigner(signer) {
         this.ethersSigner = signer;
     }
+    assignCurrentAccount(account) {
+        this.currentAccount = account;
+    }
+    assignDEVForwarderAddress(address) {
+        this.DEVforwarderAddress = address;
+    }
+    assignDEVPaymasterAddress(address) {
+        this.DEVpaymasterAddress = address;
+    }
     subscribeToEvents(eventDictionary, onComplete) {
         start_event_listeners_1.startEventListeners(eventDictionary, onComplete);
     }
+    DEVrunGSN() {
+        //execSync('gsn start');
+    }
     startService() {
-        if (this.running) {
-            return;
-        }
-        console.log('Starting service...');
-        this.sync();
-        this.running = true;
-        console.log('Finished starting service...');
+        return __awaiter(this, void 0, void 0, function* () {
+            if (this.running) {
+                return;
+            }
+            // await this.DEVrunGSN();
+            //this.assignDEVForwarderAddress('./build/gsn/Forwarder.json').address;
+            //this.assignDEVPaymasterAddress('./build/gsn/Paymaster.json').address;
+            console.log('Starting service...');
+            this.sync();
+            this.running = true;
+            console.log('Finished starting service...');
+        });
     }
     shutdownService() {
         if (!this.running) {
@@ -98,7 +138,7 @@ class OpportunityService {
         return abi_json_1.default[contract];
     }
     getDefaultProviderInterface() {
-        return this.defaultProvider;
+        return OpportunityService.defaultProvider;
     }
     getProviderInterface() {
         return this.ethersProvider;
@@ -106,10 +146,23 @@ class OpportunityService {
     getSignersInterface() {
         return this.ethersSigner;
     }
+    getGSNProviderInterface() {
+        return this.ethersGSNProvider;
+    }
+    getGSNSignersInterface() {
+        return this.ethersGSNSigner;
+    }
+    getForwarderAddress() {
+        return this.DEVforwarderAddress;
+    }
+    getPaymasterAddress() {
+        return this.DEVpaymasterAddress;
+    }
     setDefaultProvider(provider) {
-        this.defaultProvider = provider;
+        OpportunityService.defaultProvider = provider;
     }
 }
+OpportunityService.defaultProvider = null;
 const opportunityService = OpportunityService.getInstance();
 exports.default = opportunityService;
 //# sourceMappingURL=OpportunityService.js.map

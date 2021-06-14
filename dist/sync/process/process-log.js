@@ -22,6 +22,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.processLogEvents = exports.processLog = void 0;
 const constants_1 = require("../../constants");
 const abiMap = __importStar(require("../../blockchain/abi.json"));
+const processMarketCreatedLog_1 = require("./processMarketCreatedLog");
+const processMarketDestroyedEvent_1 = require("./processMarketDestroyedEvent");
 const ethers_1 = require("ethers");
 /**
  * Retrieves topics and process the approppriate log
@@ -43,44 +45,39 @@ function processLog(log) {
 }
 exports.processLog = processLog;
 function processLogEvents(log) {
-    const iface = new ethers_1.ethers.utils.Interface(abiMap[constants_1.Contracts.WORK_RELATIONSHIP]);
+    let event = null;
+    let hash = null;
     const { data, topics } = log;
-    const decodedLog = iface.parseLog(log);
-    console.log('Decoded log: ' + decodedLog);
-    const decodedEvents = iface.decodeEventLog(decodedLog.eventFragment, data, topics);
-    console.log('Decoded events: ' + decodedEvents);
-    /* let event = null;
-     let hash = null;
-     for (var i = 0; i < ABI_LIST.length; i++) {
-         var abis = abiMap[ABI_LIST[i].toString()];
-         
-         for (const aItem in abis) {
-             if (aItem['type'] == "event") { continue; };
-             var signature = abis[aItem]['name'] + "(" + abis[aItem]['inputs'].map(function (input) { return input.type; }).join(",") + ")";
-             console.log('Processing an event with the signature: ' + signature)
-             hash = utils.id(signature);
-             if (hash == topics[0]) {
-                 event = abis[aItem];
-                 break;
-             }
-         }
-     }
- 
- 
- 
-     if (event != null) {
-         switch(event['name']) {
-             case "MarketCreated":
-                 processMarketCreatedEvent(log);
-                 break;
-             case "MarketDestroyed":
-                 processMarketDestroyedEvent(log);
-                 break;
-             default:
-         }
-     } else {
-         console.log('Event is null.. exiting processing.')
-     }*/
+    for (var i = 0; i < constants_1.ABI_LIST.length; i++) {
+        var abis = abiMap[constants_1.ABI_LIST[i].toString()];
+        for (const aItem in abis) {
+            if (aItem['type'] == "event") {
+                continue;
+            }
+            ;
+            var signature = abis[aItem]['name'] + "(" + abis[aItem]['inputs'].map(function (input) { return input.type; }).join(",") + ")";
+            console.log('Processing an event with the signature: ' + signature);
+            hash = ethers_1.utils.id(signature);
+            if (hash == topics[0]) {
+                event = abis[aItem];
+                break;
+            }
+        }
+    }
+    if (event != null) {
+        switch (event['name']) {
+            case "MarketCreated":
+                processMarketCreatedLog_1.processMarketCreatedEvent(log);
+                break;
+            case "MarketDestroyed":
+                processMarketDestroyedEvent_1.processMarketDestroyedEvent(log);
+                break;
+            default:
+        }
+    }
+    else {
+        console.log('Event is null.. exiting processing.');
+    }
 }
 exports.processLogEvents = processLogEvents;
 //# sourceMappingURL=process-log.js.map

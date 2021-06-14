@@ -46,34 +46,13 @@ function processMarketCreatedEvent(log) {
         + 'Market Address: ' + marketAddress + ', Index: '
         + marketIndex + ', Owner: ' + marketOwner, ', Market Name: ' + marketName, +', and Market Type: ' + marketType);
     const marketContractInstance = new ethers_1.ethers.Contract(marketAddress, abiMap[constants_1.Contracts.MARKET], OpportunityService_1.default.getProviderInterface());
-    let relationshipsData = [];
-    //get a market's address and instantiate a new contract to get all work relationships
-    const relationshipAddresses = marketContractInstance.getWorkRelationships();
-    console.log('This market contains: ' + relationshipAddresses.length + ' relationships');
-    //go through the address of each relationship, create the contract and extract the status and metadata pointer;
-    //update work db for work relationships
-    if (relationshipAddresses.length > 0 && relationshipAddresses != null) {
-        for (const relationship in relationshipAddresses) {
-            const relationshipContractInstance = new ethers_1.ethers.Contract(abiMap[constants_1.Contracts.WORK_RELATIONSHIP], relationship, OpportunityService_1.default.getProviderInterface());
-            const relationshipContractAddress = relationship;
-            const relationshipContractStatus = relationshipContractInstance.get_contractStatus();
-            const relationshipContractTaskName = relationshipContractInstance.get_contractTaskName();
-            let relationshipData = {
-                relationshipContractAddress,
-                relationshipContractStatus,
-                relationshipContractTaskName
-            };
-            relationshipsData.push(relationshipData);
-            console.log('Processing task with task name: ' + relationshipContractTaskName + ' and the status: ' + contractStatus);
-        }
-    }
     let marketData = {
         marketAddress,
         marketIndex,
         marketOwner,
         marketName,
         marketType,
-        marketRelationshipData: relationshipsData
+        marketRelationshipData: []
     };
     OpportunityEventEmitter_1.default.emit(constants_1.MarketEvents.MarkedCreated, marketData);
 }

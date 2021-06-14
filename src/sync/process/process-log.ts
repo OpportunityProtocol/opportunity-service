@@ -6,6 +6,7 @@ import opportunityService from "../../OpportunityService";
 import { ethers, utils } from "ethers";
 import { hexZeroPad } from "@ethersproject/bytes";
 import { decode } from "node:punycode";
+import { processWorkRelationshipCreatedEvent } from "./processWorkRelationshipCreated";
 /**
  * Retrieves topics and process the approppriate log
  * @param log 
@@ -53,6 +54,9 @@ function processLogEvents(log) {
                 break;
             case "MarketDestroyed":
                 processMarketDestroyedEvent(log);
+                break;
+            case "WorkRelationshipCreated":
+                processWorkRelationshipCreatedEvent(log);
                 break;
             default:
         }

@@ -33,39 +33,29 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.createTask = void 0;
 const constants_1 = require("../../constants");
+const OpportunityEventEmitter_1 = __importDefault(require("../../events/OpportunityEventEmitter"));
 const abiMap = __importStar(require("../../blockchain/abi.json"));
 const bytecodeMap = __importStar(require("../../blockchain/bytecode.json"));
 const OpportunityService_1 = __importDefault(require("../../OpportunityService"));
-const ethers_1 = __importDefault(require("ethers"));
-const OpportunityStorageProvider_1 = __importDefault(require("../../modules/storage/OpportunityStorageProvider"));
+const ethers_1 = require("ethers");
 const Tx = require("ethereumjs-tx").Transaction;
 function createTask(data) {
     return __awaiter(this, void 0, void 0, function* () {
         const abi = abiMap[constants_1.Contracts.WORK_RELATIONSHIP];
         const bytecode = bytecodeMap[constants_1.Contracts.WORK_RELATIONSHIP];
-        const { taskOwner } = data;
-        const overrides = {
-            from: taskOwner
-        };
-        const taskAddressPointer = yield OpportunityStorageProvider_1.default.storeContent(data);
-        const contractFactory = new ethers_1.default.ContractFactory(abi, bytecode, OpportunityService_1.default.getSignersInterface());
-        const contract = yield contractFactory.deploy(taskAddressPointer, overrides);
+        const { taskOwner, taskMarket } = data;
+        const taskMetadataPointer = ''; //await opportunityStorageProvider.storeContent(data);
+        const contractFactory = new ethers_1.ethers.ContractFactory(abi, bytecode, OpportunityService_1.default.getSignersInterface());
+        const contract = yield contractFactory.deploy('0x9f72317A51728672eBca24c673c9F54ddCe1eD29', taskMetadataPointer);
         contract.deployTransaction.wait()
             .then(receipt => {
-            const parsedData = JSON.parse(data);
-            //create task object
-            const relationshipData = Object.assign(Object.assign({}, parsedData), { taskBlockNumber: receipt.blockNumber, taskContractAddress: receipt.contractAddress, taskTransactionHash: receipt.transactionHash });
-            //unfortunately here we need to stringy the data, read from ipfs, and store again, but this
-            //is a design problem that will be fixed before testnet release to avoid excessive
-            //gas cost
-            const updatedContent = JSON.stringify(relationshipData);
-            //read data from ipfs
-            //update in ipfs
-            //update contract address pointer
-            //update requester general task description
+            //TODO: update requester general task description
+            const parsedData = Object.assign(Object.assign({}, data), { taskMetadataPointer });
+            OpportunityEventEmitter_1.default.emit(constants_1.ExchangeEvents.WorkRelationshipCreated, parsedData);
+            console.log('Successfully');
         })
             .catch(error => {
-            console.log('Error deploying new work relationship.');
+            console.log('Error deploying new work relationship with error: ' + error);
         });
     });
 }

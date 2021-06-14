@@ -17,13 +17,24 @@ class OpportunityService {
     private syncing: boolean;
     private ethersProvider : providers.JsonRpcProvider = null;
     private ethersSigner : providers.JsonRpcSigner = null;
-    private defaultProvider = null;
+    private ethersGSNProvider : providers.JsonRpcProvider = null;
+    private ethersGSNSigner : providers.JsonRpcSigner = null;
+    private static defaultProvider = null;
     private opportunityLogger = null;
     private storageProvider = opportunityStorageProvider;
+    private currentAccount = null;
 
     public api  = opportunityAPI;
 
     private static instance: OpportunityService;
+
+
+    /* DEV */
+
+    private DEVforwarderAddress : string = null;
+    private DEVpaymasterAddress : string = null;
+
+    /** */
 
     /**
      * The Singleton's constructor should always be private to prevent direct
@@ -45,8 +56,16 @@ class OpportunityService {
         return OpportunityService.instance;
     }
     
-    assignDefaultProvider(provider : providers.JsonRpcProvider) {
+    static assignDefaultProvider(provider : providers.JsonRpcProvider) {
         this.defaultProvider = provider;
+    }
+
+    assignGSNProvider(provider : providers.JsonRpcProvider) {
+        this.ethersGSNProvider = provider;
+    }
+
+    assignGSNSigner(signer : providers.JsonRpcSigner) {
+        this.ethersGSNSigner = signer;
     }
 
     assignProvider(provider : providers.JsonRpcProvider) {
@@ -57,12 +76,32 @@ class OpportunityService {
         this.ethersSigner = signer;
     }
 
+    assignCurrentAccount(account : string) {
+        this.currentAccount = account;
+    }
+
+    assignDEVForwarderAddress(address) {
+        this.DEVforwarderAddress = address;
+    }
+
+    assignDEVPaymasterAddress(address) {
+        this.DEVpaymasterAddress = address;
+    }
+
     subscribeToEvents(eventDictionary : EventCallbackDictionary, onComplete) {
         startEventListeners(eventDictionary, onComplete);
     }
 
-    startService() {
+    DEVrunGSN() {
+    //execSync('gsn start');
+    }
+
+    async startService() {
         if (this.running) { return; }
+       // await this.DEVrunGSN();
+        //this.assignDEVForwarderAddress('./build/gsn/Forwarder.json').address;
+        //this.assignDEVPaymasterAddress('./build/gsn/Paymaster.json').address;
+
         console.log('Starting service...');
         this.sync();
         this.running = true;
@@ -112,7 +151,7 @@ class OpportunityService {
     }
 
     getDefaultProviderInterface() : providers.JsonRpcProvider {
-        return this.defaultProvider;
+        return OpportunityService.defaultProvider;
     }
 
     getProviderInterface() : providers.JsonRpcProvider {
@@ -123,8 +162,24 @@ class OpportunityService {
         return this.ethersSigner;
     }
 
+    getGSNProviderInterface() : providers.JsonRpcProvider {
+        return this.ethersGSNProvider;
+    }
+
+    getGSNSignersInterface() : providers.JsonRpcSigner {
+        return this.ethersGSNSigner;
+    }
+
+    getForwarderAddress() {
+        return this.DEVforwarderAddress;
+    }
+
+    getPaymasterAddress() {
+        return this.DEVpaymasterAddress;
+    }
+
     setDefaultProvider(provider : providers.JsonRpcSigner) {
-        this.defaultProvider = provider;
+        OpportunityService.defaultProvider = provider;
     }
 }
 
