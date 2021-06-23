@@ -3,6 +3,8 @@ require('dotenv').config()
 /* Contracts */
 export const ABI_LIST = [
   'MarketFactory',
+  'WorkRelationship',
+  'Market'
 ]
 
 export enum Contracts {

@@ -23,6 +23,7 @@ import { processWorkRelationshipCreatedEvent } from "./processWorkRelationshipCr
  *   },{...}]
  */
 function processLog(log) {
+    console.log(log)
     processLogEvents(log);
 }
 

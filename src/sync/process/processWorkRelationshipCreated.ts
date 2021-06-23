@@ -13,7 +13,8 @@ import opportunityEventEmitter from '../../events/OpportunityEventEmitter';
  * @returns
  */
 function processWorkRelationshipCreatedEvent(log) {
-    const iface : Interface = new ethers.utils.Interface(abiMap[Contracts.WORK_RELATIONSHIP]);
+    try {
+    const iface : Interface = new ethers.utils.Interface(abiMap[Contracts.MARKET]);
     const decodedLog : LogDescription = iface.parseLog(log);
     const { args, signature } = decodedLog;
 
@@ -25,24 +26,30 @@ function processWorkRelationshipCreatedEvent(log) {
     + 'Owner: ' + relationshipOwner + ', Address: '  + relationshipAddress + ', and Market Address: ' + relationshipAddress);
 
     const relationshipContractInstance = new ethers.Contract(relationshipAddress, abiMap[Contracts.WORK_RELATIONSHIP], opportunityService.getSignersInterface())
-    const relationshipTaskMetadataPointer = relationshipContractInstance.get_taskMetadataPointer();
-    const relationshipStatus = relationshipContractInstance.get_contractStatus();
+    const relationshipTaskMetadataPointer = relationshipContractInstance._taskMetadataPointer();
+    const relationshipStatus = 0 //relationshipContractInstance.get_contractStatus();
 
     //process contents of metadata pointer
-    //opportunityService.storageProvider.retrieveContent(relationshipTaskMetadataPointer);
+    let relation//opportunityService.storageProvider.retrieveContent(relationshipTaskMetadataPointer);
     console.log('Unsuccessful fetch of file contents from ipfs');
 
     let relationshipMetadata = {
-        relationshipStatus
+        
     }
 
     let relationshipData = {
+        relationshipOwner,
+        relationshipAddress,
         relationshipMarketAddress,
         relationshipStatus,
         relationshipMetadata,
     }
 
     opportunityEventEmitter.emit(ExchangeEvents.WorkRelationshipCreated, relationshipData);
+    console.log('Successfully processWorkRElationshipCreated')
+} catch(error) {
+    console.log('processWOrkRelationshipCreated: ' + error)
+}
 }
 
 export { processWorkRelationshipCreatedEvent };

@@ -34,31 +34,34 @@ const OpportunityEventEmitter_1 = __importDefault(require("../../events/Opportun
  * @returns
  */
 function processWorkRelationshipCreatedEvent(log) {
-    const iface = new ethers_1.ethers.utils.Interface(abiMap[constants_1.Contracts.WORK_RELATIONSHIP]);
-    const decodedLog = iface.parseLog(log);
-    const { args, signature } = decodedLog;
-    let relationshipsData = [];
-    const relationshipOwner = args[0];
-    const relationshipAddress = args[1];
-    const relationshipMarketAddress = args[2];
-    console.log('Processing ' + signature + ' with args: '
-        + 'Owner: ' + relationshipOwner + ', Address: ' + relationshipAddress + ', and Market Address: ' + relationshipAddress);
-    const relationshipContractInstance = new ethers_1.ethers.Contract(relationshipAddress, abiMap[constants_1.Contracts.WORK_RELATIONSHIP], OpportunityService_1.default.getSignersInterface());
-    const relationshipTaskMetadataPointer = relationshipContractInstance.get_taskMetadataPointer();
-    const relationshipStatus = relationshipContractInstance.get_contractStatus();
-    //process contents of metadata pointer
-    //opportunityService.storageProvider.retrieveContent(relationshipTaskMetadataPointer);
-    console.log('Unsuccessful fetch of file contents from ipfs');
-    let relationshipMetadata = {};
-    let relationshipData = {
-        relationshipOwner,
-        relationshipAddress,
-        relationshipMetadata,
-        relationshipMarketAddress,
-        relationshipTaskMetadataPointer,
-        relationshipStatus
-    };
-    OpportunityEventEmitter_1.default.emit(constants_1.ExchangeEvents.WorkRelationshipCreated, relationshipData);
+    try {
+        const iface = new ethers_1.ethers.utils.Interface(abiMap[constants_1.Contracts.MARKET]);
+        const decodedLog = iface.parseLog(log);
+        const { args, signature } = decodedLog;
+        const relationshipOwner = args[0];
+        const relationshipAddress = args[1];
+        const relationshipMarketAddress = args[2];
+        console.log('Processing ' + signature + ' with args: '
+            + 'Owner: ' + relationshipOwner + ', Address: ' + relationshipAddress + ', and Market Address: ' + relationshipAddress);
+        const relationshipContractInstance = new ethers_1.ethers.Contract(relationshipAddress, abiMap[constants_1.Contracts.WORK_RELATIONSHIP], OpportunityService_1.default.getSignersInterface());
+        const relationshipTaskMetadataPointer = relationshipContractInstance._taskMetadataPointer();
+        const relationshipStatus = 0; //relationshipContractInstance.get_contractStatus();
+        //process contents of metadata pointer
+        //opportunityService.storageProvider.retrieveContent(relationshipTaskMetadataPointer);
+        console.log('Unsuccessful fetch of file contents from ipfs');
+        let relationshipMetadata = {
+            relationshipStatus
+        };
+        let relationshipData = {
+            relationshipMarketAddress,
+            relationshipMetadata,
+        };
+        OpportunityEventEmitter_1.default.emit(constants_1.ExchangeEvents.WorkRelationshipCreated, relationshipData);
+        console.log('Successfully processWorkRElationshipCreated');
+    }
+    catch (error) {
+        console.log('processWOrkRelationshipCreated: ' + error);
+    }
 }
 exports.processWorkRelationshipCreatedEvent = processWorkRelationshipCreatedEvent;
 //# sourceMappingURL=processWorkRelationshipCreated.js.map

@@ -33,30 +33,26 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.createTask = void 0;
 const constants_1 = require("../../constants");
-const OpportunityEventEmitter_1 = __importDefault(require("../../events/OpportunityEventEmitter"));
 const abiMap = __importStar(require("../../blockchain/abi.json"));
-const bytecodeMap = __importStar(require("../../blockchain/bytecode.json"));
 const OpportunityService_1 = __importDefault(require("../../OpportunityService"));
 const ethers_1 = require("ethers");
 const Tx = require("ethereumjs-tx").Transaction;
 function createTask(data) {
     return __awaiter(this, void 0, void 0, function* () {
-        const abi = abiMap[constants_1.Contracts.WORK_RELATIONSHIP];
-        const bytecode = bytecodeMap[constants_1.Contracts.WORK_RELATIONSHIP];
+        const abi = abiMap[constants_1.Contracts.MARKET];
         const { taskOwner, taskMarket } = data;
-        const taskMetadataPointer = ''; //await opportunityStorageProvider.storeContent(data);
-        const contractFactory = new ethers_1.ethers.ContractFactory(abi, bytecode, OpportunityService_1.default.getSignersInterface());
-        const contract = yield contractFactory.deploy('0x9f72317A51728672eBca24c673c9F54ddCe1eD29', taskMetadataPointer);
-        contract.deployTransaction.wait()
-            .then(receipt => {
-            //TODO: update requester general task description
-            const parsedData = Object.assign(Object.assign({}, data), { taskMetadataPointer });
-            OpportunityEventEmitter_1.default.emit(constants_1.ExchangeEvents.WorkRelationshipCreated, parsedData);
-            console.log('Successfully');
-        })
-            .catch(error => {
-            console.log('Error deploying new work relationship with error: ' + error);
-        });
+        const taskMetadataPointer = ''; //= await opportunityStorageProvider.storeRawContent(data);
+        try {
+            console.log('AAAAAAAAAAAAAA');
+            console.log(OpportunityService_1.default.getSignersInterface());
+            console.log('Address: ' + OpportunityService_1.default.getSignersInterface()._address);
+            const contract = yield new ethers_1.ethers.Contract('0xbA4251F32a7E2B4cD367bfFB96D126d287A9E5B6', abi).connect(OpportunityService_1.default.getSignersInterface());
+            const txResponse = yield contract.functions.createJob('0xA165eCE4C33De24b2A81a93F4d37664049a9bDC9', taskMetadataPointer);
+            console.log(txResponse);
+        }
+        catch (error) {
+            console.log('Service: Caught error creating new job: ' + error);
+        }
     });
 }
 exports.createTask = createTask;

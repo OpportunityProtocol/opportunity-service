@@ -12,6 +12,12 @@ class OpportunityStorageProvider {
         return cid;
     }
 
+    async storeRawContent(content : any) {
+        const parsedContent = JSON.stringify(content);
+        const cid = await this.ipfsProvider.add(parsedContent);
+        console.log('Storage Provider: ' + 'Storing raw content with cid: ' + cid);
+    }
+
     async retrieveContent(cid: string): Promise<AsyncIterable<Object>> | Promise<number> {
         const file = this.ipfsProvider.get(cid);
         console.log(file.type, file.path)

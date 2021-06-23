@@ -12,25 +12,22 @@ import opportunityStorageProvider from "../../modules/storage/OpportunityStorage
 const Tx = require("ethereumjs-tx").Transaction;
 
 async function createTask(data) : Promise<void> {
-    const abi = abiMap[Contracts.WORK_RELATIONSHIP];
-    const bytecode = bytecodeMap[Contracts.WORK_RELATIONSHIP];
+    const abi = abiMap[Contracts.MARKET];
     const { taskOwner, taskMarket } = data;
 
-    const taskMetadataPointer = ''; //await opportunityStorageProvider.storeContent(data);
+    const taskMetadataPointer = ''; //= await opportunityStorageProvider.storeRawContent(data);
 
-    const contractFactory = new ethers.ContractFactory(abi, bytecode, opportunityService.getSignersInterface());
+    try {
+    console.log('AAAAAAAAAAAAAA')
+    console.log(opportunityService.getSignersInterface())
+    console.log('Address: ' + opportunityService.getSignersInterface()._address)
+    const contract = await new ethers.Contract('0xbA4251F32a7E2B4cD367bfFB96D126d287A9E5B6', abi).connect(opportunityService.getSignersInterface());
+    const txResponse = await contract.functions.createJob('0xA165eCE4C33De24b2A81a93F4d37664049a9bDC9', taskMetadataPointer);
 
-    const contract = await contractFactory.deploy('0x9f72317A51728672eBca24c673c9F54ddCe1eD29', taskMetadataPointer);
-    contract.deployTransaction.wait()
-    .then(receipt => {
-
-    //TODO: update requester general task description
-
-    console.log('Successfully')
-    })
-    .catch(error => {
-        console.log('Error deploying new work relationship with error: ' + error)
-    })
+    console.log(txResponse)
+    } catch(error) {
+        console.log('Service: Caught error creating new job: ' + error);
+    }
 }
 
 export { createTask }

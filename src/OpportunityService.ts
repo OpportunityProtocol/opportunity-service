@@ -5,7 +5,7 @@ import { syncWithEthereumNode } from "./events/sync-with-ethereum-node";
 import abiMap from './blockchain/abi.json';
 import addressesMap from './blockchain/addresses.json';
 import blocksMap from './blockchain/blocks.json';
-import { providers } from "ethers";
+import { ethers, providers } from "ethers";
 import { EventCallbackDictionary } from "./types";
 import { startEventListeners } from "./events/start-event-listeners";
 import opportunityAPI from './api/index';
@@ -15,7 +15,7 @@ class OpportunityService {
     private eventEmitter = opportunityEventEmitter;
     private running: boolean = false;
     private syncing: boolean;
-    private ethersProvider : providers.JsonRpcProvider = null;
+    private ethersProvider : providers.JsonRpcProvider = ethers.getDefaultProvider('http://localhost:8545');
     private ethersSigner : providers.JsonRpcSigner = null;
     private ethersGSNProvider : providers.JsonRpcProvider = null;
     private ethersGSNSigner : providers.JsonRpcSigner = null;
@@ -69,6 +69,9 @@ class OpportunityService {
     }
 
     assignProvider(provider : providers.JsonRpcProvider) {
+        if (OpportunityService.defaultProvider == null) {
+            OpportunityService.assignDefaultProvider(provider)
+        }
         this.ethersProvider = provider;
     }
 

@@ -1,16 +1,16 @@
-import opportunityService from '../OpportunityService';
+import opportunityService from "../OpportunityService";
+import { processLog } from './process/process-log';
 import * as addressMap from '../blockchain/addresses.json';
 import { Contracts } from '../constants';
-import { processLog } from './process/process-log';
 
-async function syncMarkets() {
-     //sync Markets
+async function syncJobs(marketAddress) {
+     //sync Jobs
      await opportunityService.getProviderInterface().getLogs({ 
-        address: addressMap[Contracts.MARKET_FACTORY], 
+        address: '0xbA4251F32a7E2B4cD367bfFB96D126d287A9E5B6', 
         fromBlock: 1, 
         toBlock: 'latest' 
     }).then((logs) => {
-        console.log('Found logs.. Processing...')
+        console.log('Found logs.. Processing sync Jobs')
         logs.forEach(log => {
             if (log && Array.isArray(log.topics) && log.topics.length) {
                 processLog(log); // keccashinside here
@@ -22,4 +22,4 @@ async function syncMarkets() {
     })
 }
 
-export default syncMarkets;
+export default syncJobs;

@@ -18,6 +18,7 @@ const sync_with_ethereum_node_1 = require("./events/sync-with-ethereum-node");
 const abi_json_1 = __importDefault(require("./blockchain/abi.json"));
 const addresses_json_1 = __importDefault(require("./blockchain/addresses.json"));
 const blocks_json_1 = __importDefault(require("./blockchain/blocks.json"));
+const ethers_1 = require("ethers");
 const start_event_listeners_1 = require("./events/start-event-listeners");
 const index_1 = __importDefault(require("./api/index"));
 const OpportunityStorageProvider_1 = __importDefault(require("./modules/storage/OpportunityStorageProvider"));
@@ -30,7 +31,7 @@ class OpportunityService {
     constructor() {
         this.eventEmitter = OpportunityEventEmitter_1.default;
         this.running = false;
-        this.ethersProvider = null;
+        this.ethersProvider = ethers_1.ethers.getDefaultProvider('http://localhost:8545');
         this.ethersSigner = null;
         this.ethersGSNProvider = null;
         this.ethersGSNSigner = null;
@@ -64,6 +65,9 @@ class OpportunityService {
         this.ethersGSNSigner = signer;
     }
     assignProvider(provider) {
+        if (OpportunityService.defaultProvider == null) {
+            OpportunityService.assignDefaultProvider(provider);
+        }
         this.ethersProvider = provider;
     }
     assignSigner(signer) {

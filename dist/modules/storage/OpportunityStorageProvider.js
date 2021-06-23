@@ -31,6 +31,13 @@ class OpportunityStorageProvider {
             return cid;
         });
     }
+    storeRawContent(content) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const parsedContent = JSON.stringify(content);
+            const cid = yield this.ipfsProvider.add(parsedContent);
+            console.log('Storage Provider: ' + 'Storing raw content with cid: ' + cid);
+        });
+    }
     retrieveContent(cid) {
         var e_1, _a;
         return __awaiter(this, void 0, void 0, function* () {

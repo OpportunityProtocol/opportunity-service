@@ -1,3 +1,6 @@
+import { syncWithEthereumNode } from "../events/sync-with-ethereum-node";
+import syncJobs from "../sync/sync-jobs";
+import syncMarkets from "../sync/sync-markets";
 import { completeRelationship } from "./exchange/complete-relationship";
 import { createTask } from "./exchange/create-task";
 import { enterWorkRelationship } from "./exchange/enter-work-relationship";
@@ -15,6 +18,13 @@ function generateAPI() {
         markets: {
             createMarket: createMarket,
         },
+        network: {
+            sync: {
+                syncWithEthereum: syncWithEthereumNode,
+                syncMarkets: syncMarkets,
+                syncJobs: syncJobs
+            }
+        }
     }
 }
 

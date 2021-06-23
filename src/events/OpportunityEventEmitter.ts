@@ -1,7 +1,8 @@
+import { providers } from 'ethers';
 import { EventEmitter } from 'events';
 import { MarketEvents, ExchangeEvents, UserEvents, RPCEvents, StorageEvents, ServiceEvents } from '../constants';
 
-class OpportunityEventEmitter extends EventEmitter {
+class OpportunityEventEmitter extends EventEmitter{
     constructor() {
         super();
         this.setMaxListeners(0);
@@ -13,8 +14,9 @@ class OpportunityEventEmitter extends EventEmitter {
         this.subscriptions[eventName] = callback;
     }
 
-    emit(eventName : ServiceEvents | MarketEvents | ExchangeEvents | UserEvents | RPCEvents | StorageEvents, ...args: Array<any>) : boolean {
-        this.subscriptions[MarketEvents.MarkedCreated](...args);
+    emit(eventName : string, ...args: Array<any>) : boolean {
+        console.log('emitting event name: ' + eventName)
+        console.log('args: ' + args)
         return super.emit(eventName, ...args);
     }
 

@@ -14,11 +14,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.syncWithEthereumNode = void 0;
 const sync_markets_1 = __importDefault(require("../sync/sync-markets"));
+const sync_jobs_1 = __importDefault(require("../sync/sync-jobs"));
 function syncWithEthereumNode() {
     return __awaiter(this, void 0, void 0, function* () {
         console.log('Syncing with ethereum node..');
         const highestBlockNumber = 1; //blockMap[Contracts.MARKET_FACTORY]; //get highest block number form db
         sync_markets_1.default();
+        sync_jobs_1.default('0x2b18f84Fe03C4FdC808A7ffd0E4F8FD1a8c846c2');
     });
 }
 exports.syncWithEthereumNode = syncWithEthereumNode;

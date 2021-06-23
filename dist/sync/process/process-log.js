@@ -25,6 +25,7 @@ const abiMap = __importStar(require("../../blockchain/abi.json"));
 const processMarketCreatedLog_1 = require("./processMarketCreatedLog");
 const processMarketDestroyedEvent_1 = require("./processMarketDestroyedEvent");
 const ethers_1 = require("ethers");
+const processWorkRelationshipCreated_1 = require("./processWorkRelationshipCreated");
 /**
  * Retrieves topics and process the approppriate log
  * @param log
@@ -41,6 +42,7 @@ const ethers_1 = require("ethers");
  *   },{...}]
  */
 function processLog(log) {
+    console.log(log);
     processLogEvents(log);
 }
 exports.processLog = processLog;
@@ -71,6 +73,9 @@ function processLogEvents(log) {
                 break;
             case "MarketDestroyed":
                 processMarketDestroyedEvent_1.processMarketDestroyedEvent(log);
+                break;
+            case "WorkRelationshipCreated":
+                processWorkRelationshipCreated_1.processWorkRelationshipCreatedEvent(log);
                 break;
             default:
         }

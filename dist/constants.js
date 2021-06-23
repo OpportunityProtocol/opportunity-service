@@ -5,6 +5,8 @@ require('dotenv').config();
 /* Contracts */
 exports.ABI_LIST = [
     'MarketFactory',
+    'WorkRelationship',
+    'Market'
 ];
 var Contracts;
 (function (Contracts) {
