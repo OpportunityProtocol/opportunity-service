@@ -81,6 +81,12 @@ export enum StorageEvents {
   DATA_RETRIEVED='DataRetrieved',
 }
 
+export enum WhisperEvents {
+    NewPublicWhisperMessage='NewPublicWhisperMessage',
+    NewPrivateWhisperMessage='NewPrivateWhisperMessage',
+    ChatError='ChatError'
+}
+
 /* Providers */
 
 export enum AuthenticationProviders {
