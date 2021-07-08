@@ -46,9 +46,8 @@ function createTask(data) {
             console.log('AAAAAAAAAAAAAA');
             console.log(OpportunityService_1.default.getSignersInterface());
             console.log('Address: ' + OpportunityService_1.default.getSignersInterface()._address);
-            const contract = yield new ethers_1.ethers.Contract('0xbA4251F32a7E2B4cD367bfFB96D126d287A9E5B6', abi).connect(OpportunityService_1.default.getSignersInterface());
-            const txResponse = yield contract.functions.createJob('0xA165eCE4C33De24b2A81a93F4d37664049a9bDC9', taskMetadataPointer);
-            console.log(txResponse);
+            const contract = yield new ethers_1.ethers.Contract('0xef4048590cf6872ff0cf7cd076fb26a0a5f006da', abi).connect(OpportunityService_1.default.getSignersInterface());
+            const txResult = yield contract.functions.createJob('0xA165eCE4C33De24b2A81a93F4d37664049a9bDC9', taskMetadataPointer);
         }
         catch (error) {
             console.log('Service: Caught error creating new job: ' + error);

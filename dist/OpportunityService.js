@@ -22,8 +22,9 @@ const ethers_1 = require("ethers");
 const start_event_listeners_1 = require("./events/start-event-listeners");
 const index_1 = __importDefault(require("./api/index"));
 const OpportunityStorageProvider_1 = __importDefault(require("./modules/storage/OpportunityStorageProvider"));
+const OpportunityChatProvider_1 = __importDefault(require("./modules/whisper/OpportunityChatProvider"));
+const web3_1 = __importDefault(require("web3"));
 class OpportunityService {
-    /** */
     /**
      * The Singleton's constructor should always be private to prevent direct
      * construction calls with the `new` operator.
@@ -33,15 +34,12 @@ class OpportunityService {
         this.running = false;
         this.ethersProvider = ethers_1.ethers.getDefaultProvider('http://localhost:8545');
         this.ethersSigner = null;
-        this.ethersGSNProvider = null;
-        this.ethersGSNSigner = null;
+        this.defaultProvider = new web3_1.default('wss://silent-bold-sea.rinkeby.quiknode.pro/1dbc05d5626c99bd2ad24ada0c962fc90f15b007/');
+        this.chatProvider = null;
         this.opportunityLogger = null;
         this.storageProvider = OpportunityStorageProvider_1.default;
         this.currentAccount = null;
         this.api = index_1.default;
-        /* DEV */
-        this.DEVforwarderAddress = null;
-        this.DEVpaymasterAddress = null;
     }
     /**
      * The static method that controls the access to the singleton instance.
@@ -55,19 +53,10 @@ class OpportunityService {
         }
         return OpportunityService.instance;
     }
-    static assignDefaultProvider(provider) {
+    assignDefaultProvider(provider) {
         this.defaultProvider = provider;
     }
-    assignGSNProvider(provider) {
-        this.ethersGSNProvider = provider;
-    }
-    assignGSNSigner(signer) {
-        this.ethersGSNSigner = signer;
-    }
     assignProvider(provider) {
-        if (OpportunityService.defaultProvider == null) {
-            OpportunityService.assignDefaultProvider(provider);
-        }
         this.ethersProvider = provider;
     }
     assignSigner(signer) {
@@ -76,27 +65,16 @@ class OpportunityService {
     assignCurrentAccount(account) {
         this.currentAccount = account;
     }
-    assignDEVForwarderAddress(address) {
-        this.DEVforwarderAddress = address;
-    }
-    assignDEVPaymasterAddress(address) {
-        this.DEVpaymasterAddress = address;
-    }
     subscribeToEvents(eventDictionary, onComplete) {
         start_event_listeners_1.startEventListeners(eventDictionary, onComplete);
-    }
-    DEVrunGSN() {
-        //execSync('gsn start');
     }
     startService() {
         return __awaiter(this, void 0, void 0, function* () {
             if (this.running) {
                 return;
             }
-            // await this.DEVrunGSN();
-            //this.assignDEVForwarderAddress('./build/gsn/Forwarder.json').address;
-            //this.assignDEVPaymasterAddress('./build/gsn/Paymaster.json').address;
             console.log('Starting service...');
+            this.chatProvider = new OpportunityChatProvider_1.default(this.currentAccount, this.ethersProvider, this.defaultProvider);
             this.sync();
             this.running = true;
             console.log('Finished starting service...');
@@ -142,7 +120,7 @@ class OpportunityService {
         return abi_json_1.default[contract];
     }
     getDefaultProviderInterface() {
-        return OpportunityService.defaultProvider;
+        return this.defaultProvider;
     }
     getProviderInterface() {
         return this.ethersProvider;
@@ -150,23 +128,16 @@ class OpportunityService {
     getSignersInterface() {
         return this.ethersSigner;
     }
-    getGSNProviderInterface() {
-        return this.ethersGSNProvider;
+    getCurrentAccount() {
+        return this.currentAccount;
     }
-    getGSNSignersInterface() {
-        return this.ethersGSNSigner;
-    }
-    getForwarderAddress() {
-        return this.DEVforwarderAddress;
-    }
-    getPaymasterAddress() {
-        return this.DEVpaymasterAddress;
+    getChatProvider() {
+        return this.chatProvider;
     }
     setDefaultProvider(provider) {
-        OpportunityService.defaultProvider = provider;
+        this.defaultProvider = provider;
     }
 }
-OpportunityService.defaultProvider = null;
 const opportunityService = OpportunityService.getInstance();
 exports.default = opportunityService;
 //# sourceMappingURL=OpportunityService.js.map

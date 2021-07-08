@@ -9,7 +9,9 @@ const sync_markets_1 = __importDefault(require("../sync/sync-markets"));
 const complete_relationship_1 = require("./exchange/complete-relationship");
 const create_task_1 = require("./exchange/create-task");
 const enter_work_relationship_1 = require("./exchange/enter-work-relationship");
+const register_new_user_1 = __importDefault(require("./identity/register-new-user"));
 const create_market_1 = require("./market/create-market");
+const index_1 = require("./internal/index");
 function generateAPI() {
     return {
         exchange: {
@@ -18,7 +20,9 @@ function generateAPI() {
             enterWorkRelationship: enter_work_relationship_1.enterWorkRelationship
         },
         dispute: {},
-        identity: {},
+        identity: {
+            registerNewUser: register_new_user_1.default
+        },
         markets: {
             createMarket: create_market_1.createMarket,
         },
@@ -28,6 +32,11 @@ function generateAPI() {
                 syncMarkets: sync_markets_1.default,
                 syncJobs: sync_jobs_1.default
             }
+        },
+        internal: {
+            abis: index_1.abis,
+            events: index_1.events,
+            addresses: index_1.addresses
         }
     };
 }

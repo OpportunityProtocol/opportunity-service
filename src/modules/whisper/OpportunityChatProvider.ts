@@ -3,20 +3,45 @@ import opportunityService from '../../OpportunityService';
 import opportunityEventEmitter from '../../events/OpportunityEventEmitter';
 import { IHashMap } from '../../types';
 import { WhisperEvents } from '../..//constants';
+import { utils } from 'ethers';
 
 class OpportunityChatProvider {
 
     private streams: IHashMap;
     private rpcProvider = null;
+    private ethersProvider = null;
     private keyPair;
     private channelSymmetricKey;
     private pubKey;
-    private eventEmitter: EventEmitter;
+    private eventEmitter: EventEmitter = opportunityEventEmitter;
+    private sessions: Map<String, String>; //sessions referenced by the other user's address
+    private sessionsData: Object //chat data referenced by the topic
+    private currentAccount : string = null;
 
-    constructor(rpcProvider) {
-        this.rpcProvider = rpcProvider;
+    constructor(currentAccountIn, ethersProviderIn, rpcProviderIn) {
+        this.currentAccount = currentAccountIn;
+        this.ethersProvider = ethersProviderIn;
+        this.rpcProvider = rpcProviderIn;
         this.generateKeys();
-        this.eventEmitter = opportunityEventEmitter;
+    }
+
+    async initializeNewWhisperSession(workerAddress) {
+        //save in sessions map
+        const topic = this.retrievePublicKeyTopic(workerAddress);
+        this.subscribePrivateStream(workerAddress);
+        this.sessions.set(workerAddress, topic);
+        this.sessionsData[topic] = {}
+
+        //save in mongodb for persistence
+
+        //return topic
+        return topic;
+    }
+
+    //loads whisper data from mongodb
+    async setWhisperData(sessions, sessionData) {
+        this.sessions = sessions;
+        this.sessionsData = sessionData;
     }
 
     async generateKeys() {
@@ -25,62 +50,65 @@ class OpportunityChatProvider {
         this.pubKey = await this.rpcProvider.shh.getPublicKey(this.keyPair);
     }
 
-    broadcastPublicMessage(message) {
-        this.rpcProvider.shh.post({
-            symmKeyID: this.channelSymmetricKey,
-            sig: this.keyPair,
-            ttl: 60,
-            topic: process.env.PUBLIC_WHISPER_TOPIC,
-            payload: this.rpcProvider.utils.fromAscii(message),
-            powTime: 2,
-            powTarget: 2.5
-        });
+    getWhisperData() {
+        return { sessions: this.sessions, sessionData: this.sessionsData }
     }
 
-    subscribeToPublicWhispers() {
-        // Subscribe to public chat messages
-        this.rpcProvider.web3.shh.subscribe("messages", {
-            minPow: 2.5,
-            symKeyID: this.channelSymmetricKey,
-            topics: [process.env.PUBLIC_WHISPER_TOPIC],
-        }).on('data', (data) => {
-            // Display message in the UI
-            opportunityEventEmitter.emit(WhisperEvents.NewPublicWhisperMessage, data.sig, this.rpcProvider.web3.utils.toAscii(data.payload));
-        }).on('error', (err) => {
-            //error - could ot decode message
-        });
-
-    }
-
-    broadcastPrivateMessage(message, publicKey, requesterAddress, workerAddress) {
+    broadcastPrivateMessage(message, publicKey, workerAddress) {
         this.rpcProvider.shh.post({
             symmKeyID: publicKey,
             sig: this.keyPair,
             ttl: 60,
-            topic: this.retrievePublicKeyTopic(requesterAddress, workerAddress),
+            topic: this.retrievePublicKeyTopic(workerAddress),
             payload: this.rpcProvider.utils.fromAscii(message),
             powTime: 2,
             powTarget: 2.5
         });
+
+        //update session data
+                this.sessionsData[this.retrievePublicKeyTopic(workerAddress)] = {
+                    ...this.sessionsData,
+                    [this.currentAccount]: message
+                }
+
+        //publish to mongodb
     }
 
-    retrievePublicKeyTopic = (requesterAddress, workerAddress) => {
-        return '0x';
+    retrievePublicKeyTopic = (workerAddress) => {
+        let stringID = String(this.pubKey + workerAddress)
+        return utils.id(stringID).slice(stringID.length - 8);
     }
 
-    subscribePrivateStream(requesterAddress, workerAddress) {
-        this.rpcProvider.web3.shh.subscribe("messages", {
+    subscribePrivateStream(workerAddress) {
+        this.rpcProvider.shh
+        this.rpcProvider.shh.subscribe("messages", {
             minPow: 2.5,
             privateKeyID: this.keyPair,
-            topics: [this.retrievePublicKeyTopic(requesterAddress, workerAddress)],
+            topics: [this.retrievePublicKeyTopic(workerAddress)],
         })
             .on('data', data => {
-                opportunityEventEmitter.emit(WhisperEvents.NewPrivateWhisperMessage, data.timestamp, data.sig, this.rpcProvider.utils.toAscii(data.payload), true);
-                this.streams[data.recipientPublicKey] = true;
+                const { timestamp, sig, payload, recipientPublicKey } = data;
+                const subscriptionData = {
+                    timestamp,
+                    signature: sig,
+                    payload: this.rpcProvider.utils.hexToAscii(data.payload),
+                    recipientPublicKey
+                }
+
+                //emit received new private message event
+                opportunityEventEmitter.emit(WhisperEvents.NewPrivateWhisperMessage);
+                this.sessionsData[this.retrievePublicKeyTopic(workerAddress)] = {
+                    ...this.sessionsData,
+                    [workerAddress]: this.rpcProvider.utils.toAscii(data.payload)
+                }
+                this.streams[recipientPublicKey] = true;
             })
-            .on('error', err => {
-                opportunityEventEmitter.emit(WhisperEvents.ChatError, err.message)
+            .on('error', error => {
+                console.log('subscribePrivateStream: ' + error)
+                //opportunityEventEmitter.emit(WhisperEvents.ChatError, err.message)
             })
+
+        //update session data
 
         return {
             unsubscribe: () => {
@@ -94,5 +122,4 @@ class OpportunityChatProvider {
     }
 }
 
-const opportunityChatProvider = new OpportunityChatProvider(opportunityService.getDefaultProviderInterface());
-export { opportunityChatProvider };
+export default OpportunityChatProvider;
