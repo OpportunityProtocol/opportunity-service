@@ -31,29 +31,47 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const OpportunityService_1 = __importDefault(require("../OpportunityService"));
-const addressMap = __importStar(require("../blockchain/addresses.json"));
-const constants_1 = require("../constants");
-const process_log_1 = require("./process/process-log");
-function syncMarkets() {
+const ethers_1 = require("ethers");
+const OpportunityService_1 = __importDefault(require("../../OpportunityService"));
+const constants_1 = require("../../constants");
+const addressMap = __importStar(require("../../blockchain/addresses.json"));
+const abiMap = __importStar(require("../../blockchain/abi.json"));
+function registerNewUser(universalAddress) {
     return __awaiter(this, void 0, void 0, function* () {
-        //sync Markets
-        yield OpportunityService_1.default.getProviderInterface().getLogs({
-            address: addressMap[constants_1.Contracts.MARKET_FACTORY],
-            fromBlock: 1,
-            toBlock: 'latest'
-        }).then((logs) => {
-            console.log('Found logs.. Processing...');
-            logs.forEach(log => {
-                if (log && Array.isArray(log.topics) && log.topics.length) {
-                    process_log_1.processLog(log); // keccashinside here
-                }
-            });
+        console.log('Starting service api');
+        console.log(OpportunityService_1.default.getSignersInterface());
+        console.log(addressMap[constants_1.Contracts.UserRegistration]);
+        console.log(abiMap[constants_1.Contracts.UserRegistration]);
+        console.log('making call');
+        const txResult = new ethers_1.Contract(addressMap[constants_1.Contracts.UserRegistration], abiMap[constants_1.Contracts.UserRegistration])
+            .connect(OpportunityService_1.default.getSignersInterface())
+            .functions.registerNewUser(universalAddress);
+        console.log('@@@@@@: ');
+        console.log(txResult);
+        txResult.then(value => {
+            console.log('1');
+            console.log(value);
+            return {
+                address: value,
+                status: true
+            };
+        }, value => {
+            console.log('2');
+            console.log(value);
+            return {
+                address: value,
+                status: false,
+            };
         })
             .catch(err => {
-            console.log('Err on fetching logs from blockchain: ' + err);
+            console.log('3');
+            console.log(err);
+            return {
+                address: err,
+                status: false
+            };
         });
     });
 }
-exports.default = syncMarkets;
-//# sourceMappingURL=sync-markets.js.map
+exports.default = registerNewUser;
+//# sourceMappingURL=register-new-user.js.map

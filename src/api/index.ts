@@ -4,26 +4,36 @@ import syncMarkets from "../sync/sync-markets";
 import { completeRelationship } from "./exchange/complete-relationship";
 import { createTask } from "./exchange/create-task";
 import { enterWorkRelationship } from "./exchange/enter-work-relationship";
+import registerNewUser from "./identity/register-new-user";
 import { createMarket } from "./market/create-market";
+
+import { abis, events, addresses } from './internal/index'; 
 
 function generateAPI() {
     return {
         exchange: {
-            completeRelationship: completeRelationship,
-            createTask: createTask,
-            enterWorkRelationship: enterWorkRelationship
+            completeRelationship,
+            createTask,
+            enterWorkRelationship
         },
         dispute: {},
-        identity: {},
+        identity: {
+            registerNewUser
+        },
         markets: {
-            createMarket: createMarket,
+            createMarket,
         },
         network: {
             sync: {
                 syncWithEthereum: syncWithEthereumNode,
-                syncMarkets: syncMarkets,
-                syncJobs: syncJobs
+                syncMarkets,
+                syncJobs
             }
+        },
+        internal: {
+            abis,
+            events,
+            addresses
         }
     }
 }

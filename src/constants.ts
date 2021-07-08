@@ -4,7 +4,10 @@ require('dotenv').config()
 export const ABI_LIST = [
   'MarketFactory',
   'WorkRelationship',
-  'Market'
+  'Market',
+  'UserSummary',
+  'UserSummaryFactory',
+  'UserRegistration'
 ]
 
 export enum Contracts {
@@ -16,7 +19,10 @@ export enum Contracts {
   MARKET_FACTORY='MarketFactory',
   EVALUATION='Evaluation',
   MARKETLIB='MarketLib',
-  STRINGUTILS='StringUtils'
+  STRINGUTILS='StringUtils',
+  UserSummary='UserSummary',
+  UserSummaryFactory='UserSummaryFactory',
+  UserRegistration='UserRegistration'
 }
 
 export const enum WorkRelationshipState {
@@ -35,7 +41,8 @@ export const enum WorkRelationshipState {
 export const enum Networks {
   Ropsten = 'Ropsten',
   Mainnet = 'Mainnet',
-  Rinkeby = 'Rinkeby'
+  Rinkeby = 'Rinkeby',
+  Local = 'Local'
 }
 
 export const RPC_CONFIGURATION = {
@@ -47,7 +54,6 @@ export const RPC_CONFIGURATION = {
 };
 
 /* Events */
-
 export enum AuthenticationServiceEvent {
   USER_REGISTERED = 'user_registered',
 }
@@ -68,7 +74,10 @@ export enum MarketEvents {
 }
 
 export enum UserEvents {
-  EventOne="EventOne"
+  UserRegistered='UserRegistered',
+  UserSummaryCreated='UserSummaryCreated',
+  UserAssignedTrueIdentification='UserAssignTrueIdentification',
+  UserSummaryUpdated='UserSummaryUpdated'
 }
 
 export enum ExchangeEvents {

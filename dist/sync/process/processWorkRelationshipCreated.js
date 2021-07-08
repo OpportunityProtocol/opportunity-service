@@ -47,13 +47,14 @@ function processWorkRelationshipCreatedEvent(log) {
         const relationshipTaskMetadataPointer = relationshipContractInstance._taskMetadataPointer();
         const relationshipStatus = 0; //relationshipContractInstance.get_contractStatus();
         //process contents of metadata pointer
-        //opportunityService.storageProvider.retrieveContent(relationshipTaskMetadataPointer);
+        let relation; //opportunityService.storageProvider.retrieveContent(relationshipTaskMetadataPointer);
         console.log('Unsuccessful fetch of file contents from ipfs');
-        let relationshipMetadata = {
-            relationshipStatus
-        };
+        let relationshipMetadata = {};
         let relationshipData = {
+            relationshipOwner,
+            relationshipAddress,
             relationshipMarketAddress,
+            relationshipStatus,
             relationshipMetadata,
         };
         OpportunityEventEmitter_1.default.emit(constants_1.ExchangeEvents.WorkRelationshipCreated, relationshipData);
