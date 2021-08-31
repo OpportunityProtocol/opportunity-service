@@ -1,6 +1,6 @@
 {
   "name": "opportunity-service",
-  "version": "0.0.238",
+  "version": "0.0.420",
   "description": "A service layer that connects all services between the blockchain and ui.",
   "main": "index.js",
   "scripts": {},
@@ -37,6 +37,7 @@
     "fortmatic": "^2.2.1",
     "helmet": "^4.6.0",
     "ipfs": "^0.54.4",
+    "ipfs-api": "^26.1.2",
     "ipfs-core": "^0.7.1",
     "ipfs-http-client": "^49.0.4",
     "knex": "^0.95.5",

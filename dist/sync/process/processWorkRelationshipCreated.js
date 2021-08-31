@@ -46,14 +46,15 @@ function processWorkRelationshipCreatedEvent(log) {
         const relationshipContractInstance = new ethers_1.ethers.Contract(relationshipAddress, abiMap[constants_1.Contracts.WORK_RELATIONSHIP], OpportunityService_1.default.getSignersInterface());
         const relationshipTaskMetadataPointer = relationshipContractInstance._taskMetadataPointer();
         const relationshipStatus = 0; //relationshipContractInstance.get_contractStatus();
+        const relationshipType = 0;
         //process contents of metadata pointer
-        //opportunityService.storageProvider.retrieveContent(relationshipTaskMetadataPointer);
+        let relationshipMetadata = {}; //opportunityService.storageProvider.retrieveContent(relationshipTaskMetadataPointer);
         console.log('Unsuccessful fetch of file contents from ipfs');
-        let relationshipMetadata = {
-            relationshipStatus
-        };
         let relationshipData = {
+            relationshipOwner,
+            relationshipAddress,
             relationshipMarketAddress,
+            relationshipStatus,
             relationshipMetadata,
         };
         OpportunityEventEmitter_1.default.emit(constants_1.ExchangeEvents.WorkRelationshipCreated, relationshipData);

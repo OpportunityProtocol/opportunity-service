@@ -1,14 +1,16 @@
-import IPFS from 'ipfs-core';
+import ipfsClient from 'ipfs-http-client';
+
 
 class OpportunityStorageProvider {
     private ipfsProvider = null;
 
     constructor() {
-        this.ipfsProvider = IPFS.create();
+        this.ipfsProvider = ipfsClient({ url: 'https://ipfs.infura.io', protocol: 'https', port: 5001, apiPath: '/ipfs/api/v0' })
     }
 
     async storeContent(content: any): Promise<string> {
         const { cid } = await this.ipfsProvider.add(content)
+        console.log(`OpportunityStorageProvider: Upload content with CID (${cid})`);
         return cid;
     }
 

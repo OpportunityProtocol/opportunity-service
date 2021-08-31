@@ -28,14 +28,11 @@ function processWorkRelationshipCreatedEvent(log) {
     const relationshipContractInstance = new ethers.Contract(relationshipAddress, abiMap[Contracts.WORK_RELATIONSHIP], opportunityService.getSignersInterface())
     const relationshipTaskMetadataPointer = relationshipContractInstance._taskMetadataPointer();
     const relationshipStatus = 0 //relationshipContractInstance.get_contractStatus();
+    const relationshipType = 0;
 
     //process contents of metadata pointer
-    let relation//opportunityService.storageProvider.retrieveContent(relationshipTaskMetadataPointer);
+    let relationshipMetadata = {} //opportunityService.storageProvider.retrieveContent(relationshipTaskMetadataPointer);
     console.log('Unsuccessful fetch of file contents from ipfs');
-
-    let relationshipMetadata = {
-        
-    }
 
     let relationshipData = {
         relationshipOwner,
@@ -43,12 +40,12 @@ function processWorkRelationshipCreatedEvent(log) {
         relationshipMarketAddress,
         relationshipStatus,
         relationshipMetadata,
+        relationshipType
     }
 
     opportunityEventEmitter.emit(ExchangeEvents.WorkRelationshipCreated, relationshipData);
-    console.log('Successfully processWorkRElationshipCreated')
 } catch(error) {
-    console.log('processWOrkRelationshipCreated: ' + error)
+    console.log(error)
 }
 }
 

@@ -6,7 +6,7 @@ import { Contracts } from '../constants';
 async function syncJobs(marketAddress) {
      //sync Jobs
      await opportunityService.getProviderInterface().getLogs({ 
-        address: '0xbA4251F32a7E2B4cD367bfFB96D126d287A9E5B6', 
+        address: marketAddress, 
         fromBlock: 1, 
         toBlock: 'latest' 
     }).then((logs) => {

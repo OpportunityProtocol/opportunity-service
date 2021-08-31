@@ -18,7 +18,7 @@ function syncJobs(marketAddress) {
     return __awaiter(this, void 0, void 0, function* () {
         //sync Jobs
         yield OpportunityService_1.default.getProviderInterface().getLogs({
-            address: '0xbA4251F32a7E2B4cD367bfFB96D126d287A9E5B6',
+            address: marketAddress,
             fromBlock: 1,
             toBlock: 'latest'
         }).then((logs) => {

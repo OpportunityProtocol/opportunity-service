@@ -22,8 +22,8 @@ const ethers_1 = require("ethers");
 const start_event_listeners_1 = require("./events/start-event-listeners");
 const index_1 = __importDefault(require("./api/index"));
 const OpportunityStorageProvider_1 = __importDefault(require("./modules/storage/OpportunityStorageProvider"));
+const OpportunityChatProvider_1 = require("./modules/whisper/OpportunityChatProvider");
 class OpportunityService {
-    /** */
     /**
      * The Singleton's constructor should always be private to prevent direct
      * construction calls with the `new` operator.
@@ -33,15 +33,11 @@ class OpportunityService {
         this.running = false;
         this.ethersProvider = ethers_1.ethers.getDefaultProvider('http://localhost:8545');
         this.ethersSigner = null;
-        this.ethersGSNProvider = null;
-        this.ethersGSNSigner = null;
         this.opportunityLogger = null;
         this.storageProvider = OpportunityStorageProvider_1.default;
         this.currentAccount = null;
+        this.chatProvider = OpportunityChatProvider_1.opportunityChatProvider;
         this.api = index_1.default;
-        /* DEV */
-        this.DEVforwarderAddress = null;
-        this.DEVpaymasterAddress = null;
     }
     /**
      * The static method that controls the access to the singleton instance.
@@ -58,12 +54,6 @@ class OpportunityService {
     static assignDefaultProvider(provider) {
         this.defaultProvider = provider;
     }
-    assignGSNProvider(provider) {
-        this.ethersGSNProvider = provider;
-    }
-    assignGSNSigner(signer) {
-        this.ethersGSNSigner = signer;
-    }
     assignProvider(provider) {
         if (OpportunityService.defaultProvider == null) {
             OpportunityService.assignDefaultProvider(provider);
@@ -76,26 +66,14 @@ class OpportunityService {
     assignCurrentAccount(account) {
         this.currentAccount = account;
     }
-    assignDEVForwarderAddress(address) {
-        this.DEVforwarderAddress = address;
-    }
-    assignDEVPaymasterAddress(address) {
-        this.DEVpaymasterAddress = address;
-    }
     subscribeToEvents(eventDictionary, onComplete) {
         start_event_listeners_1.startEventListeners(eventDictionary, onComplete);
-    }
-    DEVrunGSN() {
-        //execSync('gsn start');
     }
     startService() {
         return __awaiter(this, void 0, void 0, function* () {
             if (this.running) {
                 return;
             }
-            // await this.DEVrunGSN();
-            //this.assignDEVForwarderAddress('./build/gsn/Forwarder.json').address;
-            //this.assignDEVPaymasterAddress('./build/gsn/Paymaster.json').address;
             console.log('Starting service...');
             this.sync();
             this.running = true;
@@ -150,17 +128,8 @@ class OpportunityService {
     getSignersInterface() {
         return this.ethersSigner;
     }
-    getGSNProviderInterface() {
-        return this.ethersGSNProvider;
-    }
-    getGSNSignersInterface() {
-        return this.ethersGSNSigner;
-    }
-    getForwarderAddress() {
-        return this.DEVforwarderAddress;
-    }
-    getPaymasterAddress() {
-        return this.DEVpaymasterAddress;
+    getChatProviderInterface() {
+        return this.chatProvider;
     }
     setDefaultProvider(provider) {
         OpportunityService.defaultProvider = provider;

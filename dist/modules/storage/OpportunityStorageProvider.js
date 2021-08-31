@@ -19,15 +19,16 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const ipfs_core_1 = __importDefault(require("ipfs-core"));
+const ipfs_http_client_1 = __importDefault(require("ipfs-http-client"));
 class OpportunityStorageProvider {
     constructor() {
         this.ipfsProvider = null;
-        this.ipfsProvider = ipfs_core_1.default.create();
+        this.ipfsProvider = ipfs_http_client_1.default({ url: 'https://ipfs.infura.io', protocol: 'https', port: 5001, apiPath: '/ipfs/api/v0' });
     }
     storeContent(content) {
         return __awaiter(this, void 0, void 0, function* () {
             const { cid } = yield this.ipfsProvider.add(content);
+            console.log(`OpportunityStorageProvider: Upload content with CID (${cid})`);
             return cid;
         });
     }

@@ -19,10 +19,11 @@ class OpportunityService {
     private ethersProvider : providers.JsonRpcProvider = ethers.getDefaultProvider('http://localhost:8545');
     private ethersSigner : providers.JsonRpcSigner = null;
     private static defaultProvider = null;
-    private chatProvider = opportunityChatProvider;
     private opportunityLogger = null;
     private storageProvider = opportunityStorageProvider;
     private currentAccount = null;
+    private readonly chatProvider = opportunityChatProvider;
+
 
     public api  = opportunityAPI;
 
@@ -132,6 +133,10 @@ class OpportunityService {
 
     getSignersInterface() : providers.JsonRpcSigner {
         return this.ethersSigner;
+    }
+
+    getChatProviderInterface() {
+        return this.chatProvider;
     }
 
     setDefaultProvider(provider : providers.JsonRpcSigner) {

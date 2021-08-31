@@ -5,94 +5,55 @@ import { IHashMap } from '../../types';
 import { WhisperEvents } from '../..//constants';
 
 class OpportunityChatProvider {
+    userId : string;
+    ChatHttpServer : any;
+    ChatSocketServer: any;
 
-    private streams: IHashMap;
-    private rpcProvider = null;
-    private keyPair;
-    private channelSymmetricKey;
-    private pubKey;
-    private eventEmitter: EventEmitter;
+   async init(chatHttpServer : any, chatSocketServer : any) : Promise<Object> {
+       this.ChatHttpServer = chatHttpServer;
+       this.ChatSocketServer = chatSocketServer;
 
-    constructor(rpcProvider) {
-        this.rpcProvider = rpcProvider;
-        this.generateKeys();
-        this.eventEmitter = opportunityEventEmitter;
-    }
+       try {
+         console.log('Initiating OpportunityChatProvider');
+        this.userId = await this.ChatHttpServer.getUserId();
+        const response = await this.ChatHttpServer.userSessionCheck(this.userId)
 
-    async generateKeys() {
-        this.keyPair = await this.rpcProvider.shh.newKeyPair();
-        this.channelSymmetricKey = await this.rpcProvider.shh.generateSymKeyFromPass(process.env.DEFAULT_WHISPER_CHANNEL);
-        this.pubKey = await this.rpcProvider.shh.getPublicKey(this.keyPair);
-    }
+        console.log('User ID received: ' + this.userId);
+        console.log('Response received: ' + response);
 
-    broadcastPublicMessage(message) {
-        this.rpcProvider.shh.post({
-            symmKeyID: this.channelSymmetricKey,
-            sig: this.keyPair,
-            ttl: 60,
-            topic: process.env.PUBLIC_WHISPER_TOPIC,
-            payload: this.rpcProvider.utils.fromAscii(message),
-            powTime: 2,
-            powTarget: 2.5
-        });
-    }
-
-    subscribeToPublicWhispers() {
-        // Subscribe to public chat messages
-        this.rpcProvider.web3.shh.subscribe("messages", {
-            minPow: 2.5,
-            symKeyID: this.channelSymmetricKey,
-            topics: [process.env.PUBLIC_WHISPER_TOPIC],
-        }).on('data', (data) => {
-            // Display message in the UI
-            opportunityEventEmitter.emit(WhisperEvents.NewPublicWhisperMessage, data.sig, this.rpcProvider.web3.utils.toAscii(data.payload));
-        }).on('error', (err) => {
-            //error - could ot decode message
-        });
-
-    }
-
-    broadcastPrivateMessage(message, publicKey, requesterAddress, workerAddress) {
-        this.rpcProvider.shh.post({
-            symmKeyID: publicKey,
-            sig: this.keyPair,
-            ttl: 60,
-            topic: this.retrievePublicKeyTopic(requesterAddress, workerAddress),
-            payload: this.rpcProvider.utils.fromAscii(message),
-            powTime: 2,
-            powTarget: 2.5
-        });
-    }
-
-    retrievePublicKeyTopic = (requesterAddress, workerAddress) => {
-        return '0x';
-    }
-
-    subscribePrivateStream(requesterAddress, workerAddress) {
-        this.rpcProvider.web3.shh.subscribe("messages", {
-            minPow: 2.5,
-            privateKeyID: this.keyPair,
-            topics: [this.retrievePublicKeyTopic(requesterAddress, workerAddress)],
-        })
-            .on('data', data => {
-                opportunityEventEmitter.emit(WhisperEvents.NewPrivateWhisperMessage, data.timestamp, data.sig, this.rpcProvider.utils.toAscii(data.payload), true);
-                this.streams[data.recipientPublicKey] = true;
-            })
-            .on('error', err => {
-                opportunityEventEmitter.emit(WhisperEvents.ChatError, err.message)
-            })
-
-        return {
-            unsubscribe: () => {
-                this.unsubscribePrivateStream();
-            }
+        if (response.error) {
+            return { status: false, username: null }
+            //this.props.history.push(`/`)
+          } else {
+           /* this.setState({
+              username: response.username
+            });*/
+            console.log('Successfully found username: ' + response.username)
+            console.log('Successfully found a userID: ' + this.userId);
+            this.ChatHttpServer.setLS('username', response.username);
+            this.ChatSocketServer.establishSocketConnection(this.userId);
+            return { status: true, username: response.username }
+          }
+          //this.setRenderLoadingState(false);
+        } catch (error) {
+            return { status: false, username: null }
+          //this.setRenderLoadingState(false);
+          //this.props.history.push(`/`)
         }
-    }
+   }
 
-    unsubscribePrivateStream() {
-        opportunityEventEmitter.unsubscribeFromListener(WhisperEvents.NewPrivateWhisperMessage, console.log)
-    }
+   getChatList() {
+    return this.ChatSocketServer.getChatList(this.userId);
+   }
+
+   setChatListResponseListener(data) {
+     opportunityEventEmitter.on('chat-list-response', data);
+   }
+
+   removeChatListResponseListener(data) {
+    opportunityEventEmitter.removeListener('chat-list-response', data);
+   }
 }
 
-const opportunityChatProvider = new OpportunityChatProvider(opportunityService.getDefaultProviderInterface());
+const opportunityChatProvider = new OpportunityChatProvider();
 export { opportunityChatProvider };

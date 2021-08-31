@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.DBHealthStatus = exports.StorageProviders = exports.AuthenticationProviders = exports.StorageEvents = exports.ExchangeEvents = exports.UserEvents = exports.MarketEvents = exports.RPCEvents = exports.ServiceEvents = exports.AuthenticationServiceEvent = exports.RPC_CONFIGURATION = exports.Contracts = exports.ABI_LIST = void 0;
+exports.DBHealthStatus = exports.StorageProviders = exports.AuthenticationProviders = exports.WhisperEvents = exports.StorageEvents = exports.ExchangeEvents = exports.UserEvents = exports.MarketEvents = exports.RPCEvents = exports.ServiceEvents = exports.AuthenticationServiceEvent = exports.RPC_CONFIGURATION = exports.ContractType = exports.Contracts = exports.ABI_LIST = void 0;
 require('dotenv').config();
 /* Contracts */
 exports.ABI_LIST = [
@@ -19,7 +19,13 @@ var Contracts;
     Contracts["EVALUATION"] = "Evaluation";
     Contracts["MARKETLIB"] = "MarketLib";
     Contracts["STRINGUTILS"] = "StringUtils";
+    Contracts["USER_REGISTRATION"] = "UserRegistration";
 })(Contracts = exports.Contracts || (exports.Contracts = {}));
+var ContractType;
+(function (ContractType) {
+    ContractType[ContractType["NORMAL"] = 0] = "NORMAL";
+    ContractType[ContractType["FLASH"] = 1] = "FLASH";
+})(ContractType = exports.ContractType || (exports.ContractType = {}));
 exports.RPC_CONFIGURATION = {
     httpAddresses: ['https://silent-bold-sea.rinkeby.quiknode.pro/1dbc05d5626c99bd2ad24ada0c962fc90f15b007/'],
     wsAddresses: ['wss://silent-bold-sea.rinkeby.quiknode.pro/1dbc05d5626c99bd2ad24ada0c962fc90f15b007/'],
@@ -49,7 +55,10 @@ var MarketEvents;
 })(MarketEvents = exports.MarketEvents || (exports.MarketEvents = {}));
 var UserEvents;
 (function (UserEvents) {
-    UserEvents["EventOne"] = "EventOne";
+    UserEvents["UserRegistration"] = "UserRegistration";
+    UserEvents["UserSummaryCreated"] = "UserSummaryCreated";
+    UserEvents["UserRegistered"] = "UserRegistered";
+    UserEvents["UserAssignedTrueIdentification"] = "UserAssignedTrueIdentification";
 })(UserEvents = exports.UserEvents || (exports.UserEvents = {}));
 var ExchangeEvents;
 (function (ExchangeEvents) {
@@ -61,6 +70,12 @@ var StorageEvents;
     StorageEvents["DATA_ADDED"] = "DataAdded";
     StorageEvents["DATA_RETRIEVED"] = "DataRetrieved";
 })(StorageEvents = exports.StorageEvents || (exports.StorageEvents = {}));
+var WhisperEvents;
+(function (WhisperEvents) {
+    WhisperEvents["NewPublicWhisperMessage"] = "NewPublicWhisperMessage";
+    WhisperEvents["NewPrivateWhisperMessage"] = "NewPrivateWhisperMessage";
+    WhisperEvents["ChatError"] = "ChatError";
+})(WhisperEvents = exports.WhisperEvents || (exports.WhisperEvents = {}));
 /* Providers */
 var AuthenticationProviders;
 (function (AuthenticationProviders) {

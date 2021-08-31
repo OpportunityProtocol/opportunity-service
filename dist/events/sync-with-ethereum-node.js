@@ -20,7 +20,7 @@ function syncWithEthereumNode() {
         console.log('Syncing with ethereum node..');
         const highestBlockNumber = 1; //blockMap[Contracts.MARKET_FACTORY]; //get highest block number form db
         sync_markets_1.default();
-        sync_jobs_1.default('0x2b18f84Fe03C4FdC808A7ffd0E4F8FD1a8c846c2');
+        sync_jobs_1.default('0x7b7002b2bf3e0ecdda16c8f90edad483e7eeb4de');
     });
 }
 exports.syncWithEthereumNode = syncWithEthereumNode;

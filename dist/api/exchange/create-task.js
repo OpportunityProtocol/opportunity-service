@@ -39,15 +39,22 @@ const ethers_1 = require("ethers");
 const Tx = require("ethereumjs-tx").Transaction;
 function createTask(data) {
     return __awaiter(this, void 0, void 0, function* () {
+        const parsedData = JSON.parse(data);
+        console.log('Service printing data');
+        console.log(data);
         const abi = abiMap[constants_1.Contracts.MARKET];
-        const { taskOwner, taskMarket } = data;
+        console.log(abi);
+        const taskOwner = parsedData["taskOwner"];
+        const taskMarket = parsedData["taskMarket"];
+        console.log(taskOwner);
+        console.log(taskMarket);
         const taskMetadataPointer = ''; //= await opportunityStorageProvider.storeRawContent(data);
         try {
             console.log('AAAAAAAAAAAAAA');
             console.log(OpportunityService_1.default.getSignersInterface());
-            console.log('Address: ' + OpportunityService_1.default.getSignersInterface()._address);
-            const contract = yield new ethers_1.ethers.Contract('0xbA4251F32a7E2B4cD367bfFB96D126d287A9E5B6', abi).connect(OpportunityService_1.default.getSignersInterface());
-            const txResponse = yield contract.functions.createJob('0xA165eCE4C33De24b2A81a93F4d37664049a9bDC9', taskMetadataPointer);
+            console.log(data);
+            const contract = yield new ethers_1.ethers.Contract(taskMarket, abi).connect(OpportunityService_1.default.getSignersInterface());
+            const txResponse = yield contract.functions.createJob(constants_1.ContractType.NORMAL, taskMetadataPointer);
             console.log(txResponse);
         }
         catch (error) {

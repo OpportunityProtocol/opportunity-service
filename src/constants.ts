@@ -16,7 +16,8 @@ export enum Contracts {
   MARKET_FACTORY='MarketFactory',
   EVALUATION='Evaluation',
   MARKETLIB='MarketLib',
-  STRINGUTILS='StringUtils'
+  STRINGUTILS='StringUtils',
+  USER_REGISTRATION='UserRegistration'
 }
 
 export const enum WorkRelationshipState {
@@ -27,6 +28,11 @@ export const enum WorkRelationshipState {
   COMPLETED,
   EVALUATING,
   CLAIMED,
+}
+
+export enum ContractType {
+  NORMAL,
+  FLASH
 }
 
 
@@ -68,7 +74,10 @@ export enum MarketEvents {
 }
 
 export enum UserEvents {
-  EventOne="EventOne"
+  UserRegistration='UserRegistration',
+  UserSummaryCreated='UserSummaryCreated',
+  UserRegistered='UserRegistered',
+  UserAssignedTrueIdentification='UserAssignedTrueIdentification'
 }
 
 export enum ExchangeEvents {
