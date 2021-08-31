@@ -3,6 +3,7 @@ import opportunityService from '../../OpportunityService';
 import opportunityEventEmitter from '../../events/OpportunityEventEmitter';
 import { IHashMap } from '../../types';
 import { WhisperEvents } from '../..//constants';
+import { utils } from 'ethers';
 
 class OpportunityChatProvider {
     userId : string;

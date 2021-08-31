@@ -10,7 +10,9 @@ import { EventCallbackDictionary } from "./types";
 import { startEventListeners } from "./events/start-event-listeners";
 import opportunityAPI from './api/index';
 import opportunityStorageProvider from "./modules/storage/OpportunityStorageProvider";
-import { opportunityChatProvider } from "./modules/whisper/OpportunityChatProvider";
+import OpportunityChatProvider from "./modules/whisper/OpportunityChatProvider";
+
+import Web3 from 'web3';
 
 class OpportunityService {
     private eventEmitter = opportunityEventEmitter;
@@ -18,7 +20,12 @@ class OpportunityService {
     private syncing: boolean;
     private ethersProvider : providers.JsonRpcProvider = ethers.getDefaultProvider('http://localhost:8545');
     private ethersSigner : providers.JsonRpcSigner = null;
+<<<<<<< HEAD
     private static defaultProvider = null;
+=======
+    private defaultProvider = new Web3('wss://silent-bold-sea.rinkeby.quiknode.pro/1dbc05d5626c99bd2ad24ada0c962fc90f15b007/')
+    private chatProvider = null;
+>>>>>>> 097806233a7c7c444f78eb359752907815258c53
     private opportunityLogger = null;
     private storageProvider = opportunityStorageProvider;
     private currentAccount = null;
@@ -49,14 +56,11 @@ class OpportunityService {
         return OpportunityService.instance;
     }
     
-    static assignDefaultProvider(provider : providers.JsonRpcProvider) {
+    assignDefaultProvider(provider : Web3) {
         this.defaultProvider = provider;
     }
 
     assignProvider(provider : providers.JsonRpcProvider) {
-        if (OpportunityService.defaultProvider == null) {
-            OpportunityService.assignDefaultProvider(provider)
-        }
         this.ethersProvider = provider;
     }
 
@@ -76,6 +80,7 @@ class OpportunityService {
         if (this.running) { return; }
 
         console.log('Starting service...');
+        this.chatProvider = new OpportunityChatProvider(this.currentAccount, this.ethersProvider, this.defaultProvider);
         this.sync();
         this.running = true;
         console.log('Finished starting service...')
@@ -124,7 +129,7 @@ class OpportunityService {
     }
 
     getDefaultProviderInterface() {
-        return OpportunityService.defaultProvider;
+        return this.defaultProvider;
     }
 
     getProviderInterface() : providers.JsonRpcProvider {
@@ -140,7 +145,7 @@ class OpportunityService {
     }
 
     setDefaultProvider(provider : providers.JsonRpcSigner) {
-        OpportunityService.defaultProvider = provider;
+        this.defaultProvider = provider;
     }
 }
 

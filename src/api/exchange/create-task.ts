@@ -8,6 +8,7 @@ import * as bytecodeMap from '../../blockchain/bytecode.json';
 import opportunityService from "../../OpportunityService";
 import { ethers } from 'ethers';
 import opportunityStorageProvider from "../../modules/storage/OpportunityStorageProvider";
+import { Result } from "ethers/lib/utils";
 
 const Tx = require("ethereumjs-tx").Transaction;
 

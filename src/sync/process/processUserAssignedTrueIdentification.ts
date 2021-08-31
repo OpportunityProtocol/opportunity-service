@@ -17,8 +17,6 @@ function processAssignedTrueIdentification(log) {
 
     console.log('Processing: ' + 'processAssignedTrueIdentification event with args: ' + registeredUniversalAddress + ' and ' + userSummaryContractAddress);
 
-    console.log('Successfully processAssignedTrueIdentification');
-
     const trueIdentificationData = { registeredUniversalAddress, userSummaryContractAddress }
     opportunityEventEmitter.emit(UserEvents.UserAssignedTrueIdentification, trueIdentificationData);
     } catch(error) {
