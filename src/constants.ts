@@ -77,17 +77,10 @@ export enum MarketEvents {
 }
 
 export enum UserEvents {
-<<<<<<< HEAD
   UserRegistration='UserRegistration',
   UserSummaryCreated='UserSummaryCreated',
   UserRegistered='UserRegistered',
   UserAssignedTrueIdentification='UserAssignedTrueIdentification'
-=======
-  UserRegistered='UserRegistered',
-  UserSummaryCreated='UserSummaryCreated',
-  UserAssignedTrueIdentification='UserAssignTrueIdentification',
-  UserSummaryUpdated='UserSummaryUpdated'
->>>>>>> 097806233a7c7c444f78eb359752907815258c53
 }
 
 export enum ExchangeEvents {
