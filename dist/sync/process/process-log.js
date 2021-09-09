@@ -69,6 +69,7 @@ function processLogEvents(log) {
     if (event != null) {
         switch (event['name']) {
             case "MarketCreated":
+                console.log('MarketCreatedCase');
                 (0, processMarketCreatedLog_1.processMarketCreatedEvent)(log);
                 break;
             case "MarketDestroyed":

@@ -50,7 +50,7 @@ class OpportunityService {
         return OpportunityService.instance;
     }
     assignDefaultProvider(provider) {
-        this.defaultProvider = provider;
+        OpportunityService.defaultProvider = provider;
     }
     assignProvider(provider) {
         this.ethersProvider = provider;

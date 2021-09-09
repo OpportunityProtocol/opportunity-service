@@ -50,7 +50,7 @@ class OpportunityService {
     }
     
     assignDefaultProvider(provider : Web3) {
-        this.defaultProvider = provider;
+        OpportunityService.defaultProvider = provider;
     }
 
     assignProvider(provider : providers.JsonRpcProvider) {
