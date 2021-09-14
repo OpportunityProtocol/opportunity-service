@@ -19,7 +19,7 @@ class OpportunityService {
     private syncing: boolean;
     private ethersProvider : providers.JsonRpcProvider = ethers.getDefaultProvider('http://localhost:8545');
     private ethersSigner : providers.JsonRpcSigner = null;
-    private static defaultProvider = null;
+    private static defaultProvider = new Web3('localhost:8548')
     private opportunityLogger = null;
     private storageProvider = opportunityStorageProvider;
     private currentAccount = null;
@@ -81,7 +81,7 @@ class OpportunityService {
     shutdownService() {
         if (!this.running) { return };
         this.running = false;
-        this.setDefaultProvider(null);
+        this.assignDefaultProvider(null);
         this.assignProvider(null);
         this.assignSigner(null)
         this.eventEmitter.emit(ServiceEvents.ServiceStopped);
@@ -130,10 +130,6 @@ class OpportunityService {
 
     getSignersInterface() : providers.JsonRpcSigner {
         return this.ethersSigner;
-    }
-
-    setDefaultProvider(provider : providers.JsonRpcSigner) {
-        OpportunityService.defaultProvider = provider;
     }
 }
 

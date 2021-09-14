@@ -6,17 +6,15 @@ import { createTask } from "./exchange/create-task";
 import { enterWorkRelationship } from "./exchange/enter-work-relationship";
 import registerNewUser from "./identity/register-new-user";
 import { createMarket } from "./market/create-market";
-import registerNewUser  from './identity/register-new-user'
-import addresses from './internal/addresses';
-import abis from './internal/abis';
 
-import { abis, events, addresses } from './internal/index'; 
+import { abis, events, addresses, bytecode } from './internal/index'; 
 
 function generateAPI() {
     return {
         internal: {
-            addresses: addresses,
             abis: abis,
+            addresses,
+            bytecode,
         },
         exchange: {
             completeRelationship,
@@ -36,11 +34,6 @@ function generateAPI() {
                 syncMarkets,
                 syncJobs
             }
-        },
-        internal: {
-            abis,
-            events,
-            addresses
         }
     }
 }

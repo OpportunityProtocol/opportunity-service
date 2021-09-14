@@ -13,6 +13,7 @@ export const ABI_LIST = [
 export enum Contracts {
   CONTROL='Control',
   DISPUTE='Dispute',
+  DAI='Dai',
   WORK_EXCHANGE='WorkExchange',
   WORK_RELATIONSHIP='WorkRelationship',
   MARKET='Market',
