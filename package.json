@@ -1,6 +1,6 @@
 {
   "name": "opportunity-service",
-  "version": "0.0.447",
+  "version": "0.0.469",
   "description": "A service layer that connects all services between the blockchain and ui.",
   "main": "index.js",
   "scripts": {},

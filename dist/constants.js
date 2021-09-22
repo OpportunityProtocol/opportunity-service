@@ -15,6 +15,7 @@ var Contracts;
 (function (Contracts) {
     Contracts["CONTROL"] = "Control";
     Contracts["DISPUTE"] = "Dispute";
+    Contracts["DAI"] = "Dai";
     Contracts["WORK_EXCHANGE"] = "WorkExchange";
     Contracts["WORK_RELATIONSHIP"] = "WorkRelationship";
     Contracts["MARKET"] = "Market";

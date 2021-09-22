@@ -11,14 +11,13 @@ const create_task_1 = require("./exchange/create-task");
 const enter_work_relationship_1 = require("./exchange/enter-work-relationship");
 const register_new_user_1 = __importDefault(require("./identity/register-new-user"));
 const create_market_1 = require("./market/create-market");
-const addresses_1 = __importDefault(require("./internal/addresses"));
-const abis_1 = __importDefault(require("./internal/abis"));
 const index_1 = require("./internal/index");
 function generateAPI() {
     return {
         internal: {
-            addresses: addresses_1.default,
-            abis: abis_1.default,
+            abis: index_1.abis,
+            addresses: index_1.addresses,
+            bytecode: index_1.bytecode,
         },
         exchange: {
             completeRelationship: complete_relationship_1.completeRelationship,
@@ -38,11 +37,6 @@ function generateAPI() {
                 syncMarkets: sync_markets_1.default,
                 syncJobs: sync_jobs_1.default
             }
-        },
-        internal: {
-            abis: abis_1.default,
-            events: index_1.events,
-            addresses: addresses_1.default
         }
     };
 }

@@ -81,7 +81,7 @@ class OpportunityService {
         }
         ;
         this.running = false;
-        this.setDefaultProvider(null);
+        this.assignDefaultProvider(null);
         this.assignProvider(null);
         this.assignSigner(null);
         this.eventEmitter.emit(constants_1.ServiceEvents.ServiceStopped);
@@ -123,11 +123,7 @@ class OpportunityService {
     getSignersInterface() {
         return this.ethersSigner;
     }
-    setDefaultProvider(provider) {
-        OpportunityService.defaultProvider = provider;
-    }
 }
-OpportunityService.defaultProvider = null;
 const opportunityService = OpportunityService.getInstance();
 exports.default = opportunityService;
 //# sourceMappingURL=OpportunityService.js.map

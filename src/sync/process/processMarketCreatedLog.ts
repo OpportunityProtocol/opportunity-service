@@ -27,10 +27,6 @@ function processMarketCreatedEvent(log) {
     + 'Market Address: ' + marketAddress + ', Index: ' 
     + marketIndex + ', Owner: ' + marketOwner, ', Market Name: ' + marketName, + ', and Market Type: ' + marketType);
 
-    const marketContractInstance = new ethers.Contract(marketAddress,
-        abiMap[Contracts.MARKET], 
-         opportunityService.getProviderInterface());
-
     let marketData = {
         marketAddress,
         marketIndex,

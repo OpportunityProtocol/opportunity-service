@@ -25,7 +25,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.processMarketCreatedEvent = void 0;
 const constants_1 = require("../../constants");
 const abiMap = __importStar(require("../../blockchain/abi.json"));
-const OpportunityService_1 = __importDefault(require("../../OpportunityService"));
 const ethers_1 = require("ethers");
 const OpportunityEventEmitter_1 = __importDefault(require("../../events/OpportunityEventEmitter"));
 /**
@@ -45,7 +44,6 @@ function processMarketCreatedEvent(log) {
     console.log('Processing ' + signature + ' with args: '
         + 'Market Address: ' + marketAddress + ', Index: '
         + marketIndex + ', Owner: ' + marketOwner, ', Market Name: ' + marketName, +', and Market Type: ' + marketType);
-    const marketContractInstance = new ethers_1.ethers.Contract(marketAddress, abiMap[constants_1.Contracts.MARKET], OpportunityService_1.default.getProviderInterface());
     let marketData = {
         marketAddress,
         marketIndex,

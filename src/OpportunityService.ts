@@ -19,7 +19,7 @@ class OpportunityService {
     private syncing: boolean;
     private ethersProvider : providers.JsonRpcProvider = ethers.getDefaultProvider('http://localhost:8545');
     private ethersSigner : providers.JsonRpcSigner = null;
-    private static defaultProvider = new Web3('localhost:8548')
+    private static defaultProvider;// = new Web3('http://localhost:8545')
     private opportunityLogger = null;
     private storageProvider = opportunityStorageProvider;
     private currentAccount = null;

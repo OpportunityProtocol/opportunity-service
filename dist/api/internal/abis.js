@@ -26,6 +26,7 @@ exports.default = {
     'Market': abiMap['Market'],
     'UserSummary': abiMap['UserSummary'],
     'UserRegistration': abiMap['UserRegistration'],
-    'UserSummaryFactory': abiMap['UserSummaryFactory']
+    'UserSummaryFactory': abiMap['UserSummaryFactory'],
+    'WorkExchange': abiMap['WorkExchange']
 };
 //# sourceMappingURL=abis.js.map

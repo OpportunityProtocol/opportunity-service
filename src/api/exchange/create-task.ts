@@ -4,6 +4,7 @@ import opportunityEventEmitter from "../../events/OpportunityEventEmitter";
 import { ParamObject } from "../../types";
 
 import * as abiMap from '../../blockchain/abi.json';
+import * as addressMap from '../../blockchain/addresses.json'
 import * as bytecodeMap from '../../blockchain/bytecode.json';
 import opportunityService from "../../OpportunityService";
 import { ethers } from 'ethers';
@@ -22,9 +23,11 @@ async function createTask(data) : Promise<void> {
 
     const taskOwner = parsedData["taskOwner"];
     const taskMarket = parsedData["taskMarket"]
+    const taskBounty = parsedData["taskBounty"];
 
     console.log(taskOwner)
     console.log(taskMarket)
+    console.log(taskBounty)
 
     const taskMetadataPointer = ''; //= await opportunityStorageProvider.storeRawContent(data);
 
@@ -33,7 +36,7 @@ async function createTask(data) : Promise<void> {
     console.log(opportunityService.getSignersInterface())
     console.log(data)
     const contract = await new ethers.Contract(taskMarket, abi).connect(opportunityService.getSignersInterface());
-    const txResponse = await contract.functions.createJob(ContractType.NORMAL, taskMetadataPointer);
+    const txResponse = await contract.functions.createJob(taskOwner, ContractType.NORMAL, taskMetadataPointer, taskBounty, addressMap[Contracts.DAI]);
 
     console.log(txResponse)
     } catch(error) {

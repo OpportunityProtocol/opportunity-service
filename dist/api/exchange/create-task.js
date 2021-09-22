@@ -34,6 +34,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.createTask = void 0;
 const constants_1 = require("../../constants");
 const abiMap = __importStar(require("../../blockchain/abi.json"));
+const addressMap = __importStar(require("../../blockchain/addresses.json"));
 const OpportunityService_1 = __importDefault(require("../../OpportunityService"));
 const ethers_1 = require("ethers");
 const Tx = require("ethereumjs-tx").Transaction;
@@ -46,15 +47,17 @@ function createTask(data) {
         console.log(abi);
         const taskOwner = parsedData["taskOwner"];
         const taskMarket = parsedData["taskMarket"];
+        const taskBounty = parsedData["taskBounty"];
         console.log(taskOwner);
         console.log(taskMarket);
+        console.log(taskBounty);
         const taskMetadataPointer = ''; //= await opportunityStorageProvider.storeRawContent(data);
         try {
             console.log('AAAAAAAAAAAAAA');
             console.log(OpportunityService_1.default.getSignersInterface());
             console.log(data);
             const contract = yield new ethers_1.ethers.Contract(taskMarket, abi).connect(OpportunityService_1.default.getSignersInterface());
-            const txResponse = yield contract.functions.createJob(constants_1.ContractType.NORMAL, taskMetadataPointer);
+            const txResponse = yield contract.functions.createJob(taskOwner, constants_1.ContractType.NORMAL, taskMetadataPointer, taskBounty, addressMap[constants_1.Contracts.DAI]);
             console.log(txResponse);
         }
         catch (error) {
