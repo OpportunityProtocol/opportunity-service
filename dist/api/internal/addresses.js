@@ -23,7 +23,6 @@ const addressMap = __importStar(require("../../blockchain/addresses.json"));
 exports.default = {
     'MarketFactory': addressMap['MarketFactory'],
     'UserRegistration': addressMap['UserRegistration'],
-    'UserSummaryFactory': addressMap['UserSummaryFactory'],
     'Dai': addressMap['Dai']
 };
 //# sourceMappingURL=addresses.js.map

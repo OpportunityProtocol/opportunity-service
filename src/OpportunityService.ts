@@ -53,11 +53,11 @@ class OpportunityService {
         OpportunityService.defaultProvider = provider;
     }
 
-    assignProvider(provider : providers.JsonRpcProvider) {
+    assignProvider(provider : any) {
         this.ethersProvider = provider;
     }
 
-    assignSigner(signer : providers.JsonRpcSigner) {
+    assignSigner(signer : any) {
         this.ethersSigner = signer;
     }
 
