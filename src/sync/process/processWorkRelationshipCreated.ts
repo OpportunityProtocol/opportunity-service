@@ -7,6 +7,7 @@ import { ethers } from 'ethers';
 import { AbiCoder, EventFragment, Interface, LogDescription, Result } from '@ethersproject/abi';
 import opportunityEventEmitter from '../../events/OpportunityEventEmitter';
 
+
 /**
  * WorkRelationshipCreated(address owner, address relationship, address market)
  * @param log
@@ -32,7 +33,6 @@ function processWorkRelationshipCreatedEvent(log) {
 
     //process contents of metadata pointer
     let relationshipMetadata = {} //opportunityService.storageProvider.retrieveContent(relationshipTaskMetadataPointer);
-    console.log('Unsuccessful fetch of file contents from ipfs');
 
     let relationshipData = {
         relationshipOwner,

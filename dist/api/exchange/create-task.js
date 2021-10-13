@@ -40,25 +40,32 @@ const ethers_1 = require("ethers");
 const Tx = require("ethereumjs-tx").Transaction;
 function createTask(data) {
     return __awaiter(this, void 0, void 0, function* () {
+        console.log('a');
         const parsedData = JSON.parse(data);
-        console.log('Service printing data');
-        console.log(data);
         const abi = abiMap[constants_1.Contracts.MARKET];
         console.log(abi);
+        console.log(parsedData);
         const taskOwner = parsedData["taskOwner"];
         const taskMarket = parsedData["taskMarket"];
-        const taskBounty = parsedData["taskBounty"];
+        const taskBounty = Number(parsedData["taskBounty"]);
+        const taskMetadataPointer = parsedData["taskMetadataPointer"];
+        console.log('b');
         console.log(taskOwner);
         console.log(taskMarket);
+        console.log('h');
         console.log(taskBounty);
-        const taskMetadataPointer = ''; //= await opportunityStorageProvider.storeRawContent(data);
+        console.log(taskMetadataPointer);
+        if (taskOwner == null || taskMarket == 0 || taskBounty == 0 || taskMetadataPointer == '') {
+            throw new Error('Null value in data');
+        }
+        console.log('C');
         try {
-            console.log('AAAAAAAAAAAAAA');
-            console.log(OpportunityService_1.default.getSignersInterface());
-            console.log(data);
+            console.log('d');
             const contract = yield new ethers_1.ethers.Contract(taskMarket, abi).connect(OpportunityService_1.default.getSignersInterface());
+            console.log('e');
             const txResponse = yield contract.functions.createJob(taskOwner, constants_1.ContractType.NORMAL, taskMetadataPointer, taskBounty, addressMap[constants_1.Contracts.DAI]);
-            console.log(txResponse);
+            const txReceipt = yield txResponse.wait();
+            console.log(txReceipt);
         }
         catch (error) {
             console.log('Service: Caught error creating new job: ' + error);

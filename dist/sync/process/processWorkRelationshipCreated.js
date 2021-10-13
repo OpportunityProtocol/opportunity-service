@@ -49,7 +49,6 @@ function processWorkRelationshipCreatedEvent(log) {
         const relationshipType = 0;
         //process contents of metadata pointer
         let relationshipMetadata = {}; //opportunityService.storageProvider.retrieveContent(relationshipTaskMetadataPointer);
-        console.log('Unsuccessful fetch of file contents from ipfs');
         let relationshipData = {
             relationshipOwner,
             relationshipAddress,
