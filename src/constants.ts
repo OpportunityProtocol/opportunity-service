@@ -14,14 +14,11 @@ export enum Contracts {
   CONTROL='Control',
   DISPUTE='Dispute',
   DAI='Dai',
-  WORK_EXCHANGE='WorkExchange',
   WORK_RELATIONSHIP='WorkRelationship',
   MARKET='Market',
   MARKET_FACTORY='MarketFactory',
-  EVALUATION='Evaluation',
-  MARKETLIB='MarketLib',
-  STRINGUTILS='StringUtils',
-  USER_REGISTRATION='UserRegistration'
+  USER_REGISTRATION='UserRegistration',
+  SCHEDULER='Scheduler'
 }
 
 export const enum WorkRelationshipState {
@@ -37,6 +34,12 @@ export const enum WorkRelationshipState {
 export enum ContractType {
   NORMAL,
   FLASH
+}
+
+enum DisputeStatus {
+  AWAITING_ARBITRATORS,
+  PENDING_DECISION,
+  RESOLVED
 }
 
 
@@ -86,18 +89,13 @@ export enum UserEvents {
 
 export enum ExchangeEvents {
   WorkRelationshipCreated='WorkRelationshipCreated',
+  DisputeCreated='DisputeCreated'
 }
 
 export enum StorageEvents {
   HOST_CHANGED='HostChanged',
   DATA_ADDED= 'DataAdded',
   DATA_RETRIEVED='DataRetrieved',
-}
-
-export enum WhisperEvents {
-    NewPublicWhisperMessage='NewPublicWhisperMessage',
-    NewPrivateWhisperMessage='NewPrivateWhisperMessage',
-    ChatError='ChatError'
 }
 
 /* Providers */

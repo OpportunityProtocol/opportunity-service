@@ -63,7 +63,7 @@ function createTask(data) {
             console.log('d');
             const contract = yield new ethers_1.ethers.Contract(taskMarket, abi).connect(OpportunityService_1.default.getSignersInterface());
             console.log('e');
-            const txResponse = yield contract.functions.createJob(taskOwner, constants_1.ContractType.NORMAL, taskMetadataPointer, taskBounty, addressMap[constants_1.Contracts.DAI]);
+            const txResponse = yield contract.functions.createJob(taskOwner, constants_1.ContractType.NORMAL, taskMetadataPointer, addressMap['Dai'], addressMap['cDai'], addressMap['Banker']);
             const txReceipt = yield txResponse.wait();
             console.log(txReceipt);
         }
@@ -73,4 +73,23 @@ function createTask(data) {
     });
 }
 exports.createTask = createTask;
+/*
+
+blockHash: "0xa923c23eec29567d8c2a84c85efbf852d8843448e6452ace4296142a5bf172c4"
+blockNumber: 546
+byzantium: true
+confirmations: 1
+contractAddress: null
+cumulativeGasUsed: BigNumber {_hex: '0x1905c4', _isBigNumber: true}
+events: [{…}]
+from: "0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1"
+gasUsed: BigNumber {_hex: '0x1905c4', _isBigNumber: true}
+logs: [{…}]
+logsBloom: "0x00000000000000000000000000000000000008000000000000000000000000000000008004000000000000000000000000000000000000001080000020000000000000000000000000000000008000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000010000000040000000000000000000000000000000000000000000000000000080000008000800000000000000000002000000000000000000000000000000000000000000000000000000000000000000000000000"
+status: 1
+to: "0xF1fE363e6A32F91F52D55dCa56daFb1C88f9Dc2C"
+transactionHash: "0x70f1f60a6a5056374cad6480dc1137be3a953d4ef724dac1190076305291096a"
+transactionIndex: 0
+
+*/ 
 //# sourceMappingURL=create-task.js.map

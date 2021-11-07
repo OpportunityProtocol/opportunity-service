@@ -1,5 +1,9 @@
 {
-    "MarketFactory": "0x41e9d48d1bf6c7dEFEF16C8F576BF39C5831fe40",
-    "UserRegistration": "0xB16a4e64bB63a2cbeB7dC3C40471b069d819f803",
-    "Dai": "0x68d45EE246bd52601a272623d934634761F4051F"
+    "MarketFactory": "0x8eb065482F681537e90eab826540E9DF8D8cBd89",
+    "UserRegistration": "0xc4F1B570e57A5035a25035AFA5f7CbA204627024",
+    "Dai": "0x6b175474e89094c44da98b954eedeac495271d0f",
+    "Scheduler": ""
 }
+
+
+

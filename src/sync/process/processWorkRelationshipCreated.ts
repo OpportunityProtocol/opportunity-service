@@ -27,19 +27,14 @@ function processWorkRelationshipCreatedEvent(log) {
     + 'Owner: ' + relationshipOwner + ', Address: '  + relationshipAddress + ', and Market Address: ' + relationshipAddress);
 
     const relationshipContractInstance = new ethers.Contract(relationshipAddress, abiMap[Contracts.WORK_RELATIONSHIP], opportunityService.getSignersInterface())
-    const relationshipTaskMetadataPointer = relationshipContractInstance._taskMetadataPointer();
     const relationshipStatus = 0 //relationshipContractInstance.get_contractStatus();
     const relationshipType = 0;
-
-    //process contents of metadata pointer
-    let relationshipMetadata = {} //opportunityService.storageProvider.retrieveContent(relationshipTaskMetadataPointer);
 
     let relationshipData = {
         relationshipOwner,
         relationshipAddress,
         relationshipMarketAddress,
         relationshipStatus,
-        relationshipMetadata,
         relationshipType
     }
 

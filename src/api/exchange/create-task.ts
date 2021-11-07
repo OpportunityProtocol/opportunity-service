@@ -40,7 +40,7 @@ async function createTask(data) : Promise<void> {
         console.log('d')
     const contract = await new ethers.Contract(taskMarket, abi).connect(opportunityService.getSignersInterface());
     console.log('e')
-    const txResponse = await contract.functions.createJob(taskOwner, ContractType.NORMAL, taskMetadataPointer, taskBounty, addressMap[Contracts.DAI])
+    const txResponse = await contract.functions.createJob(taskOwner, ContractType.NORMAL, taskMetadataPointer, addressMap['Dai'], addressMap['cDai'], addressMap['Banker'])
     const txReceipt = await txResponse.wait()
     console.log(txReceipt)
     } catch(error) {
@@ -59,7 +59,7 @@ confirmations: 1
 contractAddress: null
 cumulativeGasUsed: BigNumber {_hex: '0x1905c4', _isBigNumber: true}
 events: [{…}]
-from: "0x74F6ff3Ae3f5EB38354FfB05867a37B7B40E6000"
+from: "0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1"
 gasUsed: BigNumber {_hex: '0x1905c4', _isBigNumber: true}
 logs: [{…}]
 logsBloom: "0x00000000000000000000000000000000000008000000000000000000000000000000008004000000000000000000000000000000000000001080000020000000000000000000000000000000008000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000010000000040000000000000000000000000000000000000000000000000000080000008000800000000000000000002000000000000000000000000000000000000000000000000000000000000000000000000000"

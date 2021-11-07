@@ -8,5 +8,5 @@ export default {
     'UserSummary': abiMap['UserSummary'],
     'UserRegistration': abiMap['UserRegistration'],
     'UserSummaryFactory': abiMap['UserSummaryFactory'],
-    'WorkExchange': abiMap['WorkExchange']
+    'Dispute': abiMap['Dispute']
 }

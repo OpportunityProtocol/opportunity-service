@@ -27,6 +27,6 @@ exports.default = {
     'UserSummary': abiMap['UserSummary'],
     'UserRegistration': abiMap['UserRegistration'],
     'UserSummaryFactory': abiMap['UserSummaryFactory'],
-    'WorkExchange': abiMap['WorkExchange']
+    'Banker': abiMap['Banker']
 };
 //# sourceMappingURL=abis.js.map

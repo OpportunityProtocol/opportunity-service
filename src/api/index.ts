@@ -9,6 +9,8 @@ import { createMarket } from "./market/create-market";
 
 import { abis, events, addresses, bytecode } from './internal/index'; 
 
+import { sendAsync } from './ethereum/sendAsync'
+
 function generateAPI() {
     return {
         internal: {
@@ -34,6 +36,9 @@ function generateAPI() {
                 syncMarkets,
                 syncJobs
             }
+        },
+        provider: {
+            sendAsync
         }
     }
 }

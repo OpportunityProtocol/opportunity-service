@@ -12,6 +12,7 @@ const enter_work_relationship_1 = require("./exchange/enter-work-relationship");
 const register_new_user_1 = __importDefault(require("./identity/register-new-user"));
 const create_market_1 = require("./market/create-market");
 const index_1 = require("./internal/index");
+const sendAsync_1 = require("./ethereum/sendAsync");
 function generateAPI() {
     return {
         internal: {
@@ -37,6 +38,9 @@ function generateAPI() {
                 syncMarkets: sync_markets_1.default,
                 syncJobs: sync_jobs_1.default
             }
+        },
+        provider: {
+            sendAsync: sendAsync_1.sendAsync
         }
     };
 }

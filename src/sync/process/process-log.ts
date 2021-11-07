@@ -7,6 +7,7 @@ import { ethers, utils } from "ethers";
 import { hexZeroPad } from "@ethersproject/bytes";
 import { decode } from "node:punycode";
 import { processWorkRelationshipCreatedEvent } from "./processWorkRelationshipCreated";
+import { processDisputeCreated } from "./processDisputeCreated";
 /**
  * Retrieves topics and process the approppriate log
  * @param log 
@@ -46,8 +47,6 @@ function processLogEvents(log) {
         }
     }
 
-
-
     if (event != null) {
         switch(event['name']) {
             case "MarketCreated":
@@ -60,6 +59,8 @@ function processLogEvents(log) {
             case "WorkRelationshipCreated":
                 processWorkRelationshipCreatedEvent(log);
                 break;
+            case "DisputeCreated":
+                processDisputeCreated(log)
             default:
         }
     } else {
