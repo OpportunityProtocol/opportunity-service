@@ -3,7 +3,9 @@
   "version": "0.0.504",
   "description": "A service layer that connects all services between the blockchain and ui.",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "test": "mocha 'test/**/*.ts' --recursive --reporter mocha-junit-reporter --timeout 60000 --exit"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/OpportunityProtocol/opportunity-service.git"
@@ -15,20 +17,23 @@
   },
   "homepage": "https://github.com/OpportunityProtocol/opportunity-service#readme",
   "devDependencies": {
+    "@types/mocha": "^9.0.0",
     "@types/node": "^14.14.41",
     "chai": "^4.3.4",
     "chai-as-promised": "^7.1.1",
     "chai-bn": "^0.2.1",
-    "mocha": "^8.3.2"
+    "mocha": "^8.4.0"
   },
   "dependencies": {
     "@toruslabs/torus-embed": "^1.10.14",
     "@types/sqlite3": "^3.1.7",
     "@types/web3": "^1.2.2",
+    "assert": "^2.0.0",
     "body-parser": "^1.19.0",
     "compression": "^1.7.4",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
+    "dvote-js": "^1.13.3",
     "ethereumjs-tx": "^2.1.2",
     "ethers": "^5.2.0",
     "ethrpc": "^6.2.4",
@@ -41,6 +46,7 @@
     "ipfs-http-client": "^49.0.4",
     "knex": "^0.95.5",
     "md5": "^2.3.0",
+    "mocha-junit-reporter": "^2.0.2",
     "mongodb": "^3.6.9",
     "mongoose": "^5.12.12",
     "sqlite3": "^5.0.2",

@@ -1,14 +1,16 @@
 {
     "compilerOptions": {
         "module": "commonjs",
+        "moduleResolution": "node",
+        "resolveJsonModule": true,
         "esModuleInterop": true,
         "allowSyntheticDefaultImports": true,
         "target": "es6",
         "suppressImplicitAnyIndexErrors": true,
         "noImplicitAny": false,
-        "resolveJsonModule": true,
-        "moduleResolution": "node",
         "sourceMap": true,
+        "declaration": false,
+        "skipLibCheck": true,
         "outDir": "./dist/",
         "baseUrl": ".",
         "paths": {

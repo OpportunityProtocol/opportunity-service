@@ -14,24 +14,24 @@ import { Result } from "ethers/lib/utils";
 const Tx = require("ethereumjs-tx").Transaction;
 
 async function createDispute(data) : Promise<void> {
-    console.log('a')
-    const parsedData = JSON.parse(data);
-    const abi = abiMap[Contracts.DISPUTE];
+    //createData(data)
+
+    const parsedData = JSON.parse(data)
+    const abi = abiMap[Contracts.DISPUTE]
+
+    const complaintMetadataPointer = parsedData['complaintMetadataPointer']
+    const complaintResponseMetadataPointer = parsedData['complaintResponseMetadataPointer']
+    const relationshipAddress = parsedData['relationshipAddress']
 
     console.log(abi)
     console.log(parsedData)
-
-    const metadataPointer = parsedData['metadata']
-    console.log(metadataPointer)
-    const relationshipAddress = parsedData['relationshipAddress']
-    console.log(relationshipAddress)
 
     try {
         // The factory we use for deploying contracts
         const disputeContractfactory = new ContractFactory(abi, bytecodeMap[Contracts.DISPUTE], opportunityService.getSignersInterface())
 
         // Deploy an instance of the contract
-        const disputeContract = await disputeContractfactory.deploy(relationshipAddress, addressMap[Contracts.SCHEDULER], metadataPointer);
+        const disputeContract = await disputeContractfactory.deploy(relationshipAddress, addressMap[Contracts.SCHEDULER], complaintMetadataPointer, complaintResponseMetadataPointer);
         const txReceipt = await disputeContract.deployTransaction.wait()
         console.log(txReceipt)
     } catch(error) {
