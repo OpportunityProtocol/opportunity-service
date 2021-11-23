@@ -1,4 +1,3 @@
-"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -15,15 +14,11 @@ var __asyncValues = (this && this.__asyncValues) || function (o) {
     function verb(n) { i[n] = o[n] && function (v) { return new Promise(function (resolve, reject) { v = o[n](v), settle(resolve, reject, v.done, v.value); }); }; }
     function settle(resolve, reject, d, v) { Promise.resolve(v).then(function(v) { resolve({ value: v, done: d }); }, reject); }
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-const ipfs_http_client_1 = __importDefault(require("ipfs-http-client"));
+import ipfsClient from 'ipfs-http-client';
 class OpportunityStorageProvider {
     constructor() {
         this.ipfsProvider = null;
-        this.ipfsProvider = (0, ipfs_http_client_1.default)({ url: 'https://ipfs.infura.io', protocol: 'https', port: 5001, apiPath: '/ipfs/api/v0' });
+        this.ipfsProvider = ipfsClient({ url: 'https://ipfs.infura.io', protocol: 'https', port: 5001, apiPath: '/ipfs/api/v0' });
     }
     storeContent(content) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -65,5 +60,5 @@ class OpportunityStorageProvider {
     }
 }
 const opportunityStorageProvider = new OpportunityStorageProvider();
-exports.default = opportunityStorageProvider;
+export default opportunityStorageProvider;
 //# sourceMappingURL=OpportunityStorageProvider.js.map

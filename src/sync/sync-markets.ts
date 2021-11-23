@@ -6,7 +6,7 @@ import { processLog } from './process/process-log';
 async function syncMarkets() {
      //sync Markets
      await opportunityService.getProviderInterface().getLogs({ 
-        address: addressMap[Contracts.MARKET_FACTORY], 
+        address: addressMap[opportunityService.getEthNetwork()][Contracts.MARKET_FACTORY], 
         fromBlock: 1, 
         toBlock: 'latest' 
     }).then((logs) => {

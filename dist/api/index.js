@@ -1,49 +1,44 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-const sync_with_ethereum_node_1 = require("../events/sync-with-ethereum-node");
-const sync_jobs_1 = __importDefault(require("../sync/sync-jobs"));
-const sync_markets_1 = __importDefault(require("../sync/sync-markets"));
-const complete_relationship_1 = require("./exchange/complete-relationship");
-const create_task_1 = require("./exchange/create-task");
-const enter_work_relationship_1 = require("./exchange/enter-work-relationship");
-const register_new_user_1 = __importDefault(require("./identity/register-new-user"));
-const create_market_1 = require("./market/create-market");
-const index_1 = require("./internal/index");
-const sendAsync_1 = require("./ethereum/sendAsync");
+import { syncWithEthereumNode } from "../events/sync-with-ethereum-node";
+import syncJobs from "../sync/sync-jobs";
+import syncMarkets from "../sync/sync-markets";
+import { completeRelationship } from "./exchange/complete-relationship";
+import { createTask } from "./exchange/create-task";
+import { enterWorkRelationship } from "./exchange/enter-work-relationship";
+import registerNewUser from "./identity/register-new-user";
+import { createMarket } from "./market/create-market";
+import { abis, addresses, bytecode } from './internal/index';
+import { sendAsync } from './ethereum/sendAsync';
 function generateAPI() {
     return {
         internal: {
-            abis: index_1.abis,
-            addresses: index_1.addresses,
-            bytecode: index_1.bytecode,
+            abis: abis,
+            addresses,
+            bytecode,
         },
         exchange: {
-            completeRelationship: complete_relationship_1.completeRelationship,
-            createTask: create_task_1.createTask,
-            enterWorkRelationship: enter_work_relationship_1.enterWorkRelationship
+            completeRelationship,
+            createTask,
+            enterWorkRelationship
         },
         dispute: {},
         identity: {
-            registerNewUser: register_new_user_1.default
+            registerNewUser
         },
         markets: {
-            createMarket: create_market_1.createMarket,
+            createMarket,
         },
         network: {
             sync: {
-                syncWithEthereum: sync_with_ethereum_node_1.syncWithEthereumNode,
-                syncMarkets: sync_markets_1.default,
-                syncJobs: sync_jobs_1.default
+                syncWithEthereum: syncWithEthereumNode,
+                syncMarkets,
+                syncJobs
             }
         },
         provider: {
-            sendAsync: sendAsync_1.sendAsync
+            sendAsync
         }
     };
 }
 const opportunityAPI = generateAPI();
-exports.default = opportunityAPI;
+export default opportunityAPI;
 //# sourceMappingURL=index.js.map

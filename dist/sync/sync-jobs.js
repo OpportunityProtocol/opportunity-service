@@ -1,4 +1,3 @@
-"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -8,16 +7,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-const OpportunityService_1 = __importDefault(require("../OpportunityService"));
-const process_log_1 = require("./process/process-log");
+import opportunityService from "../OpportunityService";
+import { processLog } from './process/process-log';
 function syncJobs(marketAddress) {
     return __awaiter(this, void 0, void 0, function* () {
         //sync Jobs
-        yield OpportunityService_1.default.getProviderInterface().getLogs({
+        yield opportunityService.getProviderInterface().getLogs({
             address: marketAddress,
             fromBlock: 1,
             toBlock: 'latest'
@@ -25,7 +20,7 @@ function syncJobs(marketAddress) {
             console.log('Found logs.. Processing sync Jobs');
             logs.forEach(log => {
                 if (log && Array.isArray(log.topics) && log.topics.length) {
-                    (0, process_log_1.processLog)(log); // keccashinside here
+                    processLog(log); // keccashinside here
                 }
             });
         })
@@ -34,5 +29,5 @@ function syncJobs(marketAddress) {
         });
     });
 }
-exports.default = syncJobs;
+export default syncJobs;
 //# sourceMappingURL=sync-jobs.js.map

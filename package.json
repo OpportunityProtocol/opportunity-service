@@ -1,10 +1,11 @@
 {
   "name": "opportunity-service",
-  "version": "0.0.504",
+  "version": "0.0.507",
   "description": "A service layer that connects all services between the blockchain and ui.",
   "main": "index.js",
   "scripts": {
-    "test": "mocha 'test/**/*.ts' --recursive --reporter mocha-junit-reporter --timeout 60000 --exit"
+    "test": "node --experimental-vm-modules node_modules/.bin/jest",
+    "coverage": "jest --coverage"
   },
   "repository": {
     "type": "git",
@@ -15,21 +16,34 @@
   "bugs": {
     "url": "https://github.com/OpportunityProtocol/opportunity-service/issues"
   },
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "node",
+    "transform": {
+      "node_modules/variables/.+\\.(j|t)sx?$": "ts-jest"
+    },
+    "transformIgnorePatterns": [
+      "node_modules/(?!variables/.*)"
+    ]
+  },
   "homepage": "https://github.com/OpportunityProtocol/opportunity-service#readme",
   "devDependencies": {
+    "@types/jest": "^27.0.3",
     "@types/mocha": "^9.0.0",
     "@types/node": "^14.14.41",
     "chai": "^4.3.4",
     "chai-as-promised": "^7.1.1",
     "chai-bn": "^0.2.1",
-    "mocha": "^8.4.0"
+    "jest": "^27.3.1",
+    "mocha": "^8.4.0",
+    "ts-jest": "^27.0.7",
+    "typescript": "^4.5.2"
   },
   "dependencies": {
     "@toruslabs/torus-embed": "^1.10.14",
     "@types/sqlite3": "^3.1.7",
     "@types/web3": "^1.2.2",
     "assert": "^2.0.0",
-    "body-parser": "^1.19.0",
     "compression": "^1.7.4",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
@@ -39,18 +53,11 @@
     "ethrpc": "^6.2.4",
     "express": "^4.17.1",
     "fortmatic": "^2.2.1",
-    "helmet": "^4.6.0",
     "ipfs": "^0.54.4",
     "ipfs-api": "^26.1.2",
     "ipfs-core": "^0.7.1",
     "ipfs-http-client": "^49.0.4",
-    "knex": "^0.95.5",
     "md5": "^2.3.0",
-    "mocha-junit-reporter": "^2.0.2",
-    "mongodb": "^3.6.9",
-    "mongoose": "^5.12.12",
-    "sqlite3": "^5.0.2",
-    "typescript": "^4.4.3",
     "web3": "^1.3.5"
   }
 }

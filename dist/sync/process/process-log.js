@@ -1,31 +1,10 @@
-"use strict";
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.processLogEvents = exports.processLog = void 0;
-const constants_1 = require("../../constants");
-const abiMap = __importStar(require("../../blockchain/abi.json"));
-const processMarketCreatedLog_1 = require("./processMarketCreatedLog");
-const processMarketDestroyedEvent_1 = require("./processMarketDestroyedEvent");
-const ethers_1 = require("ethers");
-const processWorkRelationshipCreated_1 = require("./processWorkRelationshipCreated");
+import { ABI_LIST } from "../../constants";
+import * as abiMap from '../../blockchain/abi.json';
+import { processMarketCreatedEvent } from './processMarketCreatedLog';
+import { processMarketDestroyedEvent } from "./processMarketDestroyedEvent";
+import { utils } from "ethers";
+import { processWorkRelationshipCreatedEvent } from "./processWorkRelationshipCreated";
+import { processDisputeCreated } from "./processDisputeCreated";
 /**
  * Retrieves topics and process the approppriate log
  * @param log
@@ -45,13 +24,12 @@ function processLog(log) {
     console.log(log);
     processLogEvents(log);
 }
-exports.processLog = processLog;
 function processLogEvents(log) {
     let event = null;
     let hash = null;
     const { data, topics } = log;
-    for (var i = 0; i < constants_1.ABI_LIST.length; i++) {
-        var abis = abiMap[constants_1.ABI_LIST[i].toString()];
+    for (var i = 0; i < ABI_LIST.length; i++) {
+        var abis = abiMap[ABI_LIST[i].toString()];
         for (const aItem in abis) {
             if (aItem['type'] == "event") {
                 continue;
@@ -59,7 +37,7 @@ function processLogEvents(log) {
             ;
             var signature = abis[aItem]['name'] + "(" + abis[aItem]['inputs'].map(function (input) { return input.type; }).join(",") + ")";
             console.log('Processing an event with the signature: ' + signature);
-            hash = ethers_1.utils.id(signature);
+            hash = utils.id(signature);
             if (hash == topics[0]) {
                 event = abis[aItem];
                 break;
@@ -70,14 +48,16 @@ function processLogEvents(log) {
         switch (event['name']) {
             case "MarketCreated":
                 console.log('MarketCreatedCase');
-                (0, processMarketCreatedLog_1.processMarketCreatedEvent)(log);
+                processMarketCreatedEvent(log);
                 break;
             case "MarketDestroyed":
-                (0, processMarketDestroyedEvent_1.processMarketDestroyedEvent)(log);
+                processMarketDestroyedEvent(log);
                 break;
             case "WorkRelationshipCreated":
-                (0, processWorkRelationshipCreated_1.processWorkRelationshipCreatedEvent)(log);
+                processWorkRelationshipCreatedEvent(log);
                 break;
+            case "DisputeCreated":
+                processDisputeCreated(log);
             default:
         }
     }
@@ -85,5 +65,5 @@ function processLogEvents(log) {
         console.log('Event is null.. exiting processing.');
     }
 }
-exports.processLogEvents = processLogEvents;
+export { processLog, processLogEvents };
 //# sourceMappingURL=process-log.js.map

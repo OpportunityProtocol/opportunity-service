@@ -1,4 +1,4 @@
-import { EntityMetadata, EntityApi, EntityMetadataTemplate } from "dvote-js"
+import { EntityMetadata, EntityApi, EntityMetadataTemplate, GatewayPool } from "dvote-js"
 import { providers } from 'ethers'
 import gwPool from "./connect"
 
@@ -13,7 +13,7 @@ import gwPool from "./connect"
  * @param entity 
  * @param entityAppData 
  */
-async function registerEntity(entity: providers.JsonRpcSigner) {
+export async function registerEntity(pool : GatewayPool, entity, address) {
 // Make a copy of the metadata template and customize it
 
 const entityMetadata: EntityMetadata = Object.assign({}, EntityMetadataTemplate)
@@ -26,7 +26,7 @@ entityMetadata.description.default = "App"
 }*/
 entityMetadata.actions = []
 
-const contentUri = await EntityApi.setMetadata(entity._address, entityMetadata, entity, gwPool)
+const contentUri = await EntityApi.setMetadata(address, entityMetadata, entity, pool)
 // Show stored values
 console.log("The entity has been defined")
 console.log(contentUri)

@@ -1,7 +1,5 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const events_1 = require("events");
-class OpportunityEventEmitter extends events_1.EventEmitter {
+import { EventEmitter } from 'events';
+class OpportunityEventEmitter extends EventEmitter {
     constructor() {
         super();
         this.subscriptions = [];
@@ -30,5 +28,5 @@ class OpportunityEventEmitter extends events_1.EventEmitter {
     }
 }
 const opportunityEventEmitter = new OpportunityEventEmitter();
-exports.default = opportunityEventEmitter;
+export default opportunityEventEmitter;
 //# sourceMappingURL=OpportunityEventEmitter.js.map

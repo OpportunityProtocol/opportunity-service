@@ -7,7 +7,7 @@ import * as abiMap from '../../blockchain/abi.json';
 import { Result } from 'ethers/lib/utils';
 
 async function registerNewUser(universalAddress) {
-const txResult = new Contract(addressMap[Contracts.USER_REGISTRATION], abiMap[Contracts.USER_REGISTRATION])
+const txResult = new Contract(addressMap[opportunityService.getEthNetwork()][Contracts.USER_REGISTRATION], abiMap[Contracts.USER_REGISTRATION])
 .connect(opportunityService.getSignersInterface())
 .functions
 .registerNewUser(universalAddress)

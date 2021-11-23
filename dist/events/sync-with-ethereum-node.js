@@ -1,4 +1,3 @@
-"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -8,19 +7,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.syncWithEthereumNode = void 0;
-const sync_markets_1 = __importDefault(require("../sync/sync-markets"));
+import syncMarkets from '../sync/sync-markets';
 function syncWithEthereumNode() {
     return __awaiter(this, void 0, void 0, function* () {
         console.log('Syncing with ethereum node..');
         const highestBlockNumber = 1; //blockMap[Contracts.MARKET_FACTORY]; //get highest block number form db
-        (0, sync_markets_1.default)();
+        syncMarkets();
         //syncJobs()
     });
 }
-exports.syncWithEthereumNode = syncWithEthereumNode;
+export { syncWithEthereumNode };
 //# sourceMappingURL=sync-with-ethereum-node.js.map

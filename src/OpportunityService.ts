@@ -23,6 +23,7 @@ class OpportunityService {
     private opportunityLogger = null;
     private storageProvider = opportunityStorageProvider;
     private currentAccount = null;
+    private ethNetwork;
 
 
     public api  = opportunityAPI;
@@ -67,6 +68,14 @@ class OpportunityService {
 
     subscribeToEvents(eventDictionary : EventCallbackDictionary, onComplete) {
         startEventListeners(eventDictionary, onComplete);
+    }
+
+    setEthNetwork(network) {
+        this.ethNetwork = network;
+    }
+
+    getEthNetwork() {
+        return this.ethNetwork;
     }
 
     async startService() {

@@ -1,6 +1,3 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.processMarketDestroyedEvent = void 0;
 /**
  *
  * @param eventData
@@ -9,5 +6,5 @@ exports.processMarketDestroyedEvent = void 0;
 function processMarketDestroyedEvent(eventData) {
     const marketAddress = eventData[1];
 }
-exports.processMarketDestroyedEvent = processMarketDestroyedEvent;
+export { processMarketDestroyedEvent };
 //# sourceMappingURL=processMarketDestroyedEvent.js.map

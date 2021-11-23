@@ -1,1 +1,1 @@
-{"version":3,"file":"processMarketDestroyedEvent.js","sourceRoot":"","sources":["../../../src/sync/process/processMarketDestroyedEvent.ts"],"names":[],"mappings":";;;AAIA;;;;GAIG;AACH,SAAS,2BAA2B,CAAC,SAAS;IAC1C,MAAM,aAAa,GAAG,SAAS,CAAC,CAAC,CAAC,CAAC;AAEvC,CAAC;AAEQ,kEAA2B"}
+{"version":3,"file":"processMarketDestroyedEvent.js","sourceRoot":"","sources":["../../../src/sync/process/processMarketDestroyedEvent.ts"],"names":[],"mappings":"AAIA;;;;GAIG;AACH,SAAS,2BAA2B,CAAC,SAAS;IAC1C,MAAM,aAAa,GAAG,SAAS,CAAC,CAAC,CAAC,CAAC;AAEvC,CAAC;AAED,OAAO,EAAE,2BAA2B,EAAE,CAAC"}
