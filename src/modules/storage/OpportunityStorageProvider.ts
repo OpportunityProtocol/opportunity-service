@@ -1,40 +1,92 @@
-import ipfsClient from 'ipfs-http-client';
+import OrbitDB from 'orbit-db'
+import IPFS from 'ipfs'
+
+import {
+    DisputeDoc,
+    WorkRelationshipDoc,
+    UserSummaryDoc
+} from '../../types'
+
+const operations = ['>', '<', '==', '>=', '<=']
 
 
 class OpportunityStorageProvider {
-    private ipfsProvider = null;
+    private db: any
 
-    constructor() {
-        this.ipfsProvider = ipfsClient({ url: 'https://ipfs.infura.io', protocol: 'https', port: 5001, apiPath: '/ipfs/api/v0' })
+    constructor(address: string) {
+        this.initIPFSInstance()
+        this.listen(address)
     }
 
-    async storeContent(content: any): Promise<string> {
-        const { cid } = await this.ipfsProvider.add(content)
-        console.log(`OpportunityStorageProvider: Upload content with CID (${cid})`);
-        return cid;
+    // Create IPFS instance
+    initIPFSInstance = async () => {
+        return await IPFS.create({ repo: "/opportunity/ipfs" });
+    };
+
+    listen(address) {
+        this.initIPFSInstance().then(async ipfs => {
+            const orbitdb = await OrbitDB.createInstance(ipfs);
+          
+            // Create / Open a database
+            this.db = await orbitdb.docs(address);
+            this.db.load();
+          
+            // Listen for updates from peers
+            this.db.events.on("replicated", address => {
+              console.log(this.db.iterator({ limit: -1 }).collect());
+            });
+          
+            // Add an entry
+            const hash = await this.db.add("world");
+            console.log(hash);
+          
+            // Query
+            const result = this.db.iterator({ limit: -1 }).collect();
+            console.log(JSON.stringify(result, null, 2));
+          });
     }
 
-    async storeRawContent(content : any) {
-        const parsedContent = JSON.stringify(content);
-        const cid = await this.ipfsProvider.add(parsedContent);
-        console.log('Storage Provider: ' + 'Storing raw content with cid: ' + cid);
-    }
 
-    async retrieveContent(cid: string): Promise<AsyncIterable<Object>> | Promise<number> {
-        const file = this.ipfsProvider.get(cid);
-        console.log(file.type, file.path)
+    /**
+    * Returns a Promise that resolves to the multihash of the entry as a String.
+    * @param doc 
+    * @returns 
+    */
+    async store(doc: DisputeDoc | WorkRelationshipDoc | UserSummaryDoc): Promise<string> {
+        try {  
+            const hash = await this.db.put(doc).then(hash => {
+                return hash;
+            })
 
-        if (!file.content) return -1;
-
-        const content = []
-
-        for await (const chunk of file.content) {
-            content.push(chunk)
+            return hash;
+        } catch(error) {
+            console.log(error)
+            return ''
         }
+    }
 
-        console.log('Returning content from storage provider: ' + content);
+    /**
+    * Returns an Array of all Objects that match the given key in their _id field or the field specified by indexBy. If no document with 
+    * that key exists, this returns an empty array.
+    * @param key 
+    */
+    async retrieveDoc(key: string = '', collection: string): Promise<DisputeDoc> | Promise<WorkRelationshipDoc> | Promise<UserSummaryDoc> {
+    try {
+        const docs = await this.db.get(key)
+        return docs
+        } catch(error) {
+            console.log(error)
+            return []
+        }
+    }
+
+   async retrieveDocsByCollection(collection: string) {
+        return await this.db.query((doc) => doc[collection] == collection)
+    }
+
+    async deleteDoc(key: string) {
+        const hash = await this.db.del(key)
     }
 }
 
-const opportunityStorageProvider: OpportunityStorageProvider = new OpportunityStorageProvider();
-export default opportunityStorageProvider;
+export default OpportunityStorageProvider

@@ -51,3 +51,23 @@ export type WorkRelationshipMetadata = {
 }
 
 export interface EventCallbackDictionary { [eventName : string]: () => any }
+
+
+export type DisputeDoc = {
+    _id: string, 
+    collection: string, //dispute
+    disputeAddress: string,
+    vocdoniProcessId: string
+}
+
+export type WorkRelationshipDoc = {
+    _id: string,
+    collection: string //relationship
+}
+
+export type UserSummaryDoc = {
+    _id: string, 
+    collection: string, //summary
+    universalAddress: string,
+    userSummaryAddress: string
+}

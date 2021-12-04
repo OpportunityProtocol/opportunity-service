@@ -12,6 +12,8 @@ import opportunityAPI from './api/index';
 import opportunityStorageProvider from "./modules/storage/OpportunityStorageProvider";
 
 import Web3 from 'web3';
+import OpportunityStorageProvider from "./modules/storage/OpportunityStorageProvider";
+import { EthNetworkID } from "dvote-js";
 
 class OpportunityService {
     private eventEmitter = opportunityEventEmitter;
@@ -19,12 +21,13 @@ class OpportunityService {
     private syncing: boolean;
     private ethersProvider : providers.JsonRpcProvider = ethers.getDefaultProvider('http://localhost:8545');
     private ethersSigner : providers.JsonRpcSigner = null;
-    private static defaultProvider;// = new Web3('http://localhost:8545')
+    private static defaultProvider = new Web3('http://localhost:8545')
     private opportunityLogger = null;
-    private storageProvider = opportunityStorageProvider;
+    private storageProvider = null;
     private currentAccount = null;
-    private ethNetwork : string = 'rinkeby'
+    private ethNetwork : EthNetworkID | string = 'rinkeby'
     public api  = opportunityAPI;
+    public storage = null
 
     private static instance: OpportunityService;
 
@@ -70,8 +73,8 @@ class OpportunityService {
         startEventListeners(eventDictionary, onComplete);
     }
 
-    setEthNetwork(network) {
-        switch(network) {
+    setNetworkParameters(networkId: number, dbAddress: string) {
+        switch(networkId) {
             case 1:
                 this.ethNetwork = 'mainnet'
                 break
@@ -81,10 +84,16 @@ class OpportunityService {
             default:
                 this.ethNetwork = 'rinkeby'
         }
+
+        this.storageProvider = new OpportunityStorageProvider(dbAddress)
     }
 
-    getEthNetwork() {
-        return this.ethNetwork;
+    getEthNetwork(): EthNetworkID | string {
+        return this.ethNetwork
+    }
+
+    getStorageProvider() {
+        return this.storageProvider
     }
 
     async startService() {
@@ -124,18 +133,6 @@ class OpportunityService {
 
     isSyncing() {
         return this.syncing;
-    }
-
-    accessContractUploadBlock(contract: Contracts) {
-        return blocksMap[contract];
-    }
-
-    accessContractAddress(contract: Contracts) {
-        return addressesMap[contract];
-    }
-
-    accessContractABI(contract: Contracts) {
-        return abiMap[contract];
     }
 
     getDefaultProviderInterface() {
