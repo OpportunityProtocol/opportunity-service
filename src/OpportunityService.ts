@@ -23,9 +23,7 @@ class OpportunityService {
     private opportunityLogger = null;
     private storageProvider = opportunityStorageProvider;
     private currentAccount = null;
-    private ethNetwork;
-
-
+    private ethNetwork : string = 'rinkeby'
     public api  = opportunityAPI;
 
     private static instance: OpportunityService;
@@ -34,7 +32,9 @@ class OpportunityService {
      * The Singleton's constructor should always be private to prevent direct
      * construction calls with the `new` operator.
      */
-    private constructor() {}
+    private constructor() {
+        this.ethNetwork = 'rinkeby'
+    }
 
     /**
      * The static method that controls the access to the singleton instance.
@@ -71,7 +71,16 @@ class OpportunityService {
     }
 
     setEthNetwork(network) {
-        this.ethNetwork = network;
+        switch(network) {
+            case 1:
+                this.ethNetwork = 'mainnet'
+                break
+            case 4:
+                this.ethNetwork = 'rinkeby'
+                break
+            default:
+                this.ethNetwork = 'rinkeby'
+        }
     }
 
     getEthNetwork() {

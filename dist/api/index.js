@@ -6,14 +6,24 @@ import { createTask } from "./exchange/create-task";
 import { enterWorkRelationship } from "./exchange/enter-work-relationship";
 import registerNewUser from "./identity/register-new-user";
 import { createMarket } from "./market/create-market";
-import { abis, addresses, bytecode } from './internal/index';
+import { abis, addresses } from './internal/index';
 import { sendAsync } from './ethereum/sendAsync';
+import { parseCypher } from "./util/parse-cipher";
+import { stringifyCypher } from "./util/stringify-cipher";
+import { decryptByPrivateKey, encryptByPublicKey } from "./util/encrypt-by-public-key";
+import { createEthCryptoCreds } from "./other/create-eth-crypto-creds";
+import { encrypt } from "./provider/encrypt";
+import { decrypt } from "./provider/decrypt";
 function generateAPI() {
     return {
+        crypto: {
+            encryptByPublicKey,
+            decryptByPrivateKey,
+            createEthCryptoCreds
+        },
         internal: {
             abis: abis,
             addresses,
-            bytecode,
         },
         exchange: {
             completeRelationship,
@@ -35,7 +45,13 @@ function generateAPI() {
             }
         },
         provider: {
-            sendAsync
+            sendAsync,
+            encrypt,
+            decrypt
+        },
+        util: {
+            parseCypher,
+            stringifyCypher
         }
     };
 }

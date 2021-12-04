@@ -111,20 +111,36 @@
           "internalType": "address",
           "name": "_daiTokenAddress",
           "type": "address"
-        },
-        {
-          "internalType": "address",
-          "name": "_cDaiTokenAddress",
-          "type": "address"
-        },
-        {
-          "internalType": "address",
-          "name": "_banker",
-          "type": "address"
         }
       ],
       "stateMutability": "nonpayable",
       "type": "constructor"
+    },
+    {
+      "inputs": [],
+      "name": "HIGH_MEDIAN_EVALUATION_THRESHOLD",
+      "outputs": [
+        {
+          "internalType": "uint8",
+          "name": "",
+          "type": "uint8"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "LOW_MEDIAN_EVALUATION_THRESHOLD",
+      "outputs": [
+        {
+          "internalType": "uint8",
+          "name": "",
+          "type": "uint8"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
     },
     {
       "inputs": [],
@@ -233,24 +249,29 @@
         {
           "components": [
             {
-              "internalType": "string",
-              "name": "industry",
-              "type": "string"
+              "internalType": "address",
+              "name": "market",
+              "type": "address"
             },
             {
               "internalType": "uint256",
-              "name": "industrylevel",
+              "name": "marketReputation",
               "type": "uint256"
             },
             {
               "internalType": "uint256",
-              "name": "reputation",
+              "name": "universalReputation",
               "type": "uint256"
             }
           ],
           "internalType": "struct Evaluation.EvaluationState",
           "name": "evaluationState",
           "type": "tuple"
+        },
+        {
+          "internalType": "address",
+          "name": "_market",
+          "type": "address"
         }
       ],
       "name": "checkWorkerEvaluation",
@@ -295,7 +316,7 @@
       "name": "contractStatus",
       "outputs": [
         {
-          "internalType": "enum WorkRelationship.ContractStatus",
+          "internalType": "enum Relationship.ContractStatus",
           "name": "",
           "type": "uint8"
         }
@@ -318,6 +339,42 @@
     },
     {
       "inputs": [],
+      "name": "dispute",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_scheduler",
+          "type": "address"
+        },
+        {
+          "internalType": "bytes32",
+          "name": "_complaintMetadataPointer",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "bytes32",
+          "name": "_complaintResponseMetadataPointer",
+          "type": "bytes32"
+        }
+      ],
+      "name": "disputeRelationship",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
       "name": "domain_separator",
       "outputs": [
         {
@@ -327,6 +384,19 @@
         }
       ],
       "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getRewardAddress",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "nonpayable",
       "type": "function"
     },
     {
@@ -357,6 +427,36 @@
     },
     {
       "inputs": [
+        {
+          "internalType": "address",
+          "name": "_beneficiary",
+          "type": "address"
+        }
+      ],
+      "name": "resolveDisputedReward",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "resolveTiedDisputedReward",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "averageMarketWorkerRep",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint8",
+          "name": "_evaluationScore",
+          "type": "uint8"
+        },
         {
           "internalType": "bool",
           "name": "_approve",
@@ -556,13 +656,7 @@
       "type": "function"
     },
     {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "universalAddress",
-          "type": "address"
-        }
-      ],
+      "inputs": [],
       "name": "registerNewUser",
       "outputs": [
         {
@@ -598,36 +692,11 @@
         {
           "indexed": true,
           "internalType": "address",
-          "name": "marketAddress",
+          "name": "participant",
           "type": "address"
-        },
-        {
-          "indexed": true,
-          "internalType": "string",
-          "name": "marketName",
-          "type": "string"
         }
       ],
-      "name": "MarketPaused",
-      "type": "event"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": true,
-          "internalType": "address",
-          "name": "marketAddress",
-          "type": "address"
-        },
-        {
-          "indexed": true,
-          "internalType": "string",
-          "name": "marketName",
-          "type": "string"
-        }
-      ],
-      "name": "MarketResumed",
+      "name": "NewMarketParticipant",
       "type": "event"
     },
     {
@@ -689,51 +758,12 @@
     },
     {
       "inputs": [],
-      "name": "_marketStatus",
-      "outputs": [
-        {
-          "internalType": "enum MarketLib.MarketStatus",
-          "name": "",
-          "type": "uint8"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
       "name": "_marketType",
       "outputs": [
         {
           "internalType": "enum MarketLib.MarketType",
           "name": "",
           "type": "uint8"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "_requiredIndustryWeight",
-      "outputs": [
-        {
-          "internalType": "uint256",
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "_requiredReputation",
-      "outputs": [
-        {
-          "internalType": "uint256",
-          "name": "",
-          "type": "uint256"
         }
       ],
       "stateMutability": "view",
@@ -759,16 +789,6 @@
         {
           "internalType": "address",
           "name": "_daiTokenAddress",
-          "type": "address"
-        },
-        {
-          "internalType": "address",
-          "name": "_cDaiTokenAddress",
-          "type": "address"
-        },
-        {
-          "internalType": "address",
-          "name": "_banker",
           "type": "address"
         }
       ],
@@ -802,47 +822,6 @@
       ],
       "stateMutability": "view",
       "type": "function"
-    }
-  ],
-  "Dai": [{"inputs":[{"internalType":"uint256","name":"chainId_","type":"uint256"}],"payable":false,"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"src","type":"address"},{"indexed":true,"internalType":"address","name":"guy","type":"address"},{"indexed":false,"internalType":"uint256","name":"wad","type":"uint256"}],"name":"Approval","type":"event"},{"anonymous":true,"inputs":[{"indexed":true,"internalType":"bytes4","name":"sig","type":"bytes4"},{"indexed":true,"internalType":"address","name":"usr","type":"address"},{"indexed":true,"internalType":"bytes32","name":"arg1","type":"bytes32"},{"indexed":true,"internalType":"bytes32","name":"arg2","type":"bytes32"},{"indexed":false,"internalType":"bytes","name":"data","type":"bytes"}],"name":"LogNote","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"src","type":"address"},{"indexed":true,"internalType":"address","name":"dst","type":"address"},{"indexed":false,"internalType":"uint256","name":"wad","type":"uint256"}],"name":"Transfer","type":"event"},{"constant":true,"inputs":[],"name":"DOMAIN_SEPARATOR","outputs":[{"internalType":"bytes32","name":"","type":"bytes32"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"PERMIT_TYPEHASH","outputs":[{"internalType":"bytes32","name":"","type":"bytes32"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"internalType":"address","name":"","type":"address"},{"internalType":"address","name":"","type":"address"}],"name":"allowance","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"usr","type":"address"},{"internalType":"uint256","name":"wad","type":"uint256"}],"name":"approve","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"usr","type":"address"},{"internalType":"uint256","name":"wad","type":"uint256"}],"name":"burn","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"decimals","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"guy","type":"address"}],"name":"deny","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"usr","type":"address"},{"internalType":"uint256","name":"wad","type":"uint256"}],"name":"mint","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"src","type":"address"},{"internalType":"address","name":"dst","type":"address"},{"internalType":"uint256","name":"wad","type":"uint256"}],"name":"move","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"name","outputs":[{"internalType":"string","name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"nonces","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"holder","type":"address"},{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"nonce","type":"uint256"},{"internalType":"uint256","name":"expiry","type":"uint256"},{"internalType":"bool","name":"allowed","type":"bool"},{"internalType":"uint8","name":"v","type":"uint8"},{"internalType":"bytes32","name":"r","type":"bytes32"},{"internalType":"bytes32","name":"s","type":"bytes32"}],"name":"permit","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"usr","type":"address"},{"internalType":"uint256","name":"wad","type":"uint256"}],"name":"pull","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"usr","type":"address"},{"internalType":"uint256","name":"wad","type":"uint256"}],"name":"push","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"guy","type":"address"}],"name":"rely","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"symbol","outputs":[{"internalType":"string","name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"totalSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"dst","type":"address"},{"internalType":"uint256","name":"wad","type":"uint256"}],"name":"transfer","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"src","type":"address"},{"internalType":"address","name":"dst","type":"address"},{"internalType":"uint256","name":"wad","type":"uint256"}],"name":"transferFrom","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"version","outputs":[{"internalType":"string","name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"wards","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"}],
-  "Banker": [
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": false,
-          "internalType": "address",
-          "name": "donor",
-          "type": "address"
-        },
-        {
-          "indexed": false,
-          "internalType": "uint256",
-          "name": "amount",
-          "type": "uint256"
-        }
-      ],
-      "name": "ERC20Redeemed",
-      "type": "event"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": false,
-          "internalType": "address",
-          "name": "donor",
-          "type": "address"
-        },
-        {
-          "indexed": false,
-          "internalType": "uint256",
-          "name": "amount",
-          "type": "uint256"
-        }
-      ],
-      "name": "ERC20Supplied",
-      "type": "event"
     },
     {
       "inputs": [
@@ -852,105 +831,19 @@
           "type": "address"
         }
       ],
-      "name": "addressToLendAmount",
+      "name": "relationshipsToOwner",
       "outputs": [
         {
-          "internalType": "uint256",
+          "internalType": "address",
           "name": "",
-          "type": "uint256"
+          "type": "address"
         }
       ],
       "stateMutability": "view",
       "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "_donor",
-          "type": "address"
-        }
-      ],
-      "name": "checkRedeemableAmount",
-      "outputs": [
-        {
-          "internalType": "uint256",
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "uint256",
-          "name": "amount",
-          "type": "uint256"
-        },
-        {
-          "internalType": "bool",
-          "name": "redeemType",
-          "type": "bool"
-        },
-        {
-          "internalType": "address",
-          "name": "_cErc20Contract",
-          "type": "address"
-        },
-        {
-          "internalType": "address",
-          "name": "_donor",
-          "type": "address"
-        }
-      ],
-      "name": "redeemCErc20Tokens",
-      "outputs": [
-        {
-          "internalType": "bool",
-          "name": "",
-          "type": "bool"
-        }
-      ],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "_erc20Contract",
-          "type": "address"
-        },
-        {
-          "internalType": "address",
-          "name": "_cErc20Contract",
-          "type": "address"
-        },
-        {
-          "internalType": "address",
-          "name": "_donor",
-          "type": "address"
-        },
-        {
-          "internalType": "uint256",
-          "name": "_numTokensToSupply",
-          "type": "uint256"
-        }
-      ],
-      "name": "supplyErc20ToCompound",
-      "outputs": [
-        {
-          "internalType": "uint256",
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "stateMutability": "nonpayable",
-      "type": "function"
     }
   ],
-  "Disptue": {}
+  "Dai": [{"inputs":[{"internalType":"uint256","name":"chainId_","type":"uint256"}],"payable":false,"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"src","type":"address"},{"indexed":true,"internalType":"address","name":"guy","type":"address"},{"indexed":false,"internalType":"uint256","name":"wad","type":"uint256"}],"name":"Approval","type":"event"},{"anonymous":true,"inputs":[{"indexed":true,"internalType":"bytes4","name":"sig","type":"bytes4"},{"indexed":true,"internalType":"address","name":"usr","type":"address"},{"indexed":true,"internalType":"bytes32","name":"arg1","type":"bytes32"},{"indexed":true,"internalType":"bytes32","name":"arg2","type":"bytes32"},{"indexed":false,"internalType":"bytes","name":"data","type":"bytes"}],"name":"LogNote","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"src","type":"address"},{"indexed":true,"internalType":"address","name":"dst","type":"address"},{"indexed":false,"internalType":"uint256","name":"wad","type":"uint256"}],"name":"Transfer","type":"event"},{"constant":true,"inputs":[],"name":"DOMAIN_SEPARATOR","outputs":[{"internalType":"bytes32","name":"","type":"bytes32"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"PERMIT_TYPEHASH","outputs":[{"internalType":"bytes32","name":"","type":"bytes32"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"internalType":"address","name":"","type":"address"},{"internalType":"address","name":"","type":"address"}],"name":"allowance","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"usr","type":"address"},{"internalType":"uint256","name":"wad","type":"uint256"}],"name":"approve","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"usr","type":"address"},{"internalType":"uint256","name":"wad","type":"uint256"}],"name":"burn","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"decimals","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"guy","type":"address"}],"name":"deny","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"usr","type":"address"},{"internalType":"uint256","name":"wad","type":"uint256"}],"name":"mint","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"src","type":"address"},{"internalType":"address","name":"dst","type":"address"},{"internalType":"uint256","name":"wad","type":"uint256"}],"name":"move","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"name","outputs":[{"internalType":"string","name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"nonces","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"holder","type":"address"},{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"nonce","type":"uint256"},{"internalType":"uint256","name":"expiry","type":"uint256"},{"internalType":"bool","name":"allowed","type":"bool"},{"internalType":"uint8","name":"v","type":"uint8"},{"internalType":"bytes32","name":"r","type":"bytes32"},{"internalType":"bytes32","name":"s","type":"bytes32"}],"name":"permit","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"usr","type":"address"},{"internalType":"uint256","name":"wad","type":"uint256"}],"name":"pull","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"usr","type":"address"},{"internalType":"uint256","name":"wad","type":"uint256"}],"name":"push","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"guy","type":"address"}],"name":"rely","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"symbol","outputs":[{"internalType":"string","name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"totalSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"dst","type":"address"},{"internalType":"uint256","name":"wad","type":"uint256"}],"name":"transfer","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"src","type":"address"},{"internalType":"address","name":"dst","type":"address"},{"internalType":"uint256","name":"wad","type":"uint256"}],"name":"transferFrom","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"version","outputs":[{"internalType":"string","name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"wards","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"}],
+  "Dispute": []
 }
 

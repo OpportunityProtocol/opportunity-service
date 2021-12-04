@@ -9,21 +9,21 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import { Contract } from 'ethers';
 import opportunityService from '../../OpportunityService';
-import { Contracts } from '../../constants';
-import * as addressMap from '../../blockchain/addresses.json';
-import * as abiMap from '../../blockchain/abi.json';
-function registerNewUser(universalAddress) {
+import addressMap from '../internal/addresses';
+import abiMap from '../internal/abis';
+function registerNewUser() {
     return __awaiter(this, void 0, void 0, function* () {
-        const txResult = new Contract(addressMap[Contracts.USER_REGISTRATION], abiMap[Contracts.USER_REGISTRATION])
-            .connect(opportunityService.getSignersInterface())
-            .functions
-            .registerNewUser(universalAddress)
-            .then(value => {
-            return true;
-        })
-            .catch(error => {
-            return false;
-        });
+        try {
+            const msgSender = yield opportunityService.getSignersInterface()._address;
+            console.log('Registering new user: ' + msgSender);
+            const txResult = new Contract(addressMap['UserRegistration'], abiMap['UserRegistration']).connect(opportunityService.getSignersInterface())
+                .registerNewUser({
+                from: msgSender
+            });
+        }
+        catch (error) {
+            console.log(error);
+        }
     });
 }
 export default registerNewUser;

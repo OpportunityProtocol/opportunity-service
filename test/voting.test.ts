@@ -4,7 +4,7 @@ import { ethers } from "dvote-js/node_modules/ethers"
 import gwPool, { connectGateways } from "../src/api/voting/connect"
 import { registerEntity } from '../src/api/voting/entity'
 
-const ethNetworkId = 'rinkeby'
+const ethNetworkId = 'mainnet'
 const environment = 'dev'
 const bootnodesContentUri = "https://bootnodes.vocdoni.net/gateways.dev.json"
 

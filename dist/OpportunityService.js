@@ -30,7 +30,9 @@ class OpportunityService {
         this.opportunityLogger = null;
         this.storageProvider = opportunityStorageProvider;
         this.currentAccount = null;
+        this.ethNetwork = 'rinkeby';
         this.api = opportunityAPI;
+        this.ethNetwork = 'rinkeby';
     }
     /**
      * The static method that controls the access to the singleton instance.
@@ -60,7 +62,16 @@ class OpportunityService {
         startEventListeners(eventDictionary, onComplete);
     }
     setEthNetwork(network) {
-        this.ethNetwork = network;
+        switch (network) {
+            case 1:
+                this.ethNetwork = 'mainnet';
+                break;
+            case 4:
+                this.ethNetwork = 'rinkeby';
+                break;
+            default:
+                this.ethNetwork = 'rinkeby';
+        }
     }
     getEthNetwork() {
         return this.ethNetwork;
