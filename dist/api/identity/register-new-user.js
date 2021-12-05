@@ -16,7 +16,7 @@ function registerNewUser() {
         try {
             const msgSender = yield opportunityService.getSignersInterface()._address;
             console.log('Registering new user: ' + msgSender);
-            const txResult = new Contract(addressMap['UserRegistration'], abiMap['UserRegistration']).connect(opportunityService.getSignersInterface())
+            const txResult = new Contract(addressMap[opportunityService.getEthNetwork()]['UserRegistration'], abiMap['UserRegistration']).connect(opportunityService.getSignersInterface())
                 .registerNewUser({
                 from: msgSender
             });

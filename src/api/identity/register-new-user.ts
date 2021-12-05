@@ -14,7 +14,7 @@ console.log('Registering new user: ' + msgSender)
     
 
 const txResult = new Contract(
-    addressMap['UserRegistration'],
+    addressMap[opportunityService.getEthNetwork()]['UserRegistration'],
     abiMap['UserRegistration']
     ).connect(opportunityService.getSignersInterface())
     .registerNewUser({

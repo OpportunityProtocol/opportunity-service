@@ -10,13 +10,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 import { RPCEvents, ServiceEvents } from "./constants";
 import opportunityEventEmitter from "./events/OpportunityEventEmitter";
 import { syncWithEthereumNode } from "./events/sync-with-ethereum-node";
-import abiMap from './blockchain/abi.json';
-import addressesMap from './blockchain/addresses.json';
-import blocksMap from './blockchain/blocks.json';
 import { ethers } from "ethers";
 import { startEventListeners } from "./events/start-event-listeners";
 import opportunityAPI from './api/index';
-import opportunityStorageProvider from "./modules/storage/OpportunityStorageProvider";
+import Web3 from 'web3';
+import OpportunityStorageProvider from "./modules/storage/OpportunityStorageProvider";
 class OpportunityService {
     /**
      * The Singleton's constructor should always be private to prevent direct
@@ -25,12 +23,14 @@ class OpportunityService {
     constructor() {
         this.eventEmitter = opportunityEventEmitter;
         this.running = false;
+        this.syncing = false;
         this.ethersProvider = ethers.getDefaultProvider('http://localhost:8545');
         this.ethersSigner = null;
         this.opportunityLogger = null;
-        this.storageProvider = opportunityStorageProvider;
+        this.storageProvider = null;
         this.currentAccount = null;
         this.ethNetwork = 'rinkeby';
+        this.storage = null;
         this.api = opportunityAPI;
         this.ethNetwork = 'rinkeby';
     }
@@ -61,8 +61,8 @@ class OpportunityService {
     subscribeToEvents(eventDictionary, onComplete) {
         startEventListeners(eventDictionary, onComplete);
     }
-    setEthNetwork(network) {
-        switch (network) {
+    setNetworkParameters(networkId, dbAddress) {
+        switch (networkId) {
             case 1:
                 this.ethNetwork = 'mainnet';
                 break;
@@ -72,9 +72,13 @@ class OpportunityService {
             default:
                 this.ethNetwork = 'rinkeby';
         }
+        this.storageProvider = new OpportunityStorageProvider(dbAddress);
     }
     getEthNetwork() {
         return this.ethNetwork;
+    }
+    getStorageProvider() {
+        return this.storageProvider;
     }
     startService() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -117,15 +121,6 @@ class OpportunityService {
     isSyncing() {
         return this.syncing;
     }
-    accessContractUploadBlock(contract) {
-        return blocksMap[contract];
-    }
-    accessContractAddress(contract) {
-        return addressesMap[contract];
-    }
-    accessContractABI(contract) {
-        return abiMap[contract];
-    }
     getDefaultProviderInterface() {
         return OpportunityService.defaultProvider;
     }
@@ -136,6 +131,7 @@ class OpportunityService {
         return this.ethersSigner;
     }
 }
+OpportunityService.defaultProvider = new Web3('http://localhost:8545');
 const opportunityService = OpportunityService.getInstance();
 export default opportunityService;
 //# sourceMappingURL=OpportunityService.js.map

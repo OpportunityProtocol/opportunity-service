@@ -17,7 +17,6 @@ export var Contracts;
     Contracts["MARKET"] = "Market";
     Contracts["MARKET_FACTORY"] = "MarketFactory";
     Contracts["USER_REGISTRATION"] = "UserRegistration";
-    Contracts["SCHEDULER"] = "Scheduler";
 })(Contracts || (Contracts = {}));
 export var ContractType;
 (function (ContractType) {

@@ -18,7 +18,7 @@ import { EthNetworkID } from "dvote-js";
 class OpportunityService {
     private eventEmitter = opportunityEventEmitter;
     private running: boolean = false;
-    private syncing: boolean;
+    private syncing: boolean = false;
     private ethersProvider : providers.JsonRpcProvider = ethers.getDefaultProvider('http://localhost:8545');
     private ethersSigner : providers.JsonRpcSigner = null;
     private static defaultProvider = new Web3('http://localhost:8545')
@@ -26,10 +26,11 @@ class OpportunityService {
     private storageProvider = null;
     private currentAccount = null;
     private ethNetwork : EthNetworkID | string = 'rinkeby'
-    public api  = opportunityAPI;
     public storage = null
 
     private static instance: OpportunityService;
+
+    public api  = opportunityAPI;
 
     /**
      * The Singleton's constructor should always be private to prevent direct

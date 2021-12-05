@@ -18,7 +18,6 @@ export enum Contracts {
   MARKET='Market',
   MARKET_FACTORY='MarketFactory',
   USER_REGISTRATION='UserRegistration',
-  SCHEDULER='Scheduler'
 }
 
 export const enum WorkRelationshipState {

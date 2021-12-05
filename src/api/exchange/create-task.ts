@@ -40,7 +40,7 @@ async function createTask(data) : Promise<void> {
         console.log('d')
     const contract = await new ethers.Contract(taskMarket, abi).connect(opportunityService.getSignersInterface());
     console.log('e')
-    const txResponse = await contract.functions.createJob(taskOwner, ContractType.NORMAL, taskMetadataPointer, addressMap['Dai'])
+    const txResponse = await contract.functions.createJob(taskOwner, ContractType.NORMAL, taskMetadataPointer, addressMap[opportunityService.getEthNetwork()][Contracts.DAI])
     const txReceipt = await txResponse.wait()
     console.log(txReceipt)
     } catch(error) {

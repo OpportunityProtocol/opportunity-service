@@ -38,7 +38,7 @@ function createTask(data) {
             console.log('d');
             const contract = yield new ethers.Contract(taskMarket, abi).connect(opportunityService.getSignersInterface());
             console.log('e');
-            const txResponse = yield contract.functions.createJob(taskOwner, ContractType.NORMAL, taskMetadataPointer, addressMap['Dai']);
+            const txResponse = yield contract.functions.createJob(taskOwner, ContractType.NORMAL, taskMetadataPointer, addressMap[opportunityService.getEthNetwork()][Contracts.DAI]);
             const txReceipt = yield txResponse.wait();
             console.log(txReceipt);
         }

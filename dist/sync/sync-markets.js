@@ -15,7 +15,7 @@ function syncMarkets() {
     return __awaiter(this, void 0, void 0, function* () {
         //sync Markets
         yield opportunityService.getProviderInterface().getLogs({
-            address: addressMap[Contracts.MARKET_FACTORY],
+            address: addressMap[opportunityService.getEthNetwork()][Contracts.MARKET_FACTORY],
             fromBlock: 1,
             toBlock: 'latest'
         }).then((logs) => {

@@ -7,58 +7,82 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __asyncValues = (this && this.__asyncValues) || function (o) {
-    if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
-    var m = o[Symbol.asyncIterator], i;
-    return m ? m.call(o) : (o = typeof __values === "function" ? __values(o) : o[Symbol.iterator](), i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function () { return this; }, i);
-    function verb(n) { i[n] = o[n] && function (v) { return new Promise(function (resolve, reject) { v = o[n](v), settle(resolve, reject, v.done, v.value); }); }; }
-    function settle(resolve, reject, d, v) { Promise.resolve(v).then(function(v) { resolve({ value: v, done: d }); }, reject); }
-};
-import ipfsClient from 'ipfs-http-client';
+import OrbitDB from 'orbit-db';
+import IPFS from 'ipfs';
+const operations = ['>', '<', '==', '>=', '<='];
 class OpportunityStorageProvider {
-    constructor() {
-        this.ipfsProvider = null;
-        this.ipfsProvider = ipfsClient({ url: 'https://ipfs.infura.io', protocol: 'https', port: 5001, apiPath: '/ipfs/api/v0' });
-    }
-    storeContent(content) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const { cid } = yield this.ipfsProvider.add(content);
-            console.log(`OpportunityStorageProvider: Upload content with CID (${cid})`);
-            return cid;
+    constructor(address) {
+        // Create IPFS instance
+        this.initIPFSInstance = () => __awaiter(this, void 0, void 0, function* () {
+            return yield IPFS.create({ repo: "/opportunity/ipfs" });
         });
+        this.initIPFSInstance();
+        this.listen(address);
     }
-    storeRawContent(content) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const parsedContent = JSON.stringify(content);
-            const cid = yield this.ipfsProvider.add(parsedContent);
-            console.log('Storage Provider: ' + 'Storing raw content with cid: ' + cid);
-        });
+    listen(address) {
+        this.initIPFSInstance().then((ipfs) => __awaiter(this, void 0, void 0, function* () {
+            const orbitdb = yield OrbitDB.createInstance(ipfs);
+            // Create / Open a database
+            this.db = yield orbitdb.docs(address);
+            this.db.load();
+            // Listen for updates from peers
+            this.db.events.on("replicated", address => {
+                console.log(this.db.iterator({ limit: -1 }).collect());
+            });
+            // Add an entry
+            const hash = yield this.db.add("world");
+            console.log(hash);
+            // Query
+            const result = this.db.iterator({ limit: -1 }).collect();
+            console.log(JSON.stringify(result, null, 2));
+        }));
     }
-    retrieveContent(cid) {
-        var e_1, _a;
+    /**
+    * Returns a Promise that resolves to the multihash of the entry as a String.
+    * @param doc
+    * @returns
+    */
+    store(doc) {
         return __awaiter(this, void 0, void 0, function* () {
-            const file = this.ipfsProvider.get(cid);
-            console.log(file.type, file.path);
-            if (!file.content)
-                return -1;
-            const content = [];
             try {
-                for (var _b = __asyncValues(file.content), _c; _c = yield _b.next(), !_c.done;) {
-                    const chunk = _c.value;
-                    content.push(chunk);
-                }
+                const hash = yield this.db.put(doc).then(hash => {
+                    return hash;
+                });
+                return hash;
             }
-            catch (e_1_1) { e_1 = { error: e_1_1 }; }
-            finally {
-                try {
-                    if (_c && !_c.done && (_a = _b.return)) yield _a.call(_b);
-                }
-                finally { if (e_1) throw e_1.error; }
+            catch (error) {
+                console.log(error);
+                return '';
             }
-            console.log('Returning content from storage provider: ' + content);
+        });
+    }
+    /**
+    * Returns an Array of all Objects that match the given key in their _id field or the field specified by indexBy. If no document with
+    * that key exists, this returns an empty array.
+    * @param key
+    */
+    retrieveDoc(key = '', collection) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const docs = yield this.db.get(key);
+                return docs;
+            }
+            catch (error) {
+                console.log(error);
+                return [];
+            }
+        });
+    }
+    retrieveDocsByCollection(collection) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield this.db.query((doc) => doc[collection] == collection);
+        });
+    }
+    deleteDoc(key) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const hash = yield this.db.del(key);
         });
     }
 }
-const opportunityStorageProvider = new OpportunityStorageProvider();
-export default opportunityStorageProvider;
+export default OpportunityStorageProvider;
 //# sourceMappingURL=OpportunityStorageProvider.js.map

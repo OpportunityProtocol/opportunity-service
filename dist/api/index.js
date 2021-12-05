@@ -14,6 +14,11 @@ import { decryptByPrivateKey, encryptByPublicKey } from "./util/encrypt-by-publi
 import { createEthCryptoCreds } from "./other/create-eth-crypto-creds";
 import { encrypt } from "./provider/encrypt";
 import { decrypt } from "./provider/decrypt";
+import { connectGateways, getOracleClient } from "./dispute/connect";
+import { checkVoteResults } from "./dispute/check-vote-results";
+import { ensureEntityMetadata } from "./dispute/ensure-entity-metadata";
+import { launchNewVote } from "./dispute/launch-new-vote";
+import { submitVote } from "./dispute/submit-vote";
 function generateAPI() {
     return {
         crypto: {
@@ -30,7 +35,14 @@ function generateAPI() {
             createTask,
             enterWorkRelationship
         },
-        dispute: {},
+        dispute: {
+            connectGateways: connectGateways,
+            getOracleClient: getOracleClient,
+            checkVoteResults: checkVoteResults,
+            ensureEntityMetadata: ensureEntityMetadata,
+            launchNewVote: launchNewVote,
+            submitVote: submitVote
+        },
         identity: {
             registerNewUser
         },

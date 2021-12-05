@@ -6,8 +6,6 @@ import { createTask } from "./exchange/create-task";
 import { enterWorkRelationship } from "./exchange/enter-work-relationship";
 import registerNewUser from "./identity/register-new-user";
 import { createMarket } from "./market/create-market";
-import { registerEntity } from "./voting/entity";
-import { createVotingProcess } from "./voting/process";
 
 import { abis, events, addresses } from './internal/index'; 
 

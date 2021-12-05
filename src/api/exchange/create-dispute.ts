@@ -31,7 +31,7 @@ async function createDispute(data) : Promise<void> {
         const disputeContractfactory = new ContractFactory(abi, bytecodeMap[Contracts.DISPUTE], opportunityService.getSignersInterface())
 
         // Deploy an instance of the contract
-        const disputeContract = await disputeContractfactory.deploy(relationshipAddress, addressMap[Contracts.SCHEDULER], complaintMetadataPointer, complaintResponseMetadataPointer);
+        const disputeContract = await disputeContractfactory.deploy(relationshipAddress, complaintMetadataPointer, complaintResponseMetadataPointer);
         const txReceipt = await disputeContract.deployTransaction.wait()
         console.log(txReceipt)
     } catch(error) {

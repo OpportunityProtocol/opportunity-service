@@ -4,6 +4,7 @@ export default {
     'WorkRelationship': abiMap['WorkRelationship'],
     'Market': abiMap['Market'],
     'UserRegistration': abiMap['UserRegistration'],
-    'Dispute': abiMap['Dispute']
+    'Dispute': abiMap['Dispute'],
+    'Participation': abiMap['Participation']
 };
 //# sourceMappingURL=abis.js.map
