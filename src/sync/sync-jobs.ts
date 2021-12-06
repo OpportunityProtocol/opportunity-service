@@ -4,6 +4,7 @@ import * as addressMap from '../blockchain/addresses.json';
 import { Contracts } from '../constants';
 
 async function syncJobs(marketAddress) {
+    if (opportunityService.getProviderInterface()) {
      //sync Jobs
      await opportunityService.getProviderInterface().getLogs({ 
         address: marketAddress, 
@@ -20,6 +21,7 @@ async function syncJobs(marketAddress) {
     .catch(err => {
         console.log('Err on fetching logs from blockchain: ' + err)
     })
+}
 }
 
 export default syncJobs;

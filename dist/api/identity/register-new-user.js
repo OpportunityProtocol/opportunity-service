@@ -9,14 +9,17 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import { Contract } from 'ethers';
 import opportunityService from '../../OpportunityService';
-import addressMap from '../internal/addresses';
-import abiMap from '../internal/abis';
+import { Contracts } from '../../constants';
+import addressMap from '../../blockchain/addresses.json';
+import abiMap from '../../blockchain/abi.json';
 function registerNewUser() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const msgSender = yield opportunityService.getSignersInterface()._address;
             console.log('Registering new user: ' + msgSender);
-            const txResult = new Contract(addressMap[opportunityService.getEthNetwork()]['UserRegistration'], abiMap['UserRegistration']).connect(opportunityService.getSignersInterface())
+            if (typeof msgSender == 'undefined')
+                throw new Error('Message sender is undefined');
+            const txResult = new Contract(addressMap[opportunityService.getEthNetwork()][Contracts.USER_REGISTRATION], abiMap[Contracts.USER_REGISTRATION]).connect(opportunityService.getSignersInterface())
                 .registerNewUser({
                 from: msgSender
             });

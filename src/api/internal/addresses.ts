@@ -1,26 +1,11 @@
-import opportunityService from '../../OpportunityService';
-import * as addressMap from '../../blockchain/addresses.json';
+import * as opportunityService from '../../OpportunityService';
+import addressMap from '../../blockchain/addresses.json';
+import { EthNetworkID } from 'dvote-js';
+import { Contracts } from '../../constants';
 
-export default {
-    "rinkeby": {
-        'MarketFactory': addressMap['rinkeby']['MarketFactory'],
-        'UserRegistration': addressMap['rinkeby']['UserRegistration'],
-        'UserSummaryFactory': addressMap['rinkeby']['UserSummaryFactory'],
-        'Dai': addressMap['rinkeby']['Dai'],
-        'Participation': addressMap['rinkeby']['Participation']
-    },
-    "mainnet": {
-        'MarketFactory': addressMap['mainnet']['MarketFactory'],
-        'UserRegistration': addressMap['mainnet']['UserRegistration'],
-        'UserSummaryFactory': addressMap['mainnet']['UserSummaryFactory'],
-        'Dai': addressMap['mainnet']['Dai'],
-        'Participation': addressMap['mainnet']['Participation']
-    },
-    "xdai": {
-        'MarketFactory': addressMap['xdai']['MarketFactory'],
-        'UserRegistration': addressMap['xdai']['UserRegistration'],
-        'UserSummaryFactory': addressMap['xdai']['UserSummaryFactory'],
-        'Dai': addressMap['xdai']['Dai'],
-        'Participation': addressMap['xdai']['Participation']
-    }
+export default function getContractAddress(network: EthNetworkID, contractName: Contracts): string {
+    console.log(network)
+    console.log(contractName)
+    console.log(addressMap)
+    return addressMap[network][contractName]
 }

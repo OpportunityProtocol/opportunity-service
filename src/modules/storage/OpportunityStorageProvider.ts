@@ -23,13 +23,18 @@ class OpportunityStorageProvider {
         return await IPFS.create({ repo: "/opportunity/ipfs" });
     };
 
-    listen(address) {
+    listen(address = '') {
         this.initIPFSInstance().then(async ipfs => {
             const orbitdb = await OrbitDB.createInstance(ipfs);
           
             // Create / Open a database
-            this.db = await orbitdb.docs(address);
-            this.db.load();
+            if (address == '') {
+                this.db = await orbitdb.docs('opportunity.database.default');
+                console.log(this.db.address)
+            } else {
+                this.db = await orbitdb.docs(address);
+                this.db.load();
+            }
           
             // Listen for updates from peers
             this.db.events.on("replicated", address => {

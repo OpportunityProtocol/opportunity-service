@@ -19,12 +19,18 @@ class OpportunityStorageProvider {
         this.initIPFSInstance();
         this.listen(address);
     }
-    listen(address) {
+    listen(address = '') {
         this.initIPFSInstance().then((ipfs) => __awaiter(this, void 0, void 0, function* () {
             const orbitdb = yield OrbitDB.createInstance(ipfs);
             // Create / Open a database
-            this.db = yield orbitdb.docs(address);
-            this.db.load();
+            if (address == '') {
+                this.db = yield orbitdb.docs('opportunity.database.default');
+                console.log(this.db.address);
+            }
+            else {
+                this.db = yield orbitdb.docs(address);
+                this.db.load();
+            }
             // Listen for updates from peers
             this.db.events.on("replicated", address => {
                 console.log(this.db.iterator({ limit: -1 }).collect());

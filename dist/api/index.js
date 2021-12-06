@@ -6,7 +6,7 @@ import { createTask } from "./exchange/create-task";
 import { enterWorkRelationship } from "./exchange/enter-work-relationship";
 import registerNewUser from "./identity/register-new-user";
 import { createMarket } from "./market/create-market";
-import { abis, addresses } from './internal/index';
+import { abis, getContractAddress } from './internal/index';
 import { sendAsync } from './ethereum/sendAsync';
 import { parseCypher } from "./util/parse-cipher";
 import { stringifyCypher } from "./util/stringify-cipher";
@@ -28,7 +28,7 @@ function generateAPI() {
         },
         internal: {
             abis: abis,
-            addresses,
+            getContractAddress,
         },
         exchange: {
             completeRelationship,

@@ -4,7 +4,6 @@ import opportunityEventEmitter from "../../events/OpportunityEventEmitter";
 import { ParamObject } from "../../types";
 
 import * as abiMap from '../../blockchain/abi.json';
-import * as addressMap from '../../blockchain/addresses.json'
 import * as bytecodeMap from '../../blockchain/bytecode.json';
 import opportunityService from "../../OpportunityService";
 import { ethers, ContractFactory } from 'ethers';

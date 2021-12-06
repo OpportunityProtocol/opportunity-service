@@ -1,17 +1,17 @@
 {
     "rinkeby": {
-        "MarketFactory": "0x2918CfF61AFFA820D244860Ab14D32aB78BCDD83",
-        "UserRegistration": "0xE4c3a2698e5e4F8BE58481eB923ADA73982BD94d",
-        "UserSummaryFactory": "0x72141925d0Cd8bC72Bea3A555976335341B1e7BF",
+        "MarketFactory": "0xa0f02Bfb797aD324Ea518BEcF55563DC31352b7f",
+        "UserRegistration": "0x83E7958D4f3d2d447948301c7cF64Ce236582946",
+        "UserSummaryFactory": "0xa2b4FE891dEE49bc4f906e9f0c722c38870ef8e4",
         "Dai": "0x5592ec0cfb4dbc12d3ab100b257153436a1f0fea",
-        "Participation": "0x95bFe6b12b89EBb87D6f2B854f2055Fc867Dbd50"
+        "Participation": "0x0865ffFE3263DcAf72Af452DE769142d34FF9776"
     },
     "mainnet": {
         "MarketFactory": "0x8eb065482F681537e90eab826540E9DF8D8cBd89",
         "UserRegistration": "0xc4F1B570e57A5035a25035AFA5f7CbA204627024",
         "UserSummaryFactory": "",
         "Dai": "0x6b175474e89094c44da98b954eedeac495271d0f",
-        "Tip": "0x"
+        "Participation": "0x"
     },
     "xdai": {}
 }

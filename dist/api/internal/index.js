@@ -1,5 +1,5 @@
 import abis from "./abis";
-import addresses from "./addresses";
+import getContractAddress from "./addresses";
 import events from "./events";
-export { abis, addresses, events };
+export { abis, getContractAddress, events };
 //# sourceMappingURL=index.js.map

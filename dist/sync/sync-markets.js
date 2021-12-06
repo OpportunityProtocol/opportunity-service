@@ -8,27 +8,29 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import opportunityService from '../OpportunityService';
-import * as addressMap from '../blockchain/addresses.json';
+import addressMap from '../blockchain/addresses.json';
 import { Contracts } from '../constants';
 import { processLog } from './process/process-log';
 function syncMarkets() {
     return __awaiter(this, void 0, void 0, function* () {
-        //sync Markets
-        yield opportunityService.getProviderInterface().getLogs({
-            address: addressMap[opportunityService.getEthNetwork()][Contracts.MARKET_FACTORY],
-            fromBlock: 1,
-            toBlock: 'latest'
-        }).then((logs) => {
-            console.log('Found logs.. Processing...');
-            logs.forEach(log => {
-                if (log && Array.isArray(log.topics) && log.topics.length) {
-                    processLog(log); // keccashinside here
-                }
+        if (opportunityService.getProviderInterface()) {
+            //sync Markets
+            yield opportunityService.getProviderInterface().getLogs({
+                address: addressMap[opportunityService.getEthNetwork()][Contracts.MARKET_FACTORY],
+                fromBlock: 1,
+                toBlock: 'latest'
+            }).then((logs) => {
+                console.log('Found logs.. Processing...');
+                logs.forEach(log => {
+                    if (log && Array.isArray(log.topics) && log.topics.length) {
+                        processLog(log); // keccashinside here
+                    }
+                });
+            })
+                .catch(err => {
+                console.log('Err on fetching logs from blockchain: ' + err);
             });
-        })
-            .catch(err => {
-            console.log('Err on fetching logs from blockchain: ' + err);
-        });
+        }
     });
 }
 export default syncMarkets;

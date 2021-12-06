@@ -1,9 +1,10 @@
 import opportunityService from '../OpportunityService';
-import * as addressMap from '../blockchain/addresses.json';
+import addressMap from '../blockchain/addresses.json';
 import { Contracts } from '../constants';
 import { processLog } from './process/process-log';
 
 async function syncMarkets() {
+     if (opportunityService.getProviderInterface()) {
      //sync Markets
      await opportunityService.getProviderInterface().getLogs({ 
         address: addressMap[opportunityService.getEthNetwork()][Contracts.MARKET_FACTORY], 
@@ -20,6 +21,7 @@ async function syncMarkets() {
     .catch(err => {
         console.log('Err on fetching logs from blockchain: ' + err)
     })
+    }
 }
 
 export default syncMarkets;

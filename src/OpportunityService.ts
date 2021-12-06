@@ -89,7 +89,7 @@ class OpportunityService {
         this.storageProvider = new OpportunityStorageProvider(dbAddress)
     }
 
-    getEthNetwork(): EthNetworkID | string {
+    public getEthNetwork(): EthNetworkID | string {
         return this.ethNetwork
     }
 
