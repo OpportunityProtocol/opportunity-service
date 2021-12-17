@@ -4,7 +4,7 @@ import { processMarketCreatedEvent } from './processMarketCreatedLog';
 import { processMarketDestroyedEvent } from "./processMarketDestroyedEvent";
 import { utils } from "ethers";
 import { processWorkRelationshipCreatedEvent } from "./processWorkRelationshipCreated";
-import { processDisputeCreated } from "./processDisputeCreated";
+import { processDisputeInvolvement } from "./processDisputeInvolvement";
 /**
  * Retrieves topics and process the approppriate log
  * @param log
@@ -56,8 +56,8 @@ function processLogEvents(log) {
             case "WorkRelationshipCreated":
                 processWorkRelationshipCreatedEvent(log);
                 break;
-            case "DisputeCreated":
-                processDisputeCreated(log);
+            case "DisputeInvolvement":
+                processDisputeInvolvement(log);
             default:
         }
     }

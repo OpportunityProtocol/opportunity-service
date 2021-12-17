@@ -88,7 +88,9 @@ export enum UserEvents {
 
 export enum ExchangeEvents {
   WorkRelationshipCreated='WorkRelationshipCreated',
-  DisputeCreated='DisputeCreated'
+  DisputeCreated='DisputeCreated',
+  DisputeInvolvement='MarketDispute',
+  MarketDispute='MarketDispute'
 }
 
 export enum StorageEvents {

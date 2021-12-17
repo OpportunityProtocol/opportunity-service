@@ -1,5 +1,5 @@
-import OrbitDB from 'orbit-db'
-import IPFS from 'ipfs'
+const IPFS = require('ipfs')
+const OrbitDB = require('orbit-db')
 
 import {
     DisputeDoc,
@@ -9,18 +9,37 @@ import {
 
 const operations = ['>', '<', '==', '>=', '<=']
 
+const optionsToWrite = {
+    // Give write access to the creator of the database
+    accessController: {
+      type: 'orbitdb', //OrbitDBAccessController
+      create: 'true',
+      admin: ['*'],
+      write: ['*'],
+    },
+    indexBy: 'collection'
+}
+
 
 class OpportunityStorageProvider {
     private db: any
 
     constructor(address: string) {
-        this.initIPFSInstance()
-        this.listen(address)
+       // this.initIPFSInstance()
+        //this.listen(address)
     }
+ /*   
 
     // Create IPFS instance
     initIPFSInstance = async () => {
-        return await IPFS.create({ repo: "/opportunity/ipfs" });
+        return await IPFS.create({ 
+            repo: Math.random().toString(), 
+            start: true,
+  preload: {
+    enabled: false,
+  },
+  EXPERIMENTAL: { pubsub: true },
+        });
     };
 
     listen(address = '') {
@@ -29,11 +48,26 @@ class OpportunityStorageProvider {
           
             // Create / Open a database
             if (address == '') {
-                this.db = await orbitdb.docs('opportunity.database.default');
+                this.db = await orbitdb.docs('database.default');
+                console.log(this.db)
                 console.log(this.db.address)
             } else {
-                this.db = await orbitdb.docs(address);
-                this.db.load();
+          
+                if (!this.db?.dbname || this.db?.dbname == '') {
+                    console.log('Connecting orbitdb to: ' + address)
+                    
+                    this.db = await orbitdb.docs(address, {
+                        type: 'docstore',
+                        accessController: {
+                            admin: ['*'],
+                            write: ['*']
+                        },
+                          //indexBy: 'collection'
+                    })
+
+                    //await this.db.load();
+                }
+                console.log(this.db)
             }
           
             // Listen for updates from peers
@@ -42,7 +76,7 @@ class OpportunityStorageProvider {
             });
           
             // Add an entry
-            const hash = await this.db.add("world");
+            const hash = await this.db.put({ _id: 0, collection: "hmm"});
             console.log(hash);
           
             // Query
@@ -52,11 +86,7 @@ class OpportunityStorageProvider {
     }
 
 
-    /**
-    * Returns a Promise that resolves to the multihash of the entry as a String.
-    * @param doc 
-    * @returns 
-    */
+
     async store(doc: DisputeDoc | WorkRelationshipDoc | UserSummaryDoc): Promise<string> {
         try {  
             const hash = await this.db.put(doc).then(hash => {
@@ -70,11 +100,6 @@ class OpportunityStorageProvider {
         }
     }
 
-    /**
-    * Returns an Array of all Objects that match the given key in their _id field or the field specified by indexBy. If no document with 
-    * that key exists, this returns an empty array.
-    * @param key 
-    */
     async retrieveDoc(key: string = '', collection: string): Promise<DisputeDoc> | Promise<WorkRelationshipDoc> | Promise<UserSummaryDoc> {
     try {
         const docs = await this.db.get(key)
@@ -91,7 +116,7 @@ class OpportunityStorageProvider {
 
     async deleteDoc(key: string) {
         const hash = await this.db.del(key)
-    }
+    }*/
 }
 
 export default OpportunityStorageProvider

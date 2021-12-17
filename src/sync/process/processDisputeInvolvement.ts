@@ -13,7 +13,7 @@ import opportunityEventEmitter from '../../events/OpportunityEventEmitter';
  * @param log
  * @returns
  */
-function processDisputeCreated(log) {
+function processDisputeInvolvement(log) {
     try {
     const iface : Interface = new ethers.utils.Interface(abiMap[Contracts.DISPUTE]);
     const decodedLog : LogDescription = iface.parseLog(log);
@@ -33,10 +33,10 @@ function processDisputeCreated(log) {
 
     console.log("Processing a dispute created event with address: " + disputeData)
 
-    opportunityEventEmitter.emit(ExchangeEvents.WorkRelationshipCreated, disputeData);
+    opportunityEventEmitter.emit(ExchangeEvents.DisputeInvolvement, disputeData);
 } catch(error) {
     console.log(error)
 }
 }
 
-export { processDisputeCreated };
+export { processDisputeInvolvement };

@@ -67,6 +67,8 @@ export var ExchangeEvents;
 (function (ExchangeEvents) {
     ExchangeEvents["WorkRelationshipCreated"] = "WorkRelationshipCreated";
     ExchangeEvents["DisputeCreated"] = "DisputeCreated";
+    ExchangeEvents["DisputeInvolvement"] = "MarketDispute";
+    ExchangeEvents["MarketDispute"] = "MarketDispute";
 })(ExchangeEvents || (ExchangeEvents = {}));
 export var StorageEvents;
 (function (StorageEvents) {

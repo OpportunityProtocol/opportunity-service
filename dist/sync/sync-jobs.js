@@ -16,7 +16,8 @@ function syncJobs(marketAddress) {
             yield opportunityService.getProviderInterface().getLogs({
                 address: marketAddress,
                 fromBlock: 1,
-                toBlock: 'latest'
+                toBlock: 'latest',
+                topics: ['WorkRelationshipCreated(address,address,address)']
             }).then((logs) => {
                 console.log('Found logs.. Processing sync Jobs');
                 logs.forEach(log => {

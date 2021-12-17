@@ -19,6 +19,8 @@ import { checkVoteResults } from "./dispute/check-vote-results";
 import { ensureEntityMetadata } from "./dispute/ensure-entity-metadata";
 import { launchNewVote } from "./dispute/launch-new-vote";
 import { submitVote } from "./dispute/submit-vote";
+import syncCreatedDisputes from "../sync/sync-disputes";
+import syncMarketDisputes from "../sync/sync-market-disputes";
 function generateAPI() {
     return {
         crypto: {
@@ -53,7 +55,9 @@ function generateAPI() {
             sync: {
                 syncWithEthereum: syncWithEthereumNode,
                 syncMarkets,
-                syncJobs
+                syncJobs,
+                syncCreatedDisputes,
+                syncMarketDisputes
             }
         },
         provider: {

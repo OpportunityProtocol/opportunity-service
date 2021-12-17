@@ -1,10 +1,10 @@
 {
     "rinkeby": {
-        "MarketFactory": "0xa0f02Bfb797aD324Ea518BEcF55563DC31352b7f",
-        "UserRegistration": "0x83E7958D4f3d2d447948301c7cF64Ce236582946",
-        "UserSummaryFactory": "0xa2b4FE891dEE49bc4f906e9f0c722c38870ef8e4",
+        "MarketFactory": "0xf603c80f0461563B4aa0954c25baFF20941d2550",
+        "UserRegistration": "0x39d2968aeec99c17797c7246f238a2c069FFe222",
+        "UserSummaryFactory": "0x1f884aa235580eACF8879627582fF50CE08F41E3",
         "Dai": "0x5592ec0cfb4dbc12d3ab100b257153436a1f0fea",
-        "Participation": "0x0865ffFE3263DcAf72Af452DE769142d34FF9776"
+        "Participation": "0x6cCf081607aC5D529D4cd379091E75dFF74b56aa"
     },
     "mainnet": {
         "MarketFactory": "0x8eb065482F681537e90eab826540E9DF8D8cBd89",
