@@ -14,7 +14,7 @@ import { ethers } from "ethers";
 import { startEventListeners } from "./events/start-event-listeners";
 import opportunityAPI from './api/index';
 import Web3 from 'web3';
-import OpportunityStorageProvider from "./modules/storage/OpportunityStorageProvider";
+import { createAlchemyWeb3 } from "@alch/alchemy-web3";
 class OpportunityService {
     /**
      * The Singleton's constructor should always be private to prevent direct
@@ -30,9 +30,13 @@ class OpportunityService {
         this.storageProvider = null;
         this.currentAccount = null;
         this.ethNetwork = 'rinkeby';
+        this.whisperProvider = null;
         this.storage = null;
         this.api = opportunityAPI;
-        this.ethNetwork = 'rinkeby';
+        const web3 = createAlchemyWeb3(process.env.NODE_ENV == 'dev' ? "https://eth-mainnet.alchemyapi.io/v2/JKVeBInuvm4wq9_8fECUmazLbm7Vpv5V" : "https://eth-mainnet.alchemyapi.io/v2/7d2CRio84usjQwU8tRPG75rqV1wJmX_W");
+        this.ethNetwork = 'mainnet';
+        this.opportunityProvider = new ethers.providers.JsonRpcProvider( /*process.env.NODE_ENV == 'dev' ?  "https://eth-mainnet.alchemyapi.io/v2/JKVeBInuvm4wq9_8fECUmazLbm7Vpv5V" : "https://eth-mainnet.alchemyapi.io/v2/7d2CRio84usjQwU8tRPG75rqV1wJmX_W"*/);
+        console.log(this.opportunityProvider);
     }
     /**
      * The static method that controls the access to the singleton instance.
@@ -47,7 +51,9 @@ class OpportunityService {
         return OpportunityService.instance;
     }
     assignDefaultProvider(provider) {
-        OpportunityService.defaultProvider = provider;
+        return __awaiter(this, void 0, void 0, function* () {
+            OpportunityService.defaultProvider = provider;
+        });
     }
     assignProvider(provider) {
         this.ethersProvider = provider;
@@ -62,7 +68,7 @@ class OpportunityService {
         startEventListeners(eventDictionary, onComplete);
     }
     setNetworkParameters(networkId, dbAddress) {
-        switch (networkId) {
+        switch (parseInt(networkId, 10)) {
             case 1:
                 this.ethNetwork = 'mainnet';
                 break;
@@ -72,7 +78,8 @@ class OpportunityService {
             default:
                 this.ethNetwork = 'rinkeby';
         }
-        this.storageProvider = new OpportunityStorageProvider(dbAddress);
+        console.log(networkId);
+        //this.storageProvider = new OpportunityStorageProvider(dbAddress)
     }
     getEthNetwork() {
         return this.ethNetwork;
@@ -125,10 +132,21 @@ class OpportunityService {
         return OpportunityService.defaultProvider;
     }
     getProviderInterface() {
+        if (this.opportunityProvider) {
+            console.log('Provider is not null');
+            console.log(this.opportunityProvider);
+            return this.opportunityProvider;
+        }
+        else {
+            console.log('provider is null');
+        }
         return this.ethersProvider;
     }
     getSignersInterface() {
         return this.ethersSigner;
+    }
+    getWhisperProvider() {
+        return this.whisperProvider;
     }
 }
 OpportunityService.defaultProvider = new Web3('http://localhost:8545');

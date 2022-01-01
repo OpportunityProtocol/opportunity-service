@@ -1,4 +1,9 @@
-import * as abiMap from '../../blockchain/abi.json';
+import abiMap from '../../blockchain/abi.json';
+function getContractInterface(contract) {
+    console.log(abiMap);
+    return abiMap[contract];
+}
+export { getContractInterface };
 export default {
     'MarketFactory': abiMap['MarketFactory'],
     'WorkRelationship': abiMap['WorkRelationship'],

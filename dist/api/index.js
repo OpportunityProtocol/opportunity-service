@@ -6,7 +6,7 @@ import { createTask } from "./exchange/create-task";
 import { enterWorkRelationship } from "./exchange/enter-work-relationship";
 import registerNewUser from "./identity/register-new-user";
 import { createMarket } from "./market/create-market";
-import { abis, getContractAddress } from './internal/index';
+import { abis, getContractAddress, getContractInterface } from './internal/index';
 import { sendAsync } from './ethereum/sendAsync';
 import { parseCypher } from "./util/parse-cipher";
 import { stringifyCypher } from "./util/stringify-cipher";
@@ -14,11 +14,6 @@ import { decryptByPrivateKey, encryptByPublicKey } from "./util/encrypt-by-publi
 import { createEthCryptoCreds } from "./other/create-eth-crypto-creds";
 import { encrypt } from "./provider/encrypt";
 import { decrypt } from "./provider/decrypt";
-import { connectGateways, getOracleClient } from "./dispute/connect";
-import { checkVoteResults } from "./dispute/check-vote-results";
-import { ensureEntityMetadata } from "./dispute/ensure-entity-metadata";
-import { launchNewVote } from "./dispute/launch-new-vote";
-import { submitVote } from "./dispute/submit-vote";
 import syncCreatedDisputes from "../sync/sync-disputes";
 import syncMarketDisputes from "../sync/sync-market-disputes";
 function generateAPI() {
@@ -31,6 +26,7 @@ function generateAPI() {
         internal: {
             abis: abis,
             getContractAddress,
+            getContractInterface
         },
         exchange: {
             completeRelationship,
@@ -38,12 +34,12 @@ function generateAPI() {
             enterWorkRelationship
         },
         dispute: {
-            connectGateways: connectGateways,
-            getOracleClient: getOracleClient,
-            checkVoteResults: checkVoteResults,
-            ensureEntityMetadata: ensureEntityMetadata,
-            launchNewVote: launchNewVote,
-            submitVote: submitVote
+            connectGateways: () => { },
+            getOracleClient: () => { },
+            checkVoteResults: () => { },
+            ensureEntityMetadata: () => { },
+            launchNewVote: () => { },
+            submitVote: () => { }
         },
         identity: {
             registerNewUser

@@ -3,9 +3,9 @@ import { Contracts, ContractType } from "../../constants";
 import opportunityEventEmitter from "../../events/OpportunityEventEmitter";
 import { ParamObject } from "../../types";
 
-import * as abiMap from '../../blockchain/abi.json';
-import * as addressMap from '../../blockchain/addresses.json'
-import * as bytecodeMap from '../../blockchain/bytecode.json';
+import abiMap from '../../blockchain/abi.json';
+import addressMap from '../../blockchain/addresses.json'
+import bytecodeMap from '../../blockchain/bytecode.json';
 import opportunityService from "../../OpportunityService";
 import { ethers } from 'ethers';
 import opportunityStorageProvider from "../../modules/storage/OpportunityStorageProvider";

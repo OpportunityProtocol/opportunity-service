@@ -8,8 +8,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import { Contracts, ContractType } from "../../constants";
-import * as abiMap from '../../blockchain/abi.json';
-import * as addressMap from '../../blockchain/addresses.json';
+import abiMap from '../../blockchain/abi.json';
+import addressMap from '../../blockchain/addresses.json';
 import opportunityService from "../../OpportunityService";
 import { ethers } from 'ethers';
 const Tx = require("ethereumjs-tx").Transaction;

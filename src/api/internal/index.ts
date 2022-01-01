@@ -1,5 +1,5 @@
-import abis from "./abis";
+import abis, { getContractInterface } from "./abis";
 import getContractAddress from "./addresses";
 import events from "./events";
 
-export { abis, getContractAddress, events};
+export { abis, getContractAddress, getContractInterface, events};

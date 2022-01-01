@@ -4,6 +4,7 @@ import { Contracts } from '../constants';
 import { processLog } from './process/process-log';
 
 async function syncMarkets() {
+    console.log('syncMarkets: ' + addressMap[opportunityService.getEthNetwork()][Contracts.MARKET_FACTORY])
      if (opportunityService.getProviderInterface()) {
      //sync Markets
      await opportunityService.getProviderInterface().getLogs({ 
@@ -12,6 +13,7 @@ async function syncMarkets() {
         toBlock: 'latest' 
     }).then((logs) => {
         console.log('Found logs.. Processing...')
+        console.log(logs)
         logs.forEach(log => {
             if (log && Array.isArray(log.topics) && log.topics.length) {
                 processLog(log); // keccashinside here

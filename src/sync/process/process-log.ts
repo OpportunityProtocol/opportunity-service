@@ -1,5 +1,5 @@
 import { ABI_LIST, Contracts, MarketEvents } from "../../constants";
-import * as abiMap from '../../blockchain/abi.json';
+import abiMap from '../../blockchain/abi.json';
 import  { processMarketCreatedEvent } from './processMarketCreatedLog';
 import { processMarketDestroyedEvent } from "./processMarketDestroyedEvent";
 import opportunityService from "../../OpportunityService";
@@ -34,11 +34,9 @@ function processLogEvents(log) {
     const { data, topics } = log;
     for (var i = 0; i < ABI_LIST.length; i++) {
         var abis = abiMap[ABI_LIST[i].toString()];
-        
         for (const aItem in abis) {
             if (aItem['type'] == "event") { continue; };
             var signature = abis[aItem]['name'] + "(" + abis[aItem]['inputs'].map(function (input) { return input.type; }).join(",") + ")";
-            console.log('Processing an event with the signature: ' + signature)
             hash = utils.id(signature);
             if (hash == topics[0]) { 
                 event = abis[aItem]; 
@@ -50,7 +48,6 @@ function processLogEvents(log) {
     if (event != null) {
         switch(event['name']) {
             case "MarketCreated":
-                console.log('MarketCreatedCase')
                 processMarketCreatedEvent(log);
                 break;
             case "MarketDestroyed":

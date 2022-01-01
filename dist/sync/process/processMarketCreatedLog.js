@@ -1,5 +1,5 @@
 import { Contracts, MarketEvents } from '../../constants';
-import * as abiMap from '../../blockchain/abi.json';
+import abiMap from '../../blockchain/abi.json';
 import { ethers } from 'ethers';
 import opportunityEventEmitter from '../../events/OpportunityEventEmitter';
 /**

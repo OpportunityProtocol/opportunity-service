@@ -1,17 +1,15 @@
 {
     "rinkeby": {
-        "MarketFactory": "0xf603c80f0461563B4aa0954c25baFF20941d2550",
-        "UserRegistration": "0x39d2968aeec99c17797c7246f238a2c069FFe222",
-        "UserSummaryFactory": "0x1f884aa235580eACF8879627582fF50CE08F41E3",
-        "Dai": "0x5592ec0cfb4dbc12d3ab100b257153436a1f0fea",
-        "Participation": "0x6cCf081607aC5D529D4cd379091E75dFF74b56aa"
-    },
+        "MarketFactory": "0x850cADCF43FB7a40F8aD0C09e7F4B4A649598298",
+        "UserRegistration": "0x31799946e72a44273515556e366e059064Df8ca2",
+        "UserSummaryFactory": "0x9d64421D3472E1c1776d5E4C2d1Fdb71A1B4b541",
+        "Dai": "0x5592ec0cfb4dbc12d3ab100b257153436a1f0fea"
+    }, 
     "mainnet": {
-        "MarketFactory": "0x8eb065482F681537e90eab826540E9DF8D8cBd89",
-        "UserRegistration": "0xc4F1B570e57A5035a25035AFA5f7CbA204627024",
-        "UserSummaryFactory": "",
+        "MarketFactory": "0x9fd244e5972F28e2F133bd3dAA5A6691C8E6d1c7",
+        "UserRegistration": "0x31799946e72a44273515556e366e059064Df8ca2",
+        "UserSummaryFactory": "0xA31Ea4553E82e08b3F411B29C009ECd45AE1738B",
         "Dai": "0x6b175474e89094c44da98b954eedeac495271d0f",
-        "Participation": "0x"
     },
     "xdai": {
 

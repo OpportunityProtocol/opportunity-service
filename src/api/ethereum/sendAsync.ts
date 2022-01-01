@@ -19,6 +19,10 @@ export async function sendAsync(method, params, from) {
           const s = '0x' + realResult.slice(64, 128);
           const v = parseInt(realResult.substring(128, 130), 16);
 
+          console.log('Service: ' + realResult)
+          console.log('R: ' + r)
+          console.log('S: ' + s)
+          console.log('V: ' + v)
           resolve({
               v, r, s
           })

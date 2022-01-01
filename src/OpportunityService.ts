@@ -10,15 +10,18 @@ import { EventCallbackDictionary } from "./types";
 import { startEventListeners } from "./events/start-event-listeners";
 import opportunityAPI from './api/index';
 import opportunityStorageProvider from "./modules/storage/OpportunityStorageProvider";
-
+import { EthNetworkID } from "dvote-js";
 import Web3 from 'web3';
 import OpportunityStorageProvider from "./modules/storage/OpportunityStorageProvider";
-import { EthNetworkID } from "dvote-js";
+import { createAlchemyWeb3 } from "@alch/alchemy-web3"
+
+import { Shh } from 'web3-shh'
 
 class OpportunityService {
     private eventEmitter = opportunityEventEmitter;
     private running: boolean = false;
     private syncing: boolean = false;
+    private opportunityProvider; // : providers.JsonRpcProvider;
     private ethersProvider : providers.JsonRpcProvider = ethers.getDefaultProvider('http://localhost:8545');
     private ethersSigner : providers.JsonRpcSigner = null;
     private static defaultProvider = new Web3('http://localhost:8545')
@@ -26,6 +29,7 @@ class OpportunityService {
     private storageProvider = null;
     private currentAccount = null;
     private ethNetwork : EthNetworkID | string = 'rinkeby'
+    private whisperProvider = null;
     public storage = null
 
     private static instance: OpportunityService;
@@ -37,7 +41,11 @@ class OpportunityService {
      * construction calls with the `new` operator.
      */
     private constructor() {
-        this.ethNetwork = 'rinkeby'
+        const web3 = createAlchemyWeb3(process.env.NODE_ENV == 'dev' ?  "https://eth-mainnet.alchemyapi.io/v2/JKVeBInuvm4wq9_8fECUmazLbm7Vpv5V" : "https://eth-mainnet.alchemyapi.io/v2/7d2CRio84usjQwU8tRPG75rqV1wJmX_W");
+        this.ethNetwork = 'mainnet'
+
+        this.opportunityProvider = new ethers.providers.JsonRpcProvider(/*process.env.NODE_ENV == 'dev' ?  "https://eth-mainnet.alchemyapi.io/v2/JKVeBInuvm4wq9_8fECUmazLbm7Vpv5V" : "https://eth-mainnet.alchemyapi.io/v2/7d2CRio84usjQwU8tRPG75rqV1wJmX_W"*/)
+        console.log(this.opportunityProvider)
     }
 
     /**
@@ -54,7 +62,7 @@ class OpportunityService {
         return OpportunityService.instance;
     }
     
-    assignDefaultProvider(provider : Web3) {
+    async assignDefaultProvider(provider : Web3) {
         OpportunityService.defaultProvider = provider;
     }
 
@@ -74,8 +82,8 @@ class OpportunityService {
         startEventListeners(eventDictionary, onComplete);
     }
 
-    setNetworkParameters(networkId: number, dbAddress: string) {
-        switch(networkId) {
+    setNetworkParameters(networkId: string, dbAddress: string) {
+        switch(parseInt(networkId, 10)) {
             case 1:
                 this.ethNetwork = 'mainnet'
                 break
@@ -86,7 +94,9 @@ class OpportunityService {
                 this.ethNetwork = 'rinkeby'
         }
 
-        this.storageProvider = new OpportunityStorageProvider(dbAddress)
+        console.log(networkId)
+
+        //this.storageProvider = new OpportunityStorageProvider(dbAddress)
     }
 
     public getEthNetwork(): EthNetworkID | string {
@@ -141,11 +151,23 @@ class OpportunityService {
     }
 
     getProviderInterface() : providers.JsonRpcProvider {
+        if (this.opportunityProvider) {
+            console.log('Provider is not null')
+            console.log(this.opportunityProvider)
+            return this.opportunityProvider
+        } else {
+            console.log('provider is null')
+        }  
+   
         return this.ethersProvider;
     }
 
     getSignersInterface() : providers.JsonRpcSigner {
         return this.ethersSigner;
+    }
+
+    getWhisperProvider() : any {
+        return this.whisperProvider
     }
 }
 
