@@ -7,7 +7,6 @@ import { ethers, utils } from "ethers";
 import { hexZeroPad } from "@ethersproject/bytes";
 import { decode } from "node:punycode";
 import { processWorkRelationshipCreatedEvent } from "./processWorkRelationshipCreated";
-import { processDisputeInvolvement } from "./processDisputeInvolvement";
 /**
  * Retrieves topics and process the approppriate log
  * @param log 
@@ -24,7 +23,6 @@ import { processDisputeInvolvement } from "./processDisputeInvolvement";
  *   },{...}]
  */
 function processLog(log) {
-    console.log(log)
     processLogEvents(log);
 }
 
@@ -56,12 +54,8 @@ function processLogEvents(log) {
             case "WorkRelationshipCreated":
                 processWorkRelationshipCreatedEvent(log);
                 break;
-            case "DisputeInvolvement":
-                processDisputeInvolvement(log)
             default:
         }
-    } else {
-        console.log('Event is null.. exiting processing.')
     }
 }
 

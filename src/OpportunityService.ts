@@ -45,7 +45,6 @@ class OpportunityService {
         this.ethNetwork = 'mainnet'
 
         this.opportunityProvider = new ethers.providers.JsonRpcProvider(/*process.env.NODE_ENV == 'dev' ?  "https://eth-mainnet.alchemyapi.io/v2/JKVeBInuvm4wq9_8fECUmazLbm7Vpv5V" : "https://eth-mainnet.alchemyapi.io/v2/7d2CRio84usjQwU8tRPG75rqV1wJmX_W"*/)
-        console.log(this.opportunityProvider)
     }
 
     /**
@@ -94,8 +93,6 @@ class OpportunityService {
                 this.ethNetwork = 'rinkeby'
         }
 
-        console.log(networkId)
-
         //this.storageProvider = new OpportunityStorageProvider(dbAddress)
     }
 
@@ -110,10 +107,8 @@ class OpportunityService {
     async startService() {
         if (this.running) { return; }
 
-        console.log('Starting service...');
         this.sync();
         this.running = true;
-        console.log('Finished starting service...')
     }
 
     shutdownService() {
@@ -133,11 +128,9 @@ class OpportunityService {
             .then(() => {
                 this.syncing = false;
                 this.eventEmitter.emit(RPCEvents.StopSyncing);
-                console.log('Finished syncing ethereum node.')
                 this.syncing = false;
             })
             .catch(err => {
-                console.log('Error while syncing ethereum node: ' + err)
                 this.syncing = false;
             })
     }
@@ -152,12 +145,8 @@ class OpportunityService {
 
     getProviderInterface() : providers.JsonRpcProvider {
         if (this.opportunityProvider) {
-            console.log('Provider is not null')
-            console.log(this.opportunityProvider)
             return this.opportunityProvider
-        } else {
-            console.log('provider is null')
-        }  
+        }
    
         return this.ethersProvider;
     }

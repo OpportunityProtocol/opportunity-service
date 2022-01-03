@@ -14,37 +14,25 @@ import { Result } from "ethers/lib/utils";
 const Tx = require("ethereumjs-tx").Transaction;
 
 async function createTask(data) : Promise<void> {
-    console.log('a')
     const parsedData = JSON.parse(data);
     const abi = abiMap[Contracts.MARKET];
-    console.log(abi)
-    console.log(parsedData)
 
     const taskOwner = parsedData["taskOwner"];  
     const taskMarket = parsedData["taskMarket"]
     const taskBounty = Number(parsedData["taskBounty"])
     const taskMetadataPointer = parsedData["taskMetadataPointer"]
-    console.log('b')
-    console.log(taskOwner)
-    console.log(taskMarket)
-    console.log('h')
-    console.log(taskBounty)
-    console.log(taskMetadataPointer)
+    const registrar = addressMap[opportunityService.getEthNetwork()][Contracts.USER_REGISTRATION]
 
     if (taskOwner == null || taskMarket == 0 || taskBounty == 0 || taskMetadataPointer == '' ) {
         throw new Error('Null value in data')
     }
 
-    console.log('C')
     try {
-        console.log('d')
     const contract = await new ethers.Contract(taskMarket, abi).connect(opportunityService.getSignersInterface());
-    console.log('e')
-    const txResponse = await contract.functions.createJob(taskOwner, ContractType.NORMAL, taskMetadataPointer, addressMap[opportunityService.getEthNetwork()][Contracts.DAI])
+    const txResponse = await contract.functions.createJob(registrar, ContractType.NORMAL, taskMetadataPointer, addressMap[opportunityService.getEthNetwork()][Contracts.DAI])
     const txReceipt = await txResponse.wait()
-    console.log(txReceipt)
     } catch(error) {
-        console.log('Service: Caught error creating new job: ' + error);
+        console.log(error);
     }
 }
 

@@ -126,7 +126,7 @@
       "inputs": [
         {
           "internalType": "address",
-          "name": "_owner",
+          "name": "_registrar",
           "type": "address"
         },
         {
@@ -147,32 +147,6 @@
       ],
       "stateMutability": "nonpayable",
       "type": "constructor"
-    },
-    {
-      "inputs": [],
-      "name": "HIGH_MEDIAN_EVALUATION_THRESHOLD",
-      "outputs": [
-        {
-          "internalType": "uint8",
-          "name": "",
-          "type": "uint8"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "LOW_MEDIAN_EVALUATION_THRESHOLD",
-      "outputs": [
-        {
-          "internalType": "uint8",
-          "name": "",
-          "type": "uint8"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
     },
     {
       "inputs": [],
@@ -216,7 +190,7 @@
     {
       "inputs": [
         {
-          "internalType": "address payable",
+          "internalType": "address",
           "name": "_newWorker",
           "type": "address"
         },
@@ -272,48 +246,9 @@
       "type": "function"
     },
     {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "workerUniversalAddress",
-          "type": "address"
-        },
-        {
-          "components": [
-            {
-              "internalType": "address",
-              "name": "market",
-              "type": "address"
-            },
-            {
-              "internalType": "uint256",
-              "name": "marketReputation",
-              "type": "uint256"
-            },
-            {
-              "internalType": "uint256",
-              "name": "universalReputation",
-              "type": "uint256"
-            }
-          ],
-          "internalType": "struct Evaluation.EvaluationState",
-          "name": "evaluationState",
-          "type": "tuple"
-        },
-        {
-          "internalType": "address",
-          "name": "_market",
-          "type": "address"
-        }
-      ],
-      "name": "checkWorkerEvaluation",
-      "outputs": [
-        {
-          "internalType": "bool",
-          "name": "",
-          "type": "bool"
-        }
-      ],
+      "inputs": [],
+      "name": "claimStalledContract",
+      "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
     },
@@ -371,6 +306,19 @@
     },
     {
       "inputs": [],
+      "name": "daiToken",
+      "outputs": [
+        {
+          "internalType": "contract DaiToken",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
       "name": "domain_separator",
       "outputs": [
         {
@@ -410,6 +358,19 @@
     },
     {
       "inputs": [],
+      "name": "market",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
       "name": "owner",
       "outputs": [
         {
@@ -419,6 +380,20 @@
         }
       ],
       "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "refundUnclaimedContract",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "releaseJob",
+      "outputs": [],
+      "stateMutability": "nonpayable",
       "type": "function"
     },
     {
@@ -570,22 +545,6 @@
   ],
   "UserRegistration": [
     {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "userSummaryFactoryAddress",
-          "type": "address"
-        },
-        {
-          "internalType": "address",
-          "name": "_juryParticipationAddress",
-          "type": "address"
-        }
-      ],
-      "stateMutability": "nonpayable",
-      "type": "constructor"
-    },
-    {
       "anonymous": false,
       "inputs": [
         {
@@ -618,6 +577,69 @@
       "type": "event"
     },
     {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "_userSummary",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "uint256",
+          "name": "index",
+          "type": "uint256"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "universalAddress",
+          "type": "address"
+        }
+      ],
+      "name": "UserSummaryCreated",
+      "type": "event"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "_userSummaries",
+      "outputs": [
+        {
+          "internalType": "contract UserSummary",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "universalAddress",
+          "type": "address"
+        }
+      ],
+      "name": "createUserSummary",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
       "inputs": [
         {
           "internalType": "address",
@@ -634,13 +656,6 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "redeemJuryParticipation",
-      "outputs": [],
-      "stateMutability": "nonpayable",
       "type": "function"
     },
     {
@@ -735,7 +750,7 @@
       "inputs": [
         {
           "internalType": "address",
-          "name": "taskOwner",
+          "name": "_registrar",
           "type": "address"
         },
         {
@@ -780,7 +795,7 @@
     },
     {
       "inputs": [],
-      "name": "getNumJobs",
+      "name": "getNumRelationshipsCreated",
       "outputs": [
         {
           "internalType": "uint256",

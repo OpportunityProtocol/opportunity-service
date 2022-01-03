@@ -15,8 +15,6 @@ class OpportunityEventEmitter extends EventEmitter{
     }
 
     emit(eventName : string, ...args: Array<any>) : boolean {
-        console.log('emitting event name: ' + eventName)
-        console.log('args: ' + args)
         return super.emit(eventName, ...args);
     }
 

@@ -3,7 +3,6 @@ import syncJobs from "../sync/sync-jobs";
 import syncMarkets from "../sync/sync-markets";
 import { completeRelationship } from "./exchange/complete-relationship";
 import { createTask } from "./exchange/create-task";
-import { enterWorkRelationship } from "./exchange/enter-work-relationship";
 import registerNewUser from "./identity/register-new-user";
 import { createMarket } from "./market/create-market";
 
@@ -16,8 +15,6 @@ import { decryptByPrivateKey, encryptByPublicKey } from "./util/encrypt-by-publi
 import { createEthCryptoCreds } from "./other/create-eth-crypto-creds";
 import { encrypt } from "./provider/encrypt";
 import { decrypt } from "./provider/decrypt";
-import syncCreatedDisputes from "../sync/sync-disputes";
-import syncMarketDisputes from "../sync/sync-market-disputes";
 
 function generateAPI() {
     return {
@@ -33,16 +30,7 @@ function generateAPI() {
         },
         exchange: {
             completeRelationship,
-            createTask,
-            enterWorkRelationship
-        },
-        dispute: {
-            connectGateways: () => {},
-            getOracleClient: () => {},
-            checkVoteResults: () => {},
-            ensureEntityMetadata: () => {},
-            launchNewVote: () => {},
-            submitVote: () => {}
+            createTask
         },
         identity: {
             registerNewUser
@@ -54,9 +42,7 @@ function generateAPI() {
             sync: {
                 syncWithEthereum: syncWithEthereumNode,
                 syncMarkets,
-                syncJobs,
-                syncCreatedDisputes,
-                syncMarketDisputes
+                syncJobs
             }
         },
         provider: {

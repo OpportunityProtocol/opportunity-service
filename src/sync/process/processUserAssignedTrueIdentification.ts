@@ -15,12 +15,10 @@ function processAssignedTrueIdentification(log) {
     const registeredUniversalAddress = args[0];
     const userSummaryContractAddress = args[1];
 
-    console.log('Processing: ' + 'processAssignedTrueIdentification event with args: ' + registeredUniversalAddress + ' and ' + userSummaryContractAddress);
-
     const trueIdentificationData = { registeredUniversalAddress, userSummaryContractAddress }
     opportunityEventEmitter.emit(UserEvents.UserAssignedTrueIdentification, trueIdentificationData);
     } catch(error) {
-        console.log('processAssignedTrueIdentification: ' + error);
+        console.log(error);
     }
 }
 

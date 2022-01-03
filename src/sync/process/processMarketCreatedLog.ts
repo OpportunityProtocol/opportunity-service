@@ -23,10 +23,6 @@ function processMarketCreatedEvent(log) {
     const marketName = args[3];
     const marketType = args[4];
 
-    console.log('Processing ' + signature + ' with args: ' 
-    + 'Market Address: ' + marketAddress + ', Index: ' 
-    + marketIndex + ', Owner: ' + marketOwner, ', Market Name: ' + marketName, + ', and Market Type: ' + marketType);
-
     let marketData = {
         marketAddress,
         marketIndex,

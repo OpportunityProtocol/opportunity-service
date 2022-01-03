@@ -12,15 +12,14 @@ async function syncJobs(marketAddress) {
         toBlock: 'latest',
         topics: ['WorkRelationshipCreated(address,address,address)']
     }).then((logs) => {
-        console.log('Found logs.. Processing sync Jobs')
         logs.forEach(log => {
             if (log && Array.isArray(log.topics) && log.topics.length) {
                 processLog(log); // keccashinside here
             }
         })
     })
-    .catch(err => {
-        console.log('Err on fetching logs from blockchain: ' + err)
+    .catch(error => {
+        console.log(error)
     })
 }
 }

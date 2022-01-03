@@ -21,11 +21,7 @@ function processWorkRelationshipCreatedEvent(log) {
 
     const relationshipOwner = args[0];
     const relationshipAddress = args[1];
-    const relationshipMarketAddress = args[2];
-
-    console.log('Processing ' + signature + ' with args: ' 
-    + 'Owner: ' + relationshipOwner + ', Address: '  + relationshipAddress + ', and Market Address: ' + relationshipAddress);
-
+    const relationshipMarketAddress = args[2]
     const relationshipContractInstance = new ethers.Contract(relationshipAddress, abiMap[Contracts.WORK_RELATIONSHIP], opportunityService.getSignersInterface())
     const relationshipStatus = 0 //relationshipContractInstance.get_contractStatus();
     const relationshipType = 0;

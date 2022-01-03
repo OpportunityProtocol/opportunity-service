@@ -13,13 +13,9 @@ function processUserRegistered(log) {
     const { args, signature } = decodedLog;
 
     const registeredUniversalAddress = args[0];
-
-    console.log('Processing: ' + 'UserRegistered event with args: ' + registeredUniversalAddress);
-
-    console.log('Successfully processedUserRegistered');
         opportunityEventEmitter.emit(UserEvents.UserRegistered, registeredUniversalAddress);
     } catch(error) {
-        console.log('processUserRegistered: ' + error);
+       console.log(error)
     }
 }
 

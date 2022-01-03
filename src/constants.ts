@@ -12,7 +12,6 @@ export const ABI_LIST = [
 
 export enum Contracts {
   CONTROL='Control',
-  DISPUTE='Dispute',
   DAI='Dai',
   WORK_RELATIONSHIP='WorkRelationship',
   MARKET='Market',
@@ -34,13 +33,6 @@ export enum ContractType {
   NORMAL,
   FLASH
 }
-
-enum DisputeStatus {
-  AWAITING_ARBITRATORS,
-  PENDING_DECISION,
-  RESOLVED
-}
-
 
 /* Web3 */
 
@@ -88,9 +80,6 @@ export enum UserEvents {
 
 export enum ExchangeEvents {
   WorkRelationshipCreated='WorkRelationshipCreated',
-  DisputeCreated='DisputeCreated',
-  DisputeInvolvement='MarketDispute',
-  MarketDispute='MarketDispute'
 }
 
 export enum StorageEvents {

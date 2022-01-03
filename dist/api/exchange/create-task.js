@@ -24,6 +24,7 @@ function createTask(data) {
         const taskMarket = parsedData["taskMarket"];
         const taskBounty = Number(parsedData["taskBounty"]);
         const taskMetadataPointer = parsedData["taskMetadataPointer"];
+        const registrar = addressMap[opportunityService.getEthNetwork()][Contracts.USER_REGISTRATION];
         console.log('b');
         console.log(taskOwner);
         console.log(taskMarket);
@@ -38,7 +39,7 @@ function createTask(data) {
             console.log('d');
             const contract = yield new ethers.Contract(taskMarket, abi).connect(opportunityService.getSignersInterface());
             console.log('e');
-            const txResponse = yield contract.functions.createJob(taskOwner, ContractType.NORMAL, taskMetadataPointer, addressMap[opportunityService.getEthNetwork()][Contracts.DAI]);
+            const txResponse = yield contract.functions.createJob(registrar, ContractType.NORMAL, taskMetadataPointer, addressMap[opportunityService.getEthNetwork()][Contracts.DAI]);
             const txReceipt = yield txResponse.wait();
             console.log(txReceipt);
         }

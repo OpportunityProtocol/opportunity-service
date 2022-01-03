@@ -15,8 +15,6 @@ function processUserSummaryCreated(log) {
     const userSummaryContractAddress = args[0];
     const userRegistrationNumber = args[1];
     const registeredUniversalAddress = args[2]
-
-    console.log('Processing: ' + 'processUserSummaryCreated event with args: ' + registeredUniversalAddress + ' and ' + userSummaryContractAddress);
     const userSummaryData = { userSummaryContractAddress, userRegistrationNumber, registeredUniversalAddress }
     opportunityEventEmitter.emit(UserEvents.UserSummaryCreated, userSummaryData);
     } catch(error) {
