@@ -36,13 +36,13 @@
     "chai-bn": "^0.2.1",
     "jest": "^27.3.1",
     "mocha": "^8.4.0",
+    "@types/sqlite3": "^3.1.7",
+    "@types/web3": "^1.2.2",
     "ts-jest": "^27.0.7",
     "typescript": "^4.5.2"
   },
   "dependencies": {
     "@toruslabs/torus-embed": "^1.10.14",
-    "@types/sqlite3": "^3.1.7",
-    "@types/web3": "^1.2.2",
     "assert": "^2.0.0",
     "compression": "^1.7.4",
     "cors": "^2.8.5",

@@ -12,10 +12,8 @@ function processAssignedTrueIdentification(log) {
     const decodedLog : LogDescription = iface.parseLog(log);
     const { args, signature } = decodedLog;
 
-    const registeredUniversalAddress = args[0];
-    const userSummaryContractAddress = args[1];
-
-    console.log('Processing: ' + 'processAssignedTrueIdentification event with args: ' + registeredUniversalAddress + ' and ' + userSummaryContractAddress);
+    const registeredUniversalAddress : String = args[0];
+    const userSummaryContractAddress : String = args[1];
 
     const trueIdentificationData = { registeredUniversalAddress, userSummaryContractAddress }
     opportunityEventEmitter.emit(UserEvents.UserAssignedTrueIdentification, trueIdentificationData);

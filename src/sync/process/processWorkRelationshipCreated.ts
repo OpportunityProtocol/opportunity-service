@@ -8,11 +8,6 @@ import { AbiCoder, EventFragment, Interface, LogDescription, Result } from '@eth
 import opportunityEventEmitter from '../../events/OpportunityEventEmitter';
 
 
-/**
- * WorkRelationshipCreated(address owner, address relationship, address market)
- * @param log
- * @returns
- */
 function processWorkRelationshipCreatedEvent(log) {
     try {
     const iface : Interface = new ethers.utils.Interface(abiMap[Contracts.MARKET]);
@@ -26,8 +21,8 @@ function processWorkRelationshipCreatedEvent(log) {
     console.log('Processing ' + signature + ' with args: ' 
     + 'Owner: ' + relationshipOwner + ', Address: '  + relationshipAddress + ', and Market Address: ' + relationshipAddress);
 
-    const relationshipContractInstance = new ethers.Contract(relationshipAddress, abiMap[Contracts.WORK_RELATIONSHIP], opportunityService.getSignersInterface())
-    const relationshipStatus = 0 //relationshipContractInstance.get_contractStatus();
+    const relationshipContractInstance : Contract = new ethers.Contract(relationshipAddress, abiMap[Contracts.WORK_RELATIONSHIP], opportunityService.getSignersInterface())
+    const relationshipStatus = 0 
     const relationshipType = 0;
 
     let relationshipData = {

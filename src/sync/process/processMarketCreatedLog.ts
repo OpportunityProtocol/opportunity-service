@@ -17,17 +17,13 @@ function processMarketCreatedEvent(log) {
     const decodedLog : LogDescription = iface.parseLog(log);
     const { args, signature } = decodedLog;
 
-    const marketAddress = args[0];
-    const marketIndex = args[1];
-    const marketOwner = args[2];
-    const marketName = args[3];
-    const marketType = args[4];
+    const marketAddress : String = args[0];
+    const marketIndex : String = args[1];
+    const marketOwner : String = args[2];
+    const marketName : String = args[3];
+    const marketType : String = args[4];
 
-    console.log('Processing ' + signature + ' with args: ' 
-    + 'Market Address: ' + marketAddress + ', Index: ' 
-    + marketIndex + ', Owner: ' + marketOwner, ', Market Name: ' + marketName, + ', and Market Type: ' + marketType);
-
-    let marketData = {
+    const marketData = {
         marketAddress,
         marketIndex,
         marketOwner,

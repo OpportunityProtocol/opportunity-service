@@ -19,7 +19,7 @@ class OpportunityService {
     private syncing: boolean;
     private ethersProvider : providers.JsonRpcProvider = ethers.getDefaultProvider('http://localhost:8545');
     private ethersSigner : providers.JsonRpcSigner = null;
-    private static defaultProvider;// = new Web3('http://localhost:8545')
+    private static defaultProvider;
     private opportunityLogger = null;
     private storageProvider = opportunityStorageProvider;
     private currentAccount = null;
@@ -29,19 +29,8 @@ class OpportunityService {
     public api  = opportunityAPI;
 
     private static instance: OpportunityService;
-
-    /**
-     * The Singleton's constructor should always be private to prevent direct
-     * construction calls with the `new` operator.
-     */
     private constructor() {}
 
-    /**
-     * The static method that controls the access to the singleton instance.
-     *
-     * This implementation let you subclass the Singleton class while keeping
-     * just one instance of each subclass around.
-     */
     public static getInstance(): OpportunityService {
         if (!OpportunityService.instance) {
             OpportunityService.instance = new OpportunityService();
@@ -81,10 +70,8 @@ class OpportunityService {
     async startService() {
         if (this.running) { return; }
 
-        console.log('Starting service...');
         this.sync();
         this.running = true;
-        console.log('Finished starting service...')
     }
 
     shutdownService() {
