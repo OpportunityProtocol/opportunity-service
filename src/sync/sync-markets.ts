@@ -25,6 +25,7 @@ async function syncMarkets() {
     .catch((err) => {
       console.log('Err on fetching logs from blockchain: ' + err)
     })
+    }
 }
 
 export default syncMarkets

@@ -18,7 +18,7 @@ function processAssignedTrueIdentification(log) {
     const trueIdentificationData = { registeredUniversalAddress, userSummaryContractAddress }
     opportunityEventEmitter.emit(UserEvents.UserAssignedTrueIdentification, trueIdentificationData);
     } catch(error) {
-        console.log('processAssignedTrueIdentification: ' + error);
+        console.log(error);
     }
 }
 

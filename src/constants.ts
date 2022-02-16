@@ -33,12 +33,15 @@ export enum ContractType {
   FLASH,
 }
 
+<<<<<<< HEAD
 enum DisputeStatus {
   AWAITING_ARBITRATORS,
   PENDING_DECISION,
   RESOLVED,
 }
 
+=======
+>>>>>>> ecbd2afe93c6e436f9c7ae3d7e1e62a52a511d69
 /* Web3 */
 
 export enum Networks {
@@ -90,8 +93,12 @@ export enum UserEvents {
 }
 
 export enum ExchangeEvents {
+<<<<<<< HEAD
   WorkRelationshipCreated = 'WorkRelationshipCreated',
   DisputeCreated = 'DisputeCreated',
+=======
+  WorkRelationshipCreated='WorkRelationshipCreated',
+>>>>>>> ecbd2afe93c6e436f9c7ae3d7e1e62a52a511d69
 }
 
 export enum StorageEvents {

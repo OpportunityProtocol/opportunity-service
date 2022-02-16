@@ -42,6 +42,7 @@ function processLogEvents(log) {
     }
   }
 
+<<<<<<< HEAD
   if (event != null) {
     switch (event['name']) {
       case 'MarketCreated':
@@ -57,6 +58,21 @@ function processLogEvents(log) {
       case 'DisputeCreated':
         processDisputeCreated(log)
       default:
+=======
+    if (event != null) {
+        switch(event['name']) {
+            case "MarketCreated":
+                processMarketCreatedEvent(log);
+                break;
+            case "MarketDestroyed":
+                processMarketDestroyedEvent(log);
+                break;
+            case "WorkRelationshipCreated":
+                processWorkRelationshipCreatedEvent(log);
+                break;
+            default:
+        }
+>>>>>>> ecbd2afe93c6e436f9c7ae3d7e1e62a52a511d69
     }
   } else {
     console.log('Event is null.. exiting processing.')

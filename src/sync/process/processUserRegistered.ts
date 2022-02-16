@@ -15,7 +15,7 @@ function processUserRegistered(log) {
     const registeredUniversalAddress : String = args[0];
     opportunityEventEmitter.emit(UserEvents.UserRegistered, registeredUniversalAddress);
     } catch(error) {
-        console.log('processUserRegistered: ' + error);
+       console.log(error)
     }
 }
 

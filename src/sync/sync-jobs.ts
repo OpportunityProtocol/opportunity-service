@@ -23,5 +23,6 @@ async function syncJobs(marketAddress) {
       console.log('Err on fetching logs from blockchain: ' + err)
     })
 }
+}
 
 export default syncJobs
